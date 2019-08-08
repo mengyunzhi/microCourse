@@ -10,6 +10,9 @@ class HomeController extends IndexController
 {
 	public function studentpage()
 	{
+
+
+		
 		return $this->fetch();
 	}
 
