@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<!--刘宇轩-->
+<!--2019.07.19 14:55-->
+
+<head>
+    <meta charset="UTF-8">
+    <title>{block name="title"}微课堂-管理员模式{/block}</title>
+    <link rel="stylesheet" type="text/css" href="/microCourse/public/static/bootstrap.min.css">
+    <!--调用bootstrap的CSS样式 -->
+</head>
+
+<body class="container">
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">微课堂</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav ">
+              <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+              <!--是这个标签是当前标签 -->
+              <li><a href="#">学期控制</a></li>
+              <li><a href="#">教师管理</a></li>
+              <li><a href="#">学生管理</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">One more separated link</a></li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">Link</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理员模式<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">设置</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">注销</a></li>
+                </ul>
+              </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <br><br>
+    <div class="row">
+      <div class="col-md-12">
+            {block name="search"}
+            <hr />
+              <div class="jumbotron">
+                  <h1>Hello, world!</h1>
+                  <p>...</p>
+                  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+              </div>
+              <div class="alert alert-success" role="alert">激活学期已结束或未开始</div>
+              <h3>当前学期:</h3>
+              <div class="dropdown">
+                <h4>选择周次:</h4>
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  第一周
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li><a href="#">第一周</a></li>
+                  <li><a href="#">第二周</a></li>
+                  <li><a href="#">第三周</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">......</a></li>
+                </ul>
+              </div> 
+              <br><br>
+            <table class="table table-bordered">
+                <tr class="info">
+                  <th>周次</th>
+                  <th>第一节</th>
+                  <th>第二节</th>
+                  <th>第三节</th>
+                  <th>第四节</th>
+                  <th>第五节</th>
+                </tr>
+                <tr>
+                  <td>星期一</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                 <tr>
+                  <td>星期二</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>星期三</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>星期四</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>星期五</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>星期六</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr> 
+                <tr>
+                  <td>星期日</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>    
+            </table>
+            <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
+        </div>
+    </div>
+</body>
+
+</html>

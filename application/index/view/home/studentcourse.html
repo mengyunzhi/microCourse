@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<!--刘宇轩-->
+<!--2019.07.19 14:55-->
+
+<head>
+    <meta charset="UTF-8">
+    <title>{block name="title"}微课堂-梦云智出品{/block}</title>
+    <link rel="stylesheet" type="text/css" href="/microCourse/public/static/bootstrap.min.css">
+    <!--调用bootstrap的CSS样式 -->
+</head>
+
+<body class="container">
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">微课堂</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<ul class="nav navbar-nav">
+              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentpage">学生主页</a></li>
+
+              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentonline">上课模式</a></li>
+              <li class="active"><a href="http://localhost/microCourse/public/index.php/index/home/studentcourse"> 课程查询<span class="sr-only">(current)</span></a></li>
+              <!--是这个标签是当前标签 -->
+              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentscore">成绩查询</a></li>
+              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentinfo">个人信息</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">Link</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">您好，亲爱的同学 <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">设置</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">注销</a></li>
+                </ul>
+              </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <br><br>
+    <div class="row">
+      <div class="col-md-12">
+            {block name="search"}
+            <hr />
+              
+              <div class="alert alert-success" role="alert">激活学期已结束或未开始</div>
+              <h3>学期名:</h3>
+              <table>
+                <tr>
+                  <th><h4>选择周次:&nbsp&nbsp</h4></th>
+                  <td>
+                    <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  第一周
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li><a href="#">第一周</a></li>
+                  <li><a href="#">第二周</a></li>
+                  <li><a href="#">第三周</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">......</a></li>
+                </ul>
+              </div> 
+                  </td>
+                </tr>
+              </table>
+                          <table class="table table-bordered">
+                <tr class="info">
+                  <th>课程名称</th>
+                  <th>课程代码</th>
+                  <th>学年</th>
+                  <th>学期</th>
+                  <th>任课教师</th>
+                  <th>课程类型</th>
+                  <th>上课时间</th>
+                </tr>
+                <tr>
+                  <td>商业网站开发</td>
+                  <td>GB12341234</td>
+                  <td>2018-2019</td>
+                  <td>春季</td>
+                  <td>潘杰</td>
+                  <td>选修课</td>
+                  <td><a href="" type="button" class="btn btn-default navbar-btn">点击查看</a></td>
+                </tr>
+                 <tr>
+                  <td>123</td>
+                  <td>321</td>
+                  <td>456</td>
+                  <td>654</td>
+                  <td>789</td>
+                  <td>987</td>
+                  <td><a href="" type="button" class="btn btn-default navbar-btn">点击查看</a></td>
+                </tr>
+  
+            </table>
+              <br><br>
+            <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
+        </div>
+    </div>
+</body>
+
+</html>
