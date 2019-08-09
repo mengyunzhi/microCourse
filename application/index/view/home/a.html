@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<!-- 管理员界面——教师管理编辑 -->
+<!-- limeina1 -->
+<!-- 2019.08.09 18：31 -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>{block name="title"}登录-微课堂{/block}</title>
+    <link rel="stylesheet" type="text/css" href="/microCourse/public/static/bootstrap.min.css">
+    <!--调用bootstrap的CSS样式 -->
+</head>
+
+<body class="container">
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <!-- uiView: -->
+                <ui-view class="ng-scope">
+                    <!-- uiView: -->
+                    <ui-view class="ng-scope">
+                        <div class="row ng-scope">
+                            <div class="col-md-4 col-md-offset-3">
+                                <form ng-submit="submit()" name="myForm" class="form-horizontal from-header ng-pristine ng-valid-semester ng-valid ng-valid-required" style="">
+                                    <div class="form-group">
+                                        <label for="name" class="col-md-4">学期名:</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" name="name" placeholder="学期名称...">
+                                        </div>
+                                    </div>
+                                    <div class="form-group"> <label for="startDate" class="col-md-4">学期开始时间:</label>
+                                        <div class="col-md-8"> <input type="date" class="form-control" name="startDate" ng-model="semester.startTime" required="" style=""> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group"> <label for="endDate" class="col-md-4">学期结束时间:</label>
+                                        <div class="col-md-8"> <input type="date" class="form-control" name="endDate" ng-model="semester.endTime" compare="semester.startTime" required="" style=""> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-group-setting">
+                                        <div class="col-md-2 col-md-push-8"> <button type="submit" class="btn btn-default">提交</button> </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <style type="text/css" class="ng-scope">
+                        .Message {
+                            position: relative;
+                            top: -26px;
+                            left: 267px;
+                        }
+
+                        .form-group-setting {
+                            height: 70px;
+                        }
+
+                        .from-header {
+                            margin-top: 80px;
+                        }
+                        </style>
+                    </ui-view>
+                </ui-view>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
