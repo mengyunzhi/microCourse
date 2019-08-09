@@ -55,5 +55,29 @@ class HomeController extends IndexController
 	{
 		return $this->fetch();
 	}	
+    
+    public function teachercourse()
+    {
+    	return $this->fetch();
+    }
 
+    public function teacherclassroom()
+    {
+    	return $this->fetch();
+    }
+
+    public function teacheronline()
+    {
+    	return $this->fetch();
+    }
+
+    public function teacherincourse()
+    {
+    	return $this->fetch();
+    }
+
+    public function teachergrade()
+    {
+    	return $this->fetch();
+    }
 }
