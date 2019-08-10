@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<!--刘宇轩-->
-<!--2019.07.19 14:55-->
-
 <head>
     <meta charset="UTF-8">
-    <title>{block name="title"}微课堂-管理员模式{/block}</title>
-    <link rel="stylesheet" type="text/css" href="/microCourse/public/static/bootstrap/css/bootstrap.min.css">
+    <title>微课堂-梦云智出品</title>
+    <link rel="stylesheet" type="text/css" href="/microCourse/public/static/bootstrap.min.css">
     <!--调用bootstrap的CSS样式 -->
 </head>
 
@@ -30,14 +27,28 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">微课堂</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav ">
-              <li class="active"><a href="http://localhost/microCourse/public/index.php/index/home/teacherpage">首页 <span class="sr-only">(current)</span></a></li>
-              <!--是这个标签是当前标签 -->
+            	<li><a href="http://localhost/microCourse/public/index.php/index/home/teacherpage">首页</a></li>
               <li><a href="http://localhost/microCourse/public/index.php/index/home/teachercourse">课程管理</a></li>
               <li><a href="http://localhost/microCourse/public/index.php/index/home/teacherclassroom">教室管理</a></li>
               <li><a href="http://localhost/microCourse/public/index.php/index/home/teacheronline">上课模式</a></li>
-              <li><a href="http://localhost/microCourse/public/index.php/index/home/teachergrade">成绩录入</a></li>
+              <li class="active"><a href="http://localhost/microCourse/public/index.php/index/home/teachergrade">成绩录入<span class="sr-only">(current)</span></a></li>
+              <!--是这个标签是当前标签 -->
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -70,97 +81,61 @@
       <div class="col-md-12">
             {block name="search"}
             <hr />
-              <div class="jumbotron">
-                  <h1>Hello, world!</h1>
-                  <p>...</p>
-                  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-              </div>
+              
               <div class="alert alert-success" role="alert">激活学期已结束或未开始</div>
-              <h3>当前学期:</h3>
-              <div class="dropdown">
-                <h4>选择周次:</h4>
+              <h3>学期名:</h3>
+              <table>
+                <tr>
+                  <th><h4>选择课程:&nbsp&nbsp</h4></th>
+                  <td>
+                    <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  第一周
+                  语文
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                  <li><a href="#">第一周</a></li>
-                  <li><a href="#">第二周</a></li>
-                  <li><a href="#">第三周</a></li>
+                  <li><a href="#">语文</a></li>
+                  <li><a href="#">数学</a></li>
+                  <li><a href="#">英语</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="#">......</a></li>
                 </ul>
               </div> 
-              <br><br>
-            <table class="table table-bordered">
+                  </td>
+                </tr>
+              </table>
+              <table class="table table-bordered">
                 <tr class="info">
                   <th>周次</th>
-                  <th>第一节</th>
-                  <th>第二节</th>
-                  <th>第三节</th>
-                  <th>第四节</th>
-                  <th>第五节</th>
+                  <th>星期</th>
+                  <th>节数</th>
+                  <th>教室</th>
+                  <th>班级</th>
+                  <th>成绩</th>
                 </tr>
                 <tr>
-                  <td>星期一</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>第三周</td>
+                  <td>星期二</td>
+                  <td>第四大节</td>
+                  <td>A210</td>
+                  <td>计1806</td>
+                  <td><a href="" type="button" class="btn btn-default navbar-btn">点击查看</a></td>
                 </tr>
                  <tr>
-                  <td>星期二</td>
+                  <td>123</td>
+                  <td>321</td>
+                  <td>456</td>
+                  <td>654</td>
                   <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td><a href="" type="button" class="btn btn-default navbar-btn">点击查看</a></td>
                 </tr>
-                <tr>
-                  <td>星期三</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>星期四</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>星期五</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>星期六</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr> 
-                <tr>
-                  <td>星期日</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>    
+  
             </table>
+              <br><br>
             <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
         </div>
     </div>
+    
 </body>
 
 </html>
