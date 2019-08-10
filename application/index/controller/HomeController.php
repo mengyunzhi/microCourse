@@ -4,7 +4,7 @@ namespace app\index\controller;
  * @Author: LYX6666666
  * @Date:   2019-07-19 15:52:17
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-10 09:42:00
+ * @Last Modified time: 2019-08-10 17:02:57
  */
 /**
  * @Author: limeina1
@@ -18,8 +18,6 @@ class HomeController extends IndexController
 	public function studentpage()
 	{
 
-
-		
 		return $this->fetch();
 	}
 
@@ -133,6 +131,11 @@ class HomeController extends IndexController
     	return $this->fetch();
     }
 
+    public function teachercoursetime()
+    {
+    	return $this->fetch();
+    }
+
     public function teacherclassroom()
     {
     	return $this->fetch();
@@ -144,6 +147,11 @@ class HomeController extends IndexController
     }
 
     public function teacherincourse()
+    {
+    	return $this->fetch();
+    }
+
+    public function teacherincourse2()
     {
     	return $this->fetch();
     }
@@ -163,7 +171,7 @@ class HomeController extends IndexController
     	return $this->fetch();
     }
     
-        public function studentinfoedit()
+    public function studentinfoedit()
     {
       return $this->fetch();
     }	
