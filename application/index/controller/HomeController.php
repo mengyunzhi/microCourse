@@ -4,7 +4,7 @@ namespace app\index\controller;
  * @Author: LYX6666666
  * @Date:   2019-07-19 15:52:17
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-08 19:06:08
+ * @Last Modified time: 2019-08-10 09:42:00
  */
 /**
  * @Author: limeina1
@@ -33,7 +33,17 @@ class HomeController extends IndexController
 		return $this->fetch();
 	}
 
-	public function studentincourse()
+	public function studentcoursetime()
+	{
+		return $this->fetch();
+	}
+
+	public function studentoncourse()
+	{
+		return $this->fetch();
+	}
+
+	public function studentseat()
 	{
 		return $this->fetch();
 	}
@@ -118,4 +128,18 @@ class HomeController extends IndexController
 		return $this->fetch();
 	}	
 
+	public function studentinfoedit()
+	{
+		return $this->fetch();
+	}	
+
+	public function password()
+	{
+		return $this->fetch();
+	}
+
+	public function aboutourteam()
+	{
+		return $this->fetch();
+	}
 }
