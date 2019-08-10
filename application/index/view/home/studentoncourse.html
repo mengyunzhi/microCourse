@@ -33,7 +33,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <li><a href="http://localhost/microCourse/public/index.php/index/home/studentpage">学生主页</a></li>
-              <li class="active"><a href="#">上课模式 <span class="sr-only">(current)</span></a></li>
+              <li class="active"><a href="http://localhost/microCourse/public/index.php/index/home/studentonline">上课模式 <span class="sr-only">(current)</span></a></li>
               <!--是这个标签是当前标签 -->
               <li><a href="http://localhost/microCourse/public/index.php/index/home/studentcourse">课程查询</a></li>
               <li><a href="http://localhost/microCourse/public/index.php/index/home/studentscore">成绩查询</a></li>
@@ -45,9 +45,9 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">您好，亲爱的同学 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">设置</a></li>
+                  <li><a href="http://localhost/microCourse/public/index.php/index/home/password">设置</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="#">注销</a></li>
+                  <li><a href="http://localhost/microCourse/public/index.php/index/login/login">注销</a></li>
                 </ul>
               </li>
             </ul>
@@ -60,9 +60,13 @@
             {block name="search"}
             <hr />
               
-              <div class="alert alert-success" role="alert">当前状态：系统运行正常</div>
+              <div class="alert alert-success" role="alert">当前状态：系统运行正常，成功签到，正在上课，此时可以离开界面</div>
               <h3>时间：X年X月X日&nbsp&nbsp星期X&nbsp&nbsp第X大节</h3>
-              <button type="button" class="btn btn-default navbar-btn">进入课堂</button>
+              <h3>教室：12教 A101</h3>
+              <h3>姓名：刘宇轩</h3>
+              <h3>学号：182511</h3>
+              <button type="button" class="btn btn-default navbar-btn">举手</button>
+              <a href="http://localhost/microCourse/public/index.php/index/home/studentonline" type="button" class="btn btn-default navbar-btn">返回</a>
 
           
             <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}

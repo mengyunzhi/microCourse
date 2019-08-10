@@ -26,21 +26,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="http://localhost/microCourse/public/index.php/index/home/studentpage">微课堂</a>
+          <a class="navbar-brand" href="#">微课堂</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav">
               <li><a href="http://localhost/microCourse/public/index.php/index/home/studentpage">学生主页</a></li>
-              
-              
+
               <li><a href="http://localhost/microCourse/public/index.php/index/home/studentonline">上课模式</a></li>
-              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentcourse">课程查询</a></li>
-              
-              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentscore">成绩查询</a></li>
-              <li class="active"><a href="http://localhost/microCourse/public/index.php/index/home/studentinfo">个人信息<span class="sr-only">(current)</span></a></li>
+              <li class="active"><a href="http://localhost/microCourse/public/index.php/index/home/studentcourse"> 课程查询<span class="sr-only">(current)</span></a></li>
               <!--是这个标签是当前标签 -->
+              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentscore">成绩查询</a></li>
+              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentinfo">个人信息</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#">Link</a></li>
@@ -61,38 +59,72 @@
       <div class="col-md-12">
             {block name="search"}
             <hr />
-              
-              <div class="alert alert-success" role="alert">当前状态：系统运行正常</div>
-              <h3>当前时间：X年X月X日&nbsp&nbsp xx:xx</h3>
-              </table>
+              <div class="alert alert-success" role="alert">激活学期已结束或未开始</div>
+              <h3>课程名:</h3>
               <table class="table table-bordered">
                 <tr class="info">
-                  <th>标签</th>
-                  <th>信息</th>
+                  <th>节次</th>
+                  <th>星期一</th>
+                  <th>星期二</th>
+                  <th>星期三</th>
+                  <th>星期四</th>
+                  <th>星期五</th>
+                  <th>星期六</th>
+                  <th>星期日</th>
                 </tr>
                 <tr>
-                  <td>学生姓名</td>
-                  <td>刘宇轩</td>
+                  <td>第一大节</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                 <tr>
+                  <td>第二大节</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
-                  <td>学号</td>
-                  <td>182511</td>
+                  <td>第三大节</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
-                  <td>性别</td>
-                  <td>男</td>
+                  <td>第四大节</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr><tr>
+                  <td>第五大节</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
-                <tr>
-                  <td>班级</td>
-                  <td>交通181</td>
-                </tr>
-  
             </table>
-
-              <a href="http://localhost/microCourse/public/index.php/index/home/studentinfoedit" type="button" class="btn btn-default navbar-btn">编辑</a>
-            <hr /> {/block} {block name="content"} {/block} {block name="page"} 
-
-            {/block}
+              <br><br>
+              <a href="http://localhost/microCourse/public/index.php/index/home/studentcourse" type="button" class="btn btn-default navbar-btn">返回</a>
+            <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
         </div>
     </div>
 </body>
