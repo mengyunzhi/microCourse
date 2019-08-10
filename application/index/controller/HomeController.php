@@ -80,4 +80,14 @@ class HomeController extends IndexController
     {
     	return $this->fetch();
     }
+
+    public function teachercourseedit()
+    {
+    	return $this->fetch();
+    }
+
+    public function teacherclassroomedit()
+    {
+    	return $this->fetch();
+    }
 }

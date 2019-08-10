@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>微课堂-梦云智出品</title>
-    <link rel="stylesheet" type="text/css" href="/microCourse/public/static/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/microCourse/public/static/bootstrap/css/bootstrap.min.css">
     <!--调用bootstrap的CSS样式 -->
 </head>
 
@@ -84,10 +84,27 @@
               
               <div class="alert alert-success" role="alert">激活学期已结束或未开始</div>
               <h3>学期名:</h3>
+            <hr />
+                <div class="row">
+                  <div class="col-md-8">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label class="sr-only" for="name">姓名</label>
+                        <input type="name" name="text" class="form-control" placeholder="姓名..." value="{:input('ge.name')}">
+                      </div>
+                      <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;查询</button>
+                    </form>
+                  </div>
+                  <div class="col-md-4 text-right">
+                      <a href="http://localhost/microCourse/public/index.php/index/home/teachercourseedit" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>&nbsp;增加</a>
+                    </div>
+                </div>
+                
+                <hr />
               <table>
                 <tr>
                   <th><h4>选择周次:&nbsp&nbsp</h4></th>
-                  <td>
+                <td>
                     <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   第一周
@@ -113,6 +130,7 @@
                   <th>任课教师</th>
                   <th>课程类型</th>
                   <th>上课时间</th>
+                  <th>操作</th>
                 </tr>
                 <tr>
                   <td>商业网站开发</td>
@@ -121,7 +139,11 @@
                   <td>春季</td>
                   <td>潘杰</td>
                   <td>选修课</td>
-                  <td><a href="" type="button" class="btn btn-default navbar-btn">点击查看</a></td>
+                  <td><a href="" type="button" class="btn btn-default">点击查看</a></td>
+                  <td>
+                    <a class=" btn btn-danger btn-sm" href=""><i class="glyphicon glyphicon-trash"></i>&nbsp;删除</a>&nbsp;
+                    <a class="btn btn-sm btn-primary" href="http://localhost/microCourse/public/index.php/index/home/teachercourseedit"><i class="glyphicon glyphicon-pencil"></i>&nbsp;编辑</a>
+                  </td>
                 </tr>
                  <tr>
                   <td>123</td>
@@ -130,7 +152,11 @@
                   <td>654</td>
                   <td>789</td>
                   <td>987</td>
-                  <td><a href="" type="button" class="btn btn-default navbar-btn">点击查看</a></td>
+                  <td><a href="" type="button" class="btn btn-default">点击查看</a></td>
+                  <td>
+                    <a class=" btn btn-danger btn-sm" href=""><i class="glyphicon glyphicon-trash"></i>&nbsp;删除</a>&nbsp;
+                    <a class="btn btn-sm btn-primary" href="http://localhost/microCourse/public/index.php/index/home/teachercourseedit"><i class="glyphicon glyphicon-pencil"></i>&nbsp;编辑</a>
+                  </td>
                 </tr>
   
             </table>
