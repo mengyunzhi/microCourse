@@ -14,11 +14,7 @@ namespace app\index\controller;
  */
 class HomeController extends IndexController
 {
-	public function a()
-	{
-		return $this->fetch();
-	}
-
+	
 	public function studentpage()
 	{
 		return $this->fetch();
