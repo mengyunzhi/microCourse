@@ -6,10 +6,20 @@ namespace app\index\controller;
  * @Last Modified by:   LYX6666666
  * @Last Modified time: 2019-08-10 09:42:00
  */
+/**
+ * @Author: limeina1
+ * @Date:   2019-08-09 9:14:36
+ * @Last Modified by:   limeian1
+ * @Last Modified time: 2019-08-08 19:06:08
+ */
 class HomeController extends IndexController
 {
+	
 	public function studentpage()
 	{
+
+
+		
 		return $this->fetch();
 	}
 
@@ -49,6 +59,61 @@ class HomeController extends IndexController
 	}
 
 	public function adminterm()
+	{
+		return $this->fetch();
+	}
+
+	public function admintermedit()
+	{
+		return $this->fetch();
+	}
+
+	public function admintermadd()
+	{
+		return $this->fetch();
+	}
+
+	public function adminteacher()
+	{
+		return $this->fetch();
+	}
+
+	public function adminteacheradd()
+	{
+		return $this->fetch();
+	}
+
+	public function adminteacheredit()
+	{
+		return $this->fetch();
+	}
+
+	public function adminstudent()
+	{
+		return $this->fetch();
+	}
+
+	public function adminstudentadd()
+	{
+		return $this->fetch();
+	}
+
+	public function adminstudentedit()
+	{
+		return $this->fetch();
+	}
+
+	public function adminclassroom()
+	{
+		return $this->fetch();
+	}
+
+	public function adminclassroomadd()
+	{
+		return $this->fetch();
+	}
+
+	public function adminclassroomedit()
 	{
 		return $this->fetch();
 	}
