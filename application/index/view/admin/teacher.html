@@ -75,7 +75,7 @@
                     </form>
                 </div>
                 <div class="col-md-4 text-right">
-                    <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/home/adminteacheradd">&nbsp;增加</a>
+                    <a class="btn btn-primary" href="http://127.0.0.1/microcourse/public/index/Admin/teacheradd">&nbsp;增加</a>
                 </div>
             </div>
             <hr />
@@ -88,15 +88,17 @@
                     <th>性别</th>
                     <th>操作</th>
                 </tr>
+                {volist name="teachers" id="teacher" key="key"}
                 <tr>
-                    <td>1</td>
-                    <td>张三</td>
-                    <td>000111</td>
-                    <td>男</td>
+                    <td>{$key}</td>
+                    <td>{$teacher->getData('name')}</td>
+                    <td>{$teacher->getData('num')}</td>
+                    <td>{eq name='teacher->getData("sex")' value='0'}男{else /}女{/eq}</td>
                     <td>
-                        <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/home/adminteacheredit">&nbsp;编辑</a>
-                        <a class="btn btn-danger">&nbsp;删除</a>
+                        <a class="btn btn-primary" href="{:url('teacheredit?id=' . $teacher->getData('id'))}">&nbsp;编辑</a>
+                        <a class="btn btn-danger" href="{:url('teacherdelete?id=' . $teacher->getData('id'))}">&nbsp;删除</a>
                 </tr>
+                {/volist}
             </table>
             <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
         </div>
