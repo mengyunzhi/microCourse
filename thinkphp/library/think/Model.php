@@ -458,6 +458,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     public function save($data = [], $where = [], $sequence = null)
     {
         if (is_string($data)) {
+            
             $sequence = $data;
             $data     = [];
         }
