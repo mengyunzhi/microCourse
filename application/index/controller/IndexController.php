@@ -6,7 +6,7 @@ use think\Controller;
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-07-20 11:36:13
+ * @Last Modified time: 2019-08-13 10:46:39
  */
 class IndexController extends Controller
 {

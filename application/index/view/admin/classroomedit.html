@@ -20,29 +20,30 @@
         <div class="page-header">
             <h1 class="text-center">编辑教室<small>微课堂</small></h1>
         </div>
-        <form class="form-horizontal">
+        <form class="form-horizontal" action="classroomupdate" method="post">
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">教室区域:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" placeholder="教室区域...">
+                    <input type="hidden" name="id" value="{$classroom->getData('id')}" />
+                    <input type="text" class="form-control" name="classroomplace" placeholder="教室区域..." value="{$classroom->getData('classroomplace')}">
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">教室名称:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" placeholder="教室名称...">
+                    <input type="text" class="form-control" name="classroomname" placeholder="教室名称..." value="{$classroom->getData('classroomname')}">
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">行数:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" placeholder="行数...">
+                    <input type="text" class="form-control" name="row" placeholder="行数..." value="{$classroom->getData('row')}">
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">列数:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" placeholder="列数...">
+                    <input type="text" class="form-control" name="column" placeholder="列数..." value="{$classroom->getData('column')}">
                 </div>
             </div>
             <div class="form-group">

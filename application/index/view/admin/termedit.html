@@ -20,23 +20,30 @@
         <div class="page-header">
             <h1 class="text-center">微课堂 <small>梦云智出品</small></h1>
         </div>
-        <form class="form-horizontal">
+        <form class="form-horizontal" action="termupdate" method="post">
             <div class="form-group">
-                <label for="name" class="col-sm-2 control-label">学期名:</label>
+                <label for="name" class="col-sm-2 control-label">学期名称:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" placeholder="学期名称...">
+                    <input type="hidden" name="id" value="{$Term->getData('id')}" />
+                    <input type="text" class="form-control" name="name" value="{$Term->getData('name')}">
                 </div>
             </div>
             <div class="form-group">
                 <label for="startDate" class="col-sm-2 control-label">学期开始时间:</label>
                 <div class="col-sm-10">
-                    <input type="date" class="form-control" id="startDate">
+                    <input type="date" class="form-control" name="start" value="{$Term->getData('start')}">
                 </div>
             </div>
             <div class="form-group">
                 <label for="endDate" class="col-sm-2 control-label">学期结束时间:</label>
                 <div class="col-sm-10">
-                    <input type="date" class="form-control" id="endDate">
+                    <input type="date" class="form-control" name="end" value="{$Term->getData('end')}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="endDate" class="col-sm-2 control-label">学期长度</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="length" value="{$Term->getData('length')}">
                 </div>
             </div>
             <div class="form-group">
