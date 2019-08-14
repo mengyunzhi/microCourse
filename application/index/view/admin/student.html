@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<!-- 管理员界面——教师管理 -->
+<!-- 管理员界面——学生管理 -->
 <!-- limeina1 -->
-<!-- 2019.08.09 15：22 -->
+<!-- 2019.08.09 15：43 -->
 
 <head>
     <meta charset="UTF-8">
     <title>{block name="title"}微课堂-管理员模式{/block}</title>
-    <link rel="stylesheet" type="text/css" href="/microCourse/public/static/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/microcourse/public/static/bootstrap.min.css">
     <!--调用bootstrap的CSS样式 -->
 </head>
 
@@ -26,17 +26,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="http://localhost/microCourse/public/index.php/index/home/adminpage">微课堂</a>
+                <a class="navbar-brand" href="http://localhost/microcourse/public/index.php/index/admin/page">微课堂</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav ">
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminpage">首页</a></li>
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminterm">学期控制</a></li>
+                    <li><a href="http://localhost/microcourse/public/index.php/index/admin/page">首页</a></li>
+                    <li><a href="http://localhost/microcourse/public/index.php/index/admin/term">学期控制</a></li>
+                    <li><a href="http://localhost/microcourse/public/index.php/index/admin/teacher">教师管理</a></li>
                     <!-- 这个标签是当前标签 -->
-                    <li class="active"><a href="http://localhost/microCourse/public/index.php/index/home/adminteacher">教师管理<span class="sr-only">(curent)</span></a></li>
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminstudent">学生管理</a></li>
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminclassroom">教室管理</a></li>
+                    <li class="active"><a href="http://localhost/microcourse/public/index.php/index/admin/student">学生管理<span class="sr-only">(curent)</span></a></li>
+                    <li><a href="http://localhost/microcourse/public/index.php/index/admin/classroom">教室管理</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -63,19 +63,19 @@
                 <div class="col-md-8">
                     <form class="form-inline">
                         <div class="form-group">
-                            <label  class="sr-only" for="name">条件:</label>
+                            <label class="sr-only" for="name">条件:</label>
                             <select class="btn btn-default">
                                 <option>姓名</option>
                                 </option>
-                                <option>工号</option>
+                                <option>学号</option>
                             </select>
-                            <input type="text" class="form-control" placeholder="输入...">
+                            <input type="name" class="form-control" placeholder="输入...">
                         </div>
                         <button type="submit" class="btn btn-default">&nbsp;查询</button>
                     </form>
                 </div>
                 <div class="col-md-4 text-right">
-                    <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/home/adminteacheradd">&nbsp;增加</a>
+                    <a class="btn btn-primary" href="http://localhost/microcourse/public/index.php/index/admin/studentadd">&nbsp;增加</a>
                 </div>
             </div>
             <hr />
@@ -84,19 +84,28 @@
                 <tr class="info">
                     <th>序号</th>
                     <th>姓名</th>
-                    <th>工号</th>
+                    <th>学号</th>
                     <th>性别</th>
+                    <th>学院</th>
+                    <th>专业全称</th>
+                    <th>班号</th>
                     <th>操作</th>
                 </tr>
+                {volist name="students" id="student" key="key"}
                 <tr>
-                    <td>1</td>
-                    <td>张三</td>
-                    <td>000111</td>
-                    <td>男</td>
+                    <td>{$key}</td>
+                    <td>{$student->getData('name')}</td>
+                    <td>{$student->getData('num')}</td>
+                    <td>{eq name='student->getData("sex")' value='0'}男{else /}女{/eq}</td>
+                    <td>{$student->getData('academy')}</td>
+                    <td>{$student->getData('major')}</td>
+                    <td>{$student->getData('klass_id')}</td>
                     <td>
-                        <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/home/adminteacheredit">&nbsp;编辑</a>
-                        <a class="btn btn-danger">&nbsp;删除</a>
+                        <a class="btn btn-primary" href="{:url('studentedit?id=' . $student->getData('id'))}">&nbsp;编辑</a>
+                        <a class="btn btn-danger" href="{:url('studentdelete?id=' . $student->getData('id'))}">&nbsp;删除</a>
+                    </td>
                 </tr>
+                {/volist}
             </table>
             <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
         </div>
