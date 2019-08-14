@@ -28,19 +28,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="http://localhost/microCourse/public/index.php/index/home/adminpage">微课堂</a>
+                <a class="navbar-brand" href="http://localhost/microCourse/public/index.php/index/admin/page">微课堂</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav ">
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminpage">首页</a></li>
+                    <li><a href="http://localhost/microCourse/public/index.php/index/admin/page">首页</a></li>
                     <!-- 这个标签是当前标签 -->
-                    <li class="active"><a href="http://localhost/microCourse/public/index.php/index/home/adminterm">学期控制<span class="sr-only">(current)</span></a></li>
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminteacher">教师管理</a></li>
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminstudent">学生管理</a></li>
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminclassroom">教室管理</a></li>
+                    <li class="active"><a href="http://localhost/microCourse/public/index.php/index/admin/term">学期控制<span class="sr-only">(current)</span></a></li>
+                    <li><a href="http://localhost/microCourse/public/index.php/index/admin/teacher">教师管理</a></li>
+                    <li><a href="http://localhost/microCourse/public/index.php/index/admin/student">学生管理</a></li>
+                    <li><a href="http://localhost/microCourse/public/index.php/index/admin/classroom">教室管理</a></li>
                 </ul>
-
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -51,7 +50,6 @@
                   <li><a href="http://localhost/microCourse/public/index.php/index/home/password">设置</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="http://localhost/microCourse/public/index.php/index/login/login">注销</a></li>
-
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -60,10 +58,10 @@
     <br>
     <div class="row">
         <div class="col-md-12">
-            {block name="search"}
             <hr />
             <!--  表前查询 -->
             <div class="alert alert-success" role="alert">激活学期已结束或未开始</div>
+            <hr />
             <div class="row">
                 <div class="col-md-8">
                     <form class="form-inline">
@@ -75,40 +73,42 @@
                     </form>
                 </div>
                 <div class="col-md-4 text-right">
-                    <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/home/admintermadd">&nbsp;增加</a>
+                    <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/admin/termadd">&nbsp;增加</a>
                 </div>
             </div>
             <hr />
             <!-- 学期表格 -->
-            <table class="table  table-bordered">
-                <tr class="info">
-                    <th>序号</th>
-                    <th>学期名称</th>
-                    <th>起始时间</th>
-                    <th>结束时间</th>
-                    <th>学期长度</th>
-                    <th>状态</th>
-                    <th>当前周次</th>
-                    <th>操作</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>2019春季</td>
-                    <td>2019年2月24日</td>
-                    <td>2019年7月7日</td>
-                    <td>19周</td>
-                    <td>已激活</td>
-                    <td>19周</td>
-                    <td>
-                        <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/home/admintermedit">&nbsp;编辑</a>
-                        <a class="btn btn-danger">&nbsp;删除</a>
-                        <a class="btn btn-success">冻结</a>
-                    </td>
-                </tr>
-            </table>
-            <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
+            <div>
+                <table class="table  table-bordered">
+                    <tr class="info">
+                        <th>序号</th>
+                        <th>学期名称</th>
+                        <th>起始时间</th>
+                        <th>结束时间</th>
+                        <th>学期长度</th>
+                        <th>状态</th>
+                        <th>当前周次</th>
+                        <th>操作</th>
+                    </tr>
+                    {volist name="Term" id="Term" $key="key"}
+                    <tr>
+                        <td>{$key}</td>
+                        <td>{$Term->getdata('name')}</td>
+                        <td>{$Term->getdata('start')}</td>
+                        <td>{$Term->getdata('end')}</td>
+                        <td>{$Term->getdata('length')}</td>
+                        <td>{eq name='Term->getData("state")' value='0'}已冻结{else /}已激活{/eq}</td>
+                        <td>000</td>
+                        <td>
+                            <a class="btn btn-primary" href="termedit?id={$Term->getData('id')}">&nbsp;编辑</a>
+                            <a href="termdelete?id={$Term->getData('id')}" class="btn btn-danger">&nbsp;删除</a>
+                            <a href="termcheck?id={$Term->getData('id')}" class="btn btn-success">{eq name='Term->getData("state")' value='0'}激活{else /}冻结{/eq}</a>
+                        </td>
+                    </tr>
+                    {/volist}
+                </table>
+            </div>
         </div>
     </div>
 </body>
-
 </html>

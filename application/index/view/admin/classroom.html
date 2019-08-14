@@ -26,17 +26,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="http://localhost/microCourse/public/index.php/index/home/adminpage">微课堂</a>
+                <a class="navbar-brand" href="http://localhost/microCourse/public/index.php/index/admin/adminpage">微课堂</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav ">
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminpage">首页</a></li>
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminterm">学期控制</a></li>
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminteacher">教师管理</a></li>
-                    <li><a href="http://localhost/microCourse/public/index.php/index/home/adminstudent">学生管理</a></li>
+                    <li><a href="http://localhost/microCourse/public/index.php/index/admin/page">首页</a></li>
+                    <li><a href="http://localhost/microCourse/public/index.php/index/admin/term">学期控制</a></li>
+                    <li><a href="http://localhost/microCourse/public/index.php/index/admin/teacher">教师管理</a></li>
+                    <li><a href="http://localhost/microCourse/public/index.php/index/admin/student">学生管理</a></li>
                     <!-- 这个标签是当前标签 -->
-                    <li class="active"><a href="http://localhost/microCourse/public/index.php/index/home/adminclassroom">教室管理<span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="http://localhost/microCourse/public/index.php/index/admin/classroom">教室管理<span class="sr-only">(current)</span></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -71,7 +71,7 @@
                     </form>
                 </div>
                 <div class="col-md-4 text-right">
-                    <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/home/adminclassroomadd">&nbsp;增加</a>
+                    <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/admin/classroomadd">&nbsp;增加</a>
                 </div>
             </div>
             <hr />
@@ -83,26 +83,18 @@
                     <th>列数</th>
                     <th>操作</th>
                 </tr>
+                {volist name="classroom" id="Classroom" $key="key"}
                 <tr>
-                    <td>A</td>
-                    <td>203</td>
-                    <td>5</td>
-                    <td>6</td>
+                    <td>{$Classroom->getdata('classroomplace')}</td>
+                    <td>{$Classroom->getdata('classroomname')}</td>
+                    <td>{$Classroom->getdata('row')}</td>
+                    <td>{$Classroom->getdata('column')}</td>
                     <td>
-                        <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/home/adminclassroomedit">&nbsp;编辑</a>
-                        <a class="btn btn-danger">&nbsp;删除</a>
+                        <a class="btn btn-primary" href="classroomedit?id={$Classroom->getData('id')}">&nbsp;编辑</a>
+                        <a class="btn btn-danger" href="classroomdelete?id={$Classroom->getData('id')}">&nbsp;删除</a>
                     </td>
                 </tr>
-                <tr>
-                    <td>五教</td>
-                    <td>106</td>
-                    <td>7</td>
-                    <td>8</td>
-                    <td>
-                        <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/home/adminclassroomedit">&nbsp;编辑</a>
-                        <a class="btn btn-danger">&nbsp;删除</a>
-                    </td>
-                </tr>
+                {/volist}
             </table>
             <br><br>
             <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
