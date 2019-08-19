@@ -1,15 +1,27 @@
 <?php
 
-/**
- * @Author: LYX6666666
- * @Date:   2019-08-16 15:51:03
- * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-16 21:21:07
- */
 namespace app\index\model;
-use think\Model\Pivot;
+use think\Model;
+use app\index\validate\KlassCourseValidate;
 
-class KlassCourse extends Pivot
+class KlassCourse extends Model
 {
+	// private static $validate;
 
-} 
+	// public function save($data = [], $where = [], $sequence = null)
+ //    {
+ //    	if (!$this->validate($this)) {
+ //    		return false;
+ //    	}
+
+ //    	return parent::save($data, $where, $sequence);
+ //    }
+
+ //    private function validate() {
+ //    	if (is_null(self::$validate)) {
+ //    		self::$validate = new KlassCourseValidate();
+ //    	}
+
+ //    	return self::$validate->check($this);
+ //    }
+}
