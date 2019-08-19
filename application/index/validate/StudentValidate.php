@@ -11,5 +11,5 @@ class StudentValidate extends Validate
 		'academy' => 'require',
 		'major' => 'require',
 		'klass_id' => 'require|number',
-        ];
+    ];
 }
