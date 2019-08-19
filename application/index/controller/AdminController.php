@@ -1,7 +1,7 @@
 <?php
 namespace app\index\controller;
 use app\index\model\Term;
-use app\index\model\classroom;
+use app\index\model\Classroom;
 use app\index\model\Student; 
 use app\index\model\Teacher;
 use think\Request;     // 引用Request
@@ -28,22 +28,28 @@ class AdminController extends IndexController
 		return $this->fetch();
 	}
 
-	//管理员模块学期管理插入学期——刘宇轩
-	public function terminsert()
+	//管理员模块学期管理插入学期——刘宇轩--李美娜
+	public function termsave()
 	{
+		// 接收传入的数据
 		$postData = $this->request->post();
+
+		// 实例化Term空对象
 		$Term = new Term();
+
+		// 为对象赋值
 		$Term->name = $postData['name'];
 		$Term->start = $postData['start'];
 		$Term->end = $postData['end'];
 		$Term->state = 0;
-        $result = $Term->save($Term->getData());
-        if (false === $result)
+		$Term->length = $postData['length'];
+
+		// 添加数据
+        if (!$Term->save())
         {
-            return '新增失败:' . $Term->getError();
-        } else {
-            return $this->success('新增成功。新增ID为:' . $Term->id,url('term'));
+            return $this->error('数据添加错误：' . $Term->getError());
         }
+        return $this->success('操作成功', url('term'));
 	}
 
 	//管理员模块学期管理删除学期——刘宇轩
@@ -55,7 +61,7 @@ class AdminController extends IndexController
 		}
 		$Term = Term::get($id);
         if (is_null($Term)) {
-            return $this->error('不存在id为' . $id . '的教师，删除失败');
+            return $this->error('不存在id为' . $id . '的学期，删除失败');
         }
         if (!$Term->delete()) {
             return $this->error('删除失败:');
@@ -309,7 +315,7 @@ class AdminController extends IndexController
 		}
 	
 		// 删除对象
-		if ($Student->delete()) {
+		if (!$Student->delete()) {
 			return $this->error('删除成功:' . $Student->getError());
 			}
 
@@ -368,7 +374,7 @@ class AdminController extends IndexController
 	//管理员模块教室管理——刘宇轩
 	public function classroom()
 	{
-		$classroom = new classroom;
+		$classroom = new Classroom;
 		$classroom = $classroom->select();
 		$this->assign('classroom',$classroom);
 		return $this->fetch();
@@ -390,22 +396,27 @@ class AdminController extends IndexController
         return $htmls;
 	}
 
-	//管理员模块教室管理插入教室——刘宇轩
-	public function classroominsert()
+	//管理员模块教室管理插入教室——刘宇轩--李美娜
+	public function classroomsave()
 	{
+		// 接收传入的数据
 		$postData = $this->request->post();
-		$classroom = new classroom();
+
+		// 实例化空classroom对象
+		$classroom = new Classroom();
+
+		// 为对象赋值
 		$classroom->classroomplace = $postData['classroomplace'];
 		$classroom->classroomname = $postData['classroomname'];
 		$classroom->row = $postData['row'];
 		$classroom->column = $postData['column'];
-        $result = $classroom->save($classroom->getData());
-        if (false === $result)
+
+		// 添加数据
+        if (!$classroom->save())       	
         {
-            return '新增失败:' . $classroom->getError();
-        } else {
-            return $this->success('新增成功。新增ID为:' . $classroom->id,url('classroom'));
+            return $this->error('数据添加错误：' . $classroom->getError());
         }
+        return $this->success('操作成功', url('classroom'));
 	}
 
 	//管理员模块教室管理删除教室——刘宇轩

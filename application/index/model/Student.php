@@ -12,27 +12,27 @@ use app\index\validate\StudentValidate;
 
 class Student extends Model
 {
-	private static $validate;
+	// private static $validate;
 
-	public function save($data = [], $where = [], $sequence = null)
-	{
-		if (!$this->validate($this)) {
-			return false;
-		}
+	// public function save($data = [], $where = [], $sequence = null)
+	// {
+	// 	if (!$this->validate($this)) {
+	// 		return false;
+	// 	}
 
-		return parent::save($data, $where, $sequence);
-	}
+	// 	return parent::save($data, $where, $sequence);
+	// }
 
-	private function validate() {
-		if (is_null(self::$validate)) {
-			self::$validate = new StudentValidate();
-		}
-
-		return self::$validate->check($this);
-	}
+	// private function validate() {
+	// 	if (is_null(self::$validate)) {
+	// 		self::$validate = new StudentValidate();
+	// 	}
+	//	return self::$validate->check($this);
+	//}
 
 	public function klass()
 	{
 		return $this->belongsTo('klass');
 	}
+
 }
