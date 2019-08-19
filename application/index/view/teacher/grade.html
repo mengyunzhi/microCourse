@@ -30,11 +30,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav ">
-            	<li><a href="http://localhost/microCourse/public/index.php/index/home/teacherpage">首页</a></li>
-              <li><a href="http://localhost/microCourse/public/index.php/index/home/teachercourse">课程管理</a></li>
-              <li><a href="http://localhost/microCourse/public/index.php/index/home/teacherclassroom">教室管理</a></li>
-              <li><a href="http://localhost/microCourse/public/index.php/index/home/teacheronline">上课模式</a></li>
-              <li class="active"><a href="http://localhost/microCourse/public/index.php/index/home/teachergrade">成绩录入<span class="sr-only">(current)</span></a></li>
+              <li><a href="http://localhost/microCourse/public/index.php/index/teacher/page">首页</a></li>
+              <li><a href="http://localhost/microCourse/public/index.php/index/teacher/course">课程管理</a></li>
+              <li><a href="http://localhost/microCourse/public/index.php/index/teacher/classroom">教室管理</a></li>
+              <li><a href="http://localhost/microCourse/public/index.php/index/teacher/online">上课模式</a></li>
+              <li class="active"><a href="http://localhost/microCourse/public/index.php/index/teacher/grade">成绩录入<span class="sr-only">(current)</span></a></li>
               <!--是这个标签是当前标签 -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -58,58 +58,37 @@
               
               <div class="alert alert-success" role="alert">激活学期已结束或未开始</div>
               <h3>学期名:</h3>
-              <table>
-                <tr>
-                  <th><h4>选择课程:&nbsp&nbsp</h4></th>
-                  <td>
-                    <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  语文
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                  <li><a href="#">语文</a></li>
-                  <li><a href="#">数学</a></li>
-                  <li><a href="#">英语</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="#">......</a></li>
-                </ul>
-              </div> 
-                  </td>
-                </tr>
-              </table>
               <table class="table table-bordered">
                 <tr class="info">
-                  <th>周次</th>
-                  <th>星期</th>
-                  <th>节数</th>
-                  <th>教室</th>
+                  <th>序号</th>
+                  <th>课程名称</th>
+                  <th>学期</th>
+                  <th>课程编码</th>
+                  <th>任课教师</th>
+                  <th>课程类型</th>
                   <th>班级</th>
-                  <th>成绩</th>
+                  <th>详细信息</th>
+                  <th>录入成绩</th>
                 </tr>
-                <tr>
-                  <td>第三周</td>
-                  <td>星期二</td>
-                  <td>第四大节</td>
-                  <td>A210</td>
-                  <td>计1806</td>
-                  <td><a href="" type="button" class="btn btn-default navbar-btn">点击查看</a></td>
-                </tr>
-                 <tr>
-                  <td>123</td>
-                  <td>321</td>
-                  <td>456</td>
-                  <td>654</td>
-                  <td></td>
-                  <td><a href="" type="button" class="btn btn-default navbar-btn">点击查看</a></td>
-                </tr>
-  
+                {volist name="course" id="course" $key="key"}
+                  <tr>
+                    <td>{$key}</td>
+                    <td>{$course->getdata('name')}</td>
+                    <td>{$course->Term->name}</td>
+                    <td>{$course->getdata('num')}</td>
+                    <td>{$course->teacher->name}</td>
+                    <td>{eq name='course->getData("type")' value='0'}选修{else /}必修{/eq}</td>
+                    <td>{$course->getdata('klass')}</td>
+                    
+                    <td><a href="gradeinfo?id={$course->getData('id')}" class="btn btn-primary">&nbsp;详情</a></td>
+                    <td><a href="gradeadd?id={$course->getData('id')}" class="btn btn-primary">&nbsp;录入</a></td>
+                  </tr>
+                {/volist}
             </table>
               <br><br>
             <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
         </div>
-    </div>
-    
+    </div>   
 </body>
 
 </html>
