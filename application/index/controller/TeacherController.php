@@ -308,11 +308,6 @@ class TeacherController extends IndexController
         return $this->success($message,url('grade'));
     }
 
-    public function courseedit()
-    {
-    	return $this->fetch();
-    }
-
     public function teacherclassroomedit()
     {
     	return $this->fetch();
