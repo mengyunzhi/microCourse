@@ -1,4 +1,5 @@
 <?php
+
 namespace app\index\model;
 use think\Model;
 use app\index\validate\KlassCourseValidate;

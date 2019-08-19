@@ -30,4 +30,9 @@ class Student extends Model
 
 		return self::$validate->check($this);
 	}
+
+	public function klass()
+	{
+		return $this->belongsTo('klass');
+	}
 }

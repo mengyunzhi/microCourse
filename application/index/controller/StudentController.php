@@ -1,10 +1,12 @@
 <?php
-
+namespace app\index\controller;
+use app\common\model\Index;
+use think\Controller;
 /**
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-13 09:45:27
+ * @Last Modified time: 2019-08-14 16:56:21
  */
 class StudentController extends IndexController
 {
