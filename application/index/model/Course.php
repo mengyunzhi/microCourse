@@ -1,8 +1,8 @@
 <?php
+
 namespace app\index\model;
 use think\Model;
 use app\index\validate\CourseValidate;
-
 
 class Course extends Model
 {
@@ -75,5 +75,25 @@ class Course extends Model
     	}
 
     	return self::$validate->check($this);
+    }
+  
+  public function Term()
+	{
+		return $this->belongsTo('Term');
+	}
+
+	public function teacher()
+	{
+		return $this->belongsTo('teacher');
+	}
+
+	public function courseinfo()
+    {
+        return $this->hasMany('courseinfo');
+    }
+
+    public function klass()
+    {
+    	return $this->belongsToMany('klass',config('database.prefix') . 'klass_course');
     }
 }
