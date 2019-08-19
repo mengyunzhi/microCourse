@@ -16,3 +16,4 @@ class Klass extends Model
         return $this->belongsToMany('course');
     }
 } 
+
