@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<!--刘宇轩-->
-<!--2019.07.19 14:55-->
-
 <head>
     <meta charset="UTF-8">
-    <title>{block name="title"}微课堂-梦云智出品{/block}</title>
-    <link rel="stylesheet" type="text/css" href="/microCourse/public/static/bootstrap.min.css">
-    <!--调用bootstrap的CSS样式 -->
+    <title>微课堂-梦云智出品</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 
 <body class="container">
@@ -16,6 +13,7 @@
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 
+        <!-- Collect the nav links, forms, and other content for toggling -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -26,28 +24,26 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="http://localhost/microCourse/public/index.php/index/home/studentpage">微课堂</a>
+          <a class="navbar-brand" href="#">微课堂</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentpage">学生主页</a></li>
-              <li class="active"><a href="#">上课模式 <span class="sr-only">(current)</span></a></li>
+        <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav ">
+            	<li><a href="http://localhost/microcourse/public/index.php/index/teacher/page">首页</a></li>
+              <li><a href="http://localhost/microcourse/public/index.php/index/teacher/course">课程管理</a></li>
+              <li><a href="http://localhost/microcourse/public/index.php/index/teacher/classroom">教室管理</a></li>
+              <li class="active"><a href="http://localhost/microcourse/public/index.php/index/teacher/online">上课模式<span class="sr-only">(current)</span></a></li>
               <!--是这个标签是当前标签 -->
-              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentcourse">课程查询</a></li>
-              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentscore">成绩查询</a></li>
-              <li><a href="http://localhost/microCourse/public/index.php/index/home/studentinfo">个人信息</a></li>
-              
+              <li><a href="http://localhost/microcourse/public/index.php/index/teacher/grade">成绩录入</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#">Link</a></li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">您好，亲爱的同学 <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">你好，敬爱的教师<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="http://localhost/microCourse/public/index.php/index/home/password">设置</a></li>
+                  <li><a href="#">设置</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="http://localhost/microCourse/public/index.php/index/login/login">注销</a></li>
+                  <li><a href="#">注销</a></li>
                 </ul>
               </li>
             </ul>
@@ -55,16 +51,15 @@
       </div><!-- /.container-fluid -->
     </nav>
     <br><br>
-    <div class="row">
+    <div class="container">
       <div class="col-md-12">
             {block name="search"}
             <hr />
               
               <div class="alert alert-success" role="alert">当前状态：系统运行正常</div>
-              <h3>时间：X年X月X日&nbsp&nbsp星期X&nbsp&nbsp第X大节</h3>
-              <a href="http://localhost/microCourse/public/index.php/index/home/studentseat" type="button" class="btn btn-default navbar-btn">扫码进入课堂</a>
-
-          
+              <h3>当前时间：X年X月X日&nbsp&nbsp星期X&nbsp&nbsp第X大节</h3>
+              <a href="http://localhost/microcourse/public/index.php/index/teacher/incourse" class="btn btn-default navbar-btn">开始上课</a>
+              
             <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
         </div>
     </div>

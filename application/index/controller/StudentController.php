@@ -1,4 +1,5 @@
 <?php
+namespace app\index\controller;
 
 /**
  * @Author: LYX6666666
@@ -7,50 +8,48 @@
  * @Last Modified time: 2019-08-13 09:45:27
  */
 class StudentController extends IndexController
-{
-	
-	public function studentpage()
-	{
-
-		return $this->fetch();
-	}
-
-	public function studentonline()
+{	
+	public function page()
 	{
 		return $this->fetch();
 	}
 
-	public function studentcourse()
+	public function online()
 	{
 		return $this->fetch();
 	}
 
-	public function studentcoursetime()
+	public function course()
 	{
 		return $this->fetch();
 	}
 
-	public function studentoncourse()
+	public function coursetime()
 	{
 		return $this->fetch();
 	}
 
-	public function studentseat()
+	public function oncourse()
 	{
 		return $this->fetch();
 	}
 
-	public function studentscore()
+	public function seat()
 	{
 		return $this->fetch();
 	}
 
-	public function studentinfo()
+	public function score()
+	{
+		return $this->fetch();
+	}
+
+	public function info()
 	{
 		return $this->fetch();
 	}	
     
-    public function studentinfoedit()
+    public function infoedit()
     {
       return $this->fetch();
     }	
@@ -64,5 +63,4 @@ class StudentController extends IndexController
     {
       return $this->fetch();
     }
-
 }
