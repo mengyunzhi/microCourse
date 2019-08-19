@@ -18,7 +18,7 @@ use app\index\model\Classroom;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-19 17:19:20
+ * @Last Modified time: 2019-08-19 17:40:03
  */
 class TeacherController extends IndexController
 {
@@ -41,8 +41,8 @@ class TeacherController extends IndexController
     {
         $terms = Term::paginate();
         $this->assign('terms', $terms);
-        $academys = Academy::paginate();
-        $this->assign('academys', $academys);
+        //$academys = Academy::paginate();
+        //$this->assign('academys', $academys);
         $teachers = Teacher::paginate();
         $this->assign('teachers', $teachers);
         $klass = new Klass;
