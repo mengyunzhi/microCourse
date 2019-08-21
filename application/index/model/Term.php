@@ -30,4 +30,10 @@ class Term extends Model
 
     	return self::$validate->check($this);
     }
+
+    // trem一对多查询course函数——赵凯强
+    public function Course()
+    {
+        return $this->hasMany('Course');
+    }
 }

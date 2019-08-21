@@ -2,6 +2,9 @@
 namespace app\index\controller;
 use app\common\model\Index;
 use think\Controller;
+use app\index\model\Term;
+use app\index\model\Course;
+use app\index\model\Score;
 
 /**
  * @Author: LYX6666666
@@ -40,10 +43,37 @@ class StudentController extends IndexController
 	{
 		return $this->fetch();
 	}
-
+    
+    // 学生成绩查询——赵凯强
 	public function score()
 	{
-		return $this->fetch();
+		$terms = Term::paginate();
+        $this->assign('terms', $terms);
+        $id = $this->request->param('id/d');
+        if (is_null($id)) {
+        	$i = 0;
+	        foreach($terms as $term){
+	        	$i++;
+	        }
+	        $id = $terms[$i-1]->id;
+	        foreach ($terms as $term){
+	        	if ($term->state === 1){
+	                $id = $term->id;
+	        	}
+	        }
+        }
+
+        $Term = Term::get($id);
+        $this->assign('Term', $Term);
+        $courses = $Term->Course;
+        $score = new Score();
+        $scores = [];
+        foreach ($courses as $key => $course) {
+        	array_push($scores, $score->where('course_id',$course->id)->where('student_id',1)->find());
+        }
+
+        $this->assign('scores', $scores);
+        return $this->fetch();
 	}
 
 	public function info()
