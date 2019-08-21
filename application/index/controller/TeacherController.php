@@ -10,7 +10,7 @@ use think\Request;     // 引用Request
 use app\common\model\Index;
 use app\index\model\oncourse;
 use app\index\model\courseinfo;
-use app\index\model\score;
+use app\index\model\Score;
 use think\Controller;
 use app\index\model\Classroom;
 
@@ -395,7 +395,7 @@ class TeacherController extends IndexController
     {
         $id = $this->request->param('id/d');
         $course = course::get($id);
-        $score = new score;
+        $score = new Score;
         $scores = $score->where('course_id',$id)->select();
         $this->assign('course',$course);
         $this->assign('score',$scores);

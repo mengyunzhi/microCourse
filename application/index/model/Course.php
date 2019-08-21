@@ -76,6 +76,11 @@ class Course extends Model
 
     	return self::$validate->check($this);
     }
+
+    public function scores()
+    {
+    	return $this->hasMany('Score');
+    }
   
   public function Term()
 	{

@@ -11,6 +11,12 @@ use think\Model;
 
 class score extends Model
 {
+	// 通过score表调用course表——赵凯强
+	public function course()
+	{
+		return $this->belongsTo('course');
+	}
+
 	public function Student()
 	{
 		return $this->belongsTo('Student');
