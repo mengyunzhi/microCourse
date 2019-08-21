@@ -5,6 +5,8 @@ use think\Controller;
 use app\index\model\Term;
 use app\index\model\Course;
 use app\index\model\Score;
+use app\index\model\Student;
+use app\index\model\Klass;
 
 /**
  * @Author: LYX6666666
@@ -76,14 +78,49 @@ class StudentController extends IndexController
         return $this->fetch();
 	}
 
+    // 学生信息页面————赵凯强
 	public function info()
 	{
+		$id = 1;
+		$student = Student::get($id);
+		$this->assign('student', $student);
 		return $this->fetch();
 	}	
     
+    // 学生信息编辑页面跳转————赵凯强
     public function infoedit()
     {
+      $id = $this->request->param('id/d');
+
+      // 判断是否存在当前记录
+      if (is_null($Student = Student::get($id))) {
+      	return $this->error('未找到ID为' . $id  . '的记录');
+      }
+
+      $this->assign('Student', $Student);
+      $klasses = Klass::paginate();
+      $this->assign('klasses', $klasses);
       return $this->fetch();
+    }
+    // 学生信息编辑保存————赵凯强
+    public function infoupdate()
+    {
+    	$id = $this->request->param('id/d');
+
+    	// 获取传入的学生信息
+    	$Student = Student::get($id);
+    	if (is_null($Student)) {
+    		return $this->error('系统未找到ID为' . $id . '的记录');
+    	}
+
+    	// 数据更新
+    	$Student->password = $this->request->param('password');
+    	$Student->klass_id = $this->request->param('klass_id/d');
+        if (!$Student->save()) {
+        	return $this->error('更新错误：' . $Student->getError());
+        } else {
+        	return $this->success('操作成功', url('info'));
+        }
     }	
 
     public function password()
