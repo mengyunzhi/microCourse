@@ -10,7 +10,7 @@ use think\Request;     // 引用Request
 use app\common\model\Index;
 use app\index\model\oncourse;
 use app\index\model\Courseinfo;
-use app\index\model\score;
+use app\index\model\Score;
 use think\Controller;
 use app\index\model\Classroom;
 
@@ -31,6 +31,7 @@ class TeacherController extends IndexController
     // 课程——赵凯强
     public function course()
     {
+        
         $courses = Course::paginate();
         $this->assign('courses', $courses);
     	return $this->fetch();
@@ -39,6 +40,7 @@ class TeacherController extends IndexController
     // 课程增加跳转——赵凯强
     public function courseadd()
     {
+
         $terms = Term::paginate();
         $this->assign('terms', $terms);
         //$academys = Academy::paginate();
@@ -480,7 +482,7 @@ class TeacherController extends IndexController
     {
         $id = $this->request->param('id/d');
         $course = course::get($id);
-        $score = new score;
+        $score = new Score;
         $scores = $score->where('course_id',$id)->select();
         $this->assign('course',$course);
         $this->assign('score',$scores);

@@ -175,4 +175,9 @@ class Term extends Model
         return 0;
     }     
 
+    // trem一对多查询course函数——赵凯强
+    public function Course()
+    {
+        return $this->hasMany('Course');
+    }
 }
