@@ -1,13 +1,14 @@
 <?php
 namespace app\index\controller;
-use app\common\model\Index;
+use app\index\model\Index;
 use think\Controller;
+use app\index\model\Term;
 
 /**
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-19 17:14:40
+ * @Last Modified time: 2019-08-22 15:09:20
  */
 class StudentController extends IndexController
 {	
@@ -53,16 +54,24 @@ class StudentController extends IndexController
     
     public function infoedit()
     {
-      return $this->fetch();
+      	return $this->fetch();
     }	
 
     public function password()
     {
-      return $this->fetch();
+      	return $this->fetch();
     }
 
     public function aboutourteam()
     {
-      return $this->fetch();
+    	// $day = Term::largeClass();
+    	// return $day;
+    	// $day1 = "2019-08-10";
+		// $day2 = date("Y-m-d");
+		// echo $day2;
+		// echo "空格";
+		// $diff = index::weekday($day2);
+		// echo $diff;
+      	// return $this->fetch();
     }
 }

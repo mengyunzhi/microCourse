@@ -97,7 +97,7 @@
                   <td>{$course->getTeacher()->getData('name')}</td>
                   <td>{$course->getTerm()->getData('name')}</td>
                   <td>{eq name='course->getData("type")' value='1' }必修{else /}选修{/eq}</td>
-                  <td><a href="http://127.0.0.1/microcourse/public/index/teacher/coursesee" type="button" class="btn btn-default">点击查看</a></td>
+                  <td><a href="{:url('coursesee?id=' . $course->getData('id'))}" type="button" class="btn btn-default">点击查看</a></td>
                   <td>
                     <a class=" btn btn-danger btn-sm" href="{:url('coursedelete?id=' . $course->getData('id'))}"><i class="glyphicon glyphicon-trash"></i>&nbsp;删除</a>&nbsp;
                     <a class="btn btn-sm btn-primary" href="{:url('courseedit?id=' . $course->getData('id'))}"><i class="glyphicon glyphicon-pencil"></i>&nbsp;编辑</a>
