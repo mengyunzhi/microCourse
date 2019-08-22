@@ -31,6 +31,7 @@ class TeacherController extends IndexController
     // 课程——赵凯强
     public function course()
     {
+        
         $courses = Course::paginate();
         $this->assign('courses', $courses);
     	return $this->fetch();
@@ -39,6 +40,7 @@ class TeacherController extends IndexController
     // 课程增加跳转——赵凯强
     public function courseadd()
     {
+
         $terms = Term::paginate();
         $this->assign('terms', $terms);
         //$academys = Academy::paginate();
