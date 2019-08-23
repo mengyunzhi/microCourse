@@ -8,9 +8,9 @@ use app\index\model\Teacher;
 use app\index\model\KlassCourse;
 use think\Request;     // 引用Request
 use app\common\model\Index;
-use app\index\model\oncourse;
-use app\index\model\courseinfo;
-use app\index\model\score;
+use app\index\model\Oncourse;
+use app\index\model\Courseinfo;
+use app\index\model\Score;
 use think\Controller;
 use app\index\model\Classroom;
 
@@ -378,9 +378,9 @@ class TeacherController extends IndexController
     public function gradeoncourse()
     {
         $id = $this->request->param('id/d');
-        $courseinfo = courseinfo::get($id);
+        $courseinfo = Courseinfo::get($id);
         $course = $courseinfo->course()->find();
-        $oncourse = new oncourse;
+        $oncourse = new Oncourse;
         $arrival1 = $oncourse->where('courseinfo_id',$id)->where('arrival',1)->select();
         $arrival0 = $oncourse->where('courseinfo_id',$id)->where('arrival',0)->select();
         $this->assign('arrival1',$arrival1);
@@ -395,7 +395,7 @@ class TeacherController extends IndexController
     {
         $id = $this->request->param('id/d');
         $course = course::get($id);
-        $score = new score;
+        $score = new Score;
         $scores = $score->where('course_id',$id)->select();
         $this->assign('course',$course);
         $this->assign('score',$scores);

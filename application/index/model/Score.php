@@ -15,4 +15,9 @@ class score extends Model
 	{
 		return $this->belongsTo('Student');
 	}
+
+	public function Course()
+	{
+		return $this->belongsTo('Course');
+	}
 }
