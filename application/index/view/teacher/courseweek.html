@@ -12,11 +12,11 @@
         <div class="col-md-2"></div>
         <div class="col-md-4 form-group">
             <label for="name" class="col-sm control-label col-md-4"><h3>课程:</h3></label>
-            <button type="button" class="btn btn-default btn-lg" disabled="disabled">&nbsp;&nbsp;数学&nbsp;&nbsp;</button>
+            <button type="button" class="btn btn-default btn-lg" disabled="disabled">&nbsp;&nbsp;{$course->getdata('name')}&nbsp;&nbsp;</button>
         </div>
         <div class="col-md-4 form-group">
             <label for="name" class="col-sm control-label col-md-4"><h3>学期:</h3></label>
-            <button type="button" class="btn btn-default btn-lg" disabled="disabled">&nbsp;&nbsp;2018-2019春&nbsp;&nbsp;</button>
+            <button type="button" class="btn btn-default btn-lg" disabled="disabled">&nbsp;&nbsp;{$course->Term->getdata('name')}&nbsp;&nbsp;</button>
         </div>
         <div class="col-md-2"></div>
     </div>
@@ -24,11 +24,11 @@
         <div class="col-md-2"></div>
         <div class="col-md-4 form-group">
             <label for="name" class="col-sm control-label col-md-4"><h3>星期:</h3></label>
-            <button type="button" class="btn btn-default btn-lg">&nbsp;&nbsp;星期一&nbsp;&nbsp;</button>
+            <button type="button" class="btn btn-default btn-lg " disabled="disabled">&nbsp;&nbsp;{$weekday}&nbsp;&nbsp;</button>
         </div>
         <div class="col-md-4 form-group">
             <label for="name" class="col-sm control-label col-md-4"><h3>小节:</h3></label>
-            <button type="button" class="btn btn-default btn-lg">&nbsp;&nbsp;第三小节&nbsp;&nbsp;</button>
+            <button type="button" class="btn btn-default btn-lg" disabled="disabled">&nbsp;&nbsp;第{$begin}小节&nbsp;&nbsp;</button>
         </div>
         <div class="col-md-2"></div>
     </div>
@@ -43,20 +43,45 @@
         
     </div>
     <br><br>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <input type="checkbox" name="klass_id[]" id="klass_id_1" value="1" />
-            <label for="klass_id_1">1&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <input type="checkbox" name="klass_id[]" id="klass_id_2" value="2" />
-            <label for="klass_id_2">2</label>
+    <form action="{:url('courseweeksave')}" method="post">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-8">
+                <input type="hidden" name="id" value="{$course->id}" />
+                <input type="hidden" name="weekday" value="{$weekdayorigin}" />
+                <input type="hidden" name="begin" value="{$begin}" />
+                {volist name="weeks" id="week" $key="key"}
+                    <input type="checkbox" name="weeks[]" value={$key+1} {eq name="courseinfo->getIsCheched($course->id,$weekdayorigin,$begin,$key+1)" value="1"} checked="checked"{/eq} />
+                    <label for="klass_id_1">{$key+1}</label>
+                {/volist}
+            </div>
+            <br>
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <h3>选择时长（小节）:&nbsp;</h3>
+                <select type="text" name="length">
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <h3>选择座位:&nbsp;</h3>
+                {volist name="classroom" id="classroom" $key="key"}
+                    <label class="radio-inline">
+                      <input type="radio" name="classroom_id" value="{$key + 1}" {eq name="classroom->getdata('id')" value="$classroom_id"} checked="checked"{/eq}> {$classroom->getdata('classroomplace') . $classroom->getdata('classroomname')}
+                    </label>
+                {/volist}
+            </div>
         </div>
-        <div class="col-md-2"></div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 center-block">
-            <button type="submit" class="btn btn-default center-block"><h4>&nbsp;&nbsp;保存&nbsp;&nbsp;</h4></button>
+        <br>
+        <div class="form-group">
+            <div class="col-sm-offset-2 center-block">
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>保存</button>
+                <a class="btn btn-danger" href="{:url('courseweekdelete?id=' . $course->getData('id') . '&weekday='. $weekdayorigin . '&begin=' . $begin )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>删除</a>
+            </div>
         </div>
-    </div>
+    </form>
+    
 </body>
 </html>

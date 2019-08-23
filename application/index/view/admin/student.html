@@ -42,9 +42,8 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理员模式<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">设置</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">注销</a></li>
+                            
+                            <li><a href="http://localhost/microcourse/public/index.php/index/login/AlogOut">注销</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -86,9 +85,8 @@
                     <th>姓名</th>
                     <th>学号</th>
                     <th>性别</th>
-                    <th>学院</th>
-                    <th>专业全称</th>
-                    <th>班号</th>
+                    
+                    <th>班级</th>
                     <th>操作</th>
                 </tr>
                 {volist name="students" id="student" key="key"}
@@ -97,9 +95,8 @@
                     <td>{$student->getData('name')}</td>
                     <td>{$student->getData('num')}</td>
                     <td>{eq name='student->getData("sex")' value='0'}男{else /}女{/eq}</td>
-                    <td>{$student->getData('academy')}</td>
-                    <td>{$student->getData('major')}</td>
-                    <td>{$student->getData('klass_id')}</td>
+                    
+                    <td>{$student->klass->name}</td>
                     <td>
                         <a class="btn btn-primary" href="{:url('studentedit?id=' . $student->getData('id'))}">&nbsp;编辑</a>
                         <a class="btn btn-danger" href="{:url('studentdelete?id=' . $student->getData('id'))}">&nbsp;删除</a>

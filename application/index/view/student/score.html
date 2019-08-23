@@ -38,13 +38,10 @@
                     <li><a href="http://localhost/microcourse/public/index.php/index/student/info">个人信息</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Link</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">您好，亲爱的同学 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="http://localhost/microcourse/public/index.php/index/student/password">设置</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="http://localhost/microcourse/public/index.php/index/login/login">注销</a></li>
+                            <li><a href="http://localhost/microcourse/public/index.php/index/login/SlogOut">注销</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -54,10 +51,12 @@
     <br><br>
     <div class="row">
         <div class="col-md-12">
-            {block name="search"}
             <hr />
             <div class="alert alert-success" role="alert">当前状态：系统运行正常</div>
-            <h3>当前时间：X年X月X日&nbsp&nbsp xx:xx</h3>
+            <!-- <h3>当前时间：{:date('Y-m-d H:i:s')}
+            </h3> -->
+            <h3>当前时间：{:date('Y-m-d')}
+            </h3>
             <table>
                 <tr>
                     <th>
@@ -66,13 +65,14 @@
                     <td>
                         <div class="dropdown">
                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                2018-2019秋
+                                {$Term->getData('name')}
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li><a href="#">2018-2019秋</a></li>
-                                <li><a href="#">2018-2019春</a></li>
-                                <li><a href="#">2019-2020秋</a></li>
+                                
+                                {volist name="terms" id="term" key="key"}
+                                <li><a href="{:url('score?id=' . $term->getData('id'))}">{$term->getData('name')}</a></li>
+                                {/volist}
                                 <li role="separator" class="divider"></li>
                                 <li><a href="#">......</a></li>
                             </ul>
@@ -80,56 +80,24 @@
                     </td>
                 </tr>
             </table>
-            <table>
-                <tr>
-                    <th>
-                        <h4>选择科目:&nbsp&nbsp</h4>
-                    </th>
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                商业网站开发
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li><a href="#">高等数学1B</a></li>
-                                <li><a href="#">大学英语2</a></li>
-                                <li><a href="#">商业网站开发</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">......</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <a href="#" type="button" class="btn btn-default navbar-btn">查询</a>
-            <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
-            </table>
+            <br><br>
             <table class="table table-bordered">
                 <tr class="info">
                     <th>科目</th>
                     <th>任课教师</th>
                     <th>平时成绩</th>
-                    <th>期末作业</th>
                     <th>期末考试</th>
                     <th>总成绩</th>
                 </tr>
+                {volist name="scores" id="score" key="key"}
                 <tr>
-                    <td>高等数学1B</td>
-                    <td>你猜</td>
-                    <td>29</td>
-                    <td>0</td>
-                    <td>32</td>
-                    <td>61</td>
+                    <td>{$score->course->name}</td>
+                    <td>{$score->course->teacher->name}</td>
+                    <td>{$score->getData('score1')}</td>
+                    <td>{$score->getData('score2')}</td>
+                    <td>{$score->getData('scoresum')}</td>
                 </tr>
-                <tr>
-                    <td>商业网站开发</td>
-                    <td>你猜</td>
-                    <td>30</td>
-                    <td>30</td>
-                    <td>30</td>
-                    <td>90</td>
-                </tr>
+                {/volist}
             </table>
         </div>
     </div>

@@ -38,13 +38,10 @@
                     <!--是这个标签是当前标签 -->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Link</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">您好，亲爱的同学 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="http://localhost/microcourse/public/index.php/index/student/password">设置</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="http://localhost/microcourse/public/index.php/index/login/login">注销</a></li>
+                            <li><a href="http://localhost/microcourse/public/index.php/index/login/SlogOut">注销</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -57,7 +54,8 @@
             {block name="search"}
             <hr />
             <div class="alert alert-success" role="alert">当前状态：系统运行正常</div>
-            <h3>当前时间：X年X月X日&nbsp&nbsp xx:xx</h3>
+            <h3>当前时间：{:date('Y-m-d')}
+            </h3>
             </table>
             <table class="table table-bordered">
                 <tr class="info">
@@ -66,22 +64,22 @@
                 </tr>
                 <tr>
                     <td>学生姓名</td>
-                    <td>刘宇轩</td>
+                    <td>{$student->getData('name')}</td>
                 </tr>
                 <tr>
                     <td>学号</td>
-                    <td>182511</td>
+                    <td>{$student->getData('num')}</td>
                 </tr>
                 <tr>
                     <td>性别</td>
-                    <td>男</td>
+                    <td>{$student->sex}</td>
                 </tr>
                 <tr>
                     <td>班级</td>
-                    <td>交通181</td>
+                    <td>{$student->klass->name}</td>
                 </tr>
             </table>
-            <a href="http://localhost/microcourse/public/index.php/index/student/infoedit" type="button" class="btn btn-default navbar-btn">编辑</a>
+            <a href="{:url('infoedit?id=' . $student->getData('id'))}" type="button" class="btn btn-default navbar-btn">编辑</a>
             <hr /> {/block} {block name="content"} {/block} {block name="page"}
             {/block}
         </div>

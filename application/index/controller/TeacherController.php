@@ -18,9 +18,9 @@ use app\index\model\Classroom;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-19 17:40:03
+ * @Last Modified time: 2019-08-22 21:47:39
  */
-class TeacherController extends IndexController
+class TeacherController extends TIndexController
 {
 	public function page()
 	{
@@ -31,6 +31,7 @@ class TeacherController extends IndexController
     // 课程——赵凯强
     public function course()
     {
+        
         $courses = Course::paginate();
         $this->assign('courses', $courses);
     	return $this->fetch();
@@ -39,6 +40,7 @@ class TeacherController extends IndexController
     // 课程增加跳转——赵凯强
     public function courseadd()
     {
+
         $terms = Term::paginate();
         $this->assign('terms', $terms);
         //$academys = Academy::paginate();
@@ -178,16 +180,101 @@ class TeacherController extends IndexController
   
     }
     
-    // 课程上课查看跳转——赵凯强
+    // 教师模块课程管理查看上课时间——刘宇轩
     public function coursesee()
     {
+        $id = $this->request->param('id/d');
+        $acourse = new Course;
+        $course = $acourse->where('id',$id)->find();
+        $this->assign('course',$course);
+        $Tables = Courseinfo::getCourseTable($id);
+
+        $this->assign('table',$Tables);
+        $classroom = new classroom;
+        $this->assign('classroom',$classroom);
+        // dump($Tables);
+        // return ;
         return $this->fetch();
     }
-    
-    // 课程上课查看跳转二级页面——赵凯强
+
+    // 教师模块课程管理查看修改上课时间——刘宇轩
     public function courseweek()
     {
+        $id = $this->request->param('id/d');
+        $weekday = $this->request->param('weekday/d');
+        $weekdayorigin = $weekday;
+        $weekday = Term::getWeekday($weekday - 1);
+        $begin = $this->request->param('begin/d');
+        $weeks = array();
+        $classroom_id = Courseinfo::getCourseClassroom($id,$weekdayorigin,$begin);
+        $classroom = Classroom::select();
+        $termLength = Term::TermLength();
+        for ($i=0; $i < $termLength; $i++) { 
+            $weeks[$i] = $i;
+        }
+        $course = Course::get($id);
+        $courseinfo = new Courseinfo;
+        $this->assign('classroom',$classroom);
+        $this->assign('classroom_id',$classroom_id);
+        $this->assign('courseinfo',$courseinfo);
+        $this->assign('weekdayorigin',$weekdayorigin);
+        $this->assign('weekday',$weekday);
+        $this->assign('begin',$begin);
+        $this->assign('weeks',$weeks);
+        $this->assign('course',$course);
         return $this->fetch();
+    }
+
+    //教师模块课程管理更新上课时间——刘宇轩
+    public function courseweeksave()
+    {
+        $id = $this->request->post('id');
+        $weekday = $this->request->post('weekday');
+        $begin = $this->request->post('begin');
+        $weeks = $this->request->post('weeks');
+        $length = $this->request->post('length');
+        $classroom_id = $this->request->post('classroom_id');
+
+        
+        // dump($id);   
+        // return ; 
+        if (is_null($weeks)) {
+            return $this->error('周次不能为空');
+        }
+        if (is_null($classroom_id)) {
+            return $this->error('教室不能为空');
+        }
+        
+        if (false === Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begin)->delete()) {
+            return $this->error('更新课程信息失败，删除错误');
+        }
+        foreach ($weeks as $key => $week) {
+            $courseinfo = new Courseinfo();
+            $courseinfo->course_id = $id;
+            $courseinfo->weekday = $weekday;
+            $courseinfo->begin = $begin;
+            $courseinfo->length = $length;
+            $courseinfo->classroom_id = $classroom_id;
+            $courseinfo->week = $week;
+            if (!$courseinfo->save()) {
+                return $this->error('课程信息保存错误：');
+            }
+        }
+        return $this->success('更新成功',url('coursesee?id=' . $id));
+    }
+
+    //教师模块课程管理删除上课时间——刘宇轩
+    public function courseweekdelete()
+    {
+        $id = $this->request->param('id');
+        // dump($id);
+        // return ; 
+        $weekday = $this->request->param('weekday');
+        $begin = $this->request->param('begin');
+        if (false === Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begin)->delete()) {
+            return $this->error('删除错误');
+        }
+        return $this->success('删除成功',url('coursesee?id=' . $id));
     }
 
     public function coursetime()
