@@ -29,7 +29,7 @@ class Student extends Model
 	// 	}
 	//	return self::$validate->check($this);
 	//}
-
+    // 学生找班级————赵凯强
 	public function klass()
 	{
 		return $this->belongsTo('klass');
@@ -50,5 +50,56 @@ class Student extends Model
 		$Klass = Klass::get($KlassId); 
 		return $Klass;
 	}
+    
+    // 学生登录验证————赵凯强
+	static public function login($num, $password)
+	{
+		// 验证用户是否存在
+		$map = array('num' => $num);
+		$Student = self::get($map);
+
+		if (!is_null($Student)) {
+			// 验证密码是否正确
+			if ($Student->checkPassword($password)) {
+				// 登录
+				session('studentId', $Student->getData('id'));
+				return true;
+			}
+		}
+		return false;
+	}
+    
+    // 学生登录密码验证————赵凯强
+	public function checkPassword($password)
+	{
+		if ($this->getData('password') === $password)
+		{
+			return true;
+		} else {
+			return false;
+		}
+	}
+    
+    // 学生注销————赵凯强
+	static public function logOut()
+	{
+		// 销毁session中数据
+		session('studentId', null);
+		return true;
+	} 
+
+    // 学生操作验证————赵凯强
+	static public function isLogin()
+	{
+		$studentId = session('studentId');
+
+		// isset()和is_null是一对反义词
+		if (isset($studentId)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 }

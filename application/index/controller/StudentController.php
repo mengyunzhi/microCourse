@@ -1,6 +1,6 @@
 <?php
 namespace app\index\controller;
-use app\common\model\Index;
+use app\index\model\Index;
 use think\Controller;
 use app\index\model\Term;
 use app\index\model\Course;
@@ -9,12 +9,15 @@ use app\index\model\Student;
 use app\index\model\Klass;
 
 /**
+ * $studentId = session('studentId');  //得到本学生Id
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
  * @Last Modified time: 2019-08-19 17:14:40
  */
-class StudentController extends IndexController
+
+
+class StudentController extends SIndexController
 {	
 	public function page()
 	{
@@ -64,14 +67,18 @@ class StudentController extends IndexController
 	        	}
 	        }
         }
-
+        
+        $studentId = session('studentId');
         $Term = Term::get($id);
         $this->assign('Term', $Term);
         $courses = $Term->Course;
         $score = new Score();
         $scores = [];
         foreach ($courses as $key => $course) {
-        	array_push($scores, $score->where('course_id',$course->id)->where('student_id',1)->find());
+            if (!is_null($scoree = $score->where('course_id',$course->id)->where('student_id',$studentId)->find())){
+                array_push($scores, $scoree);
+            }
+        	
         }
 
         $this->assign('scores', $scores);
@@ -81,7 +88,7 @@ class StudentController extends IndexController
     // 学生信息页面————赵凯强
 	public function info()
 	{
-		$id = 1;
+		$id = session('studentId');;
 		$student = Student::get($id);
 		$this->assign('student', $student);
 		return $this->fetch();
