@@ -11,7 +11,7 @@ use think\Request;     // 引用Request
  * @Last Modified by:   LYX6666666
  * @Last Modified time: 2019-08-14 10:49:32
  */
-class AdminController extends IndexController	
+class AdminController extends AIndexController	
 {
 
 	public function page()

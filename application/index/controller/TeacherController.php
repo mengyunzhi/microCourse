@@ -20,7 +20,7 @@ use app\index\model\Classroom;
  * @Last Modified by:   LYX6666666
  * @Last Modified time: 2019-08-22 21:47:39
  */
-class TeacherController extends IndexController
+class TeacherController extends TIndexController
 {
 	public function page()
 	{
