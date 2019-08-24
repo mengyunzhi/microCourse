@@ -9,11 +9,7 @@ use app\index\model\KlassCourse;
 use app\index\model\Course;
 use app\index\model\Teacher;
 use app\index\model\Score;
-use app\index\model\Term;
-use app\index\model\Course;
-use app\index\model\Score;
-use app\index\model\Student;
-use app\index\model\Klass;
+
 
 /**
  * $studentId = session('studentId');  //得到本学生Id
