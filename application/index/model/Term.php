@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-08-13 10:09:10
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-22 15:11:18
+ * @Last Modified time: 2019-08-28 20:32:07
  */
 namespace app\index\model;
 use think\Model;
@@ -13,6 +13,9 @@ use app\index\validate\TermValidate;
 class Term extends Model
 {
 	private static $validate;
+
+    // public static $domainname = "http://192.168.2.66";
+    public static $domainname = "http://localhost";
 
     public function save($data = [], $where = [], $sequence = null)
     {
@@ -160,13 +163,13 @@ class Term extends Model
         $now = date("H-i-s");
         $times = ["08-30-00","10-05-00","10-25-00","12-00-00","14-00-00","15-35-00","15-55-00","17-30-00","18-40-00","21-05-00"];
 
-        for ($i=0; $i < 20 ; $i = $i+2) { 
+        for ($i=0; $i < 10 ; $i = $i+2) { 
             if ($now > $times[$i] && $now <$times[$i+1])
             {
                 return $i/2+1; //返回大节数，整数为课上
             }
         }
-        for ($i=1; $i < 19 ; $i = $i+2) { 
+        for ($i=1; $i < 9 ; $i = $i+2) { 
             if ($now > $times[$i] && $now <$times[$i+1])
             {
                 return $i/2+1.5; //返回课间数，小数为课间

@@ -53,8 +53,13 @@
         <div class="col-md-12">
             {block name="search"}
             <hr />
-            <div class="alert alert-success" role="alert">当前状态：系统运行正常</div>
-            <h3>时间：X年X月X日&nbsp&nbsp星期X&nbsp&nbsp第X大节</h3>
+            {eq name='$time[0]' value='0'}   
+              <div class="alert alert-danger" role="alert">激活学期已结束或未开始</div>
+              {else}
+              <div class="alert alert-success" role="alert">{$time[1]}&nbsp&nbsp第{$time[2]}教学周&nbsp&nbsp{$time[3]}&nbsp&nbsp第{$time[4]}大节</div>
+              <h3></h3>
+              {/eq}
+              
             <a href="http://localhost/microcourse/public/index.php/index/student/seat" type="button" class="btn btn-default navbar-btn">扫码进入课堂</a>
             <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
         </div>

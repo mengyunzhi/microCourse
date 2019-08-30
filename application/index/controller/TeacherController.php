@@ -13,12 +13,14 @@ use app\index\model\Courseinfo;
 use app\index\model\Score;
 use think\Controller;
 use app\index\model\Classroom;
+use think\facade\Session;
+use app\index\model\Student;
 
 /**
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-22 21:47:39
+ * @Last Modified time: 2019-08-29 21:28:43
  */
 class TeacherController extends TIndexController
 {
@@ -238,6 +240,8 @@ class TeacherController extends TIndexController
         
         // dump($id);   
         // return ; 
+        
+        
         if (is_null($weeks)) {
             return $this->error('周次不能为空');
         }
@@ -277,7 +281,7 @@ class TeacherController extends TIndexController
         return $this->success('删除成功',url('coursesee?id=' . $id));
     }
 
-    public function coursetime()
+    public function coursetime()// 废弃
     {
     	return $this->fetch();
     }
@@ -306,6 +310,7 @@ class TeacherController extends TIndexController
     }
 
 
+    // 教师模块教室管理插入教室--李美娜
     public function classroomadd()
     {
         return $this->fetch();
@@ -416,11 +421,92 @@ class TeacherController extends TIndexController
         return $this->success($message,url('classroom'));
     }
 
+    //教师模块上课模式——刘宇轩
     public function online()
     {
+        $teacher = Teacher::where('id',Session::get('teacherId'))->find();                         //获取教师信息
+        $time[0] = Term::TermLength();  //获取学期
+        $time[1] = date('Y-m-d H:i:s'); //获取日期
+        $time[2] = Term::getWeek();     //获取教学周次
+        $time[3] = Term::getWeekday(Term::weekday());   //获取星期
+        $time[4] = Term::largeClass();  //获取大节
+        $courseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
+        
+        $this->assign('time',$time);    //发送各种时间变量
+        $this->assign('courseinfo',$courseinfo);
     	return $this->fetch();
     }
 
+    //教师模块课程首页——刘宇轩
+    public function onlinehome()
+    {
+        $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
+        $time[0] = Term::TermLength();  //获取学期
+        $time[1] = date('Y-m-d H:i:s'); //获取日期
+        $time[2] = Term::getWeek();     //获取教学周次
+        $time[3] = Term::getWeekday(Term::weekday());   //获取星期
+        $time[4] = Term::largeClass();  //获取大节
+        $courseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
+        // dump($courseinfo);
+        $this->assign('time',$time);    //发送各种时间变量
+        $this->assign('courseinfo',$courseinfo);
+        return $this->fetch();
+    }
+
+    //教师模块签到界面——刘宇轩 
+    public function setcourse()
+    {
+        $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
+        $classroom[0] = $courseinfo->classroom->classroomplace . $courseinfo->classroom->classroomname;
+        $classroom[1] = $courseinfo->classroom->row;
+        $classroom[2] = $courseinfo->classroom->column;
+        $url = Term::$domainname . url('student/entercourse?id=' . $courseinfo->getData('id'));
+
+        $this->assign('classroom',$classroom);
+        $this->assign('courseinfo',$courseinfo);
+        $this->assign('url',$url);
+        return $this->fetch();
+    }
+
+    //教师模块随机提问界面——刘宇轩
+    public function onlinesignin()
+    {
+        //取出本节课的课程信息
+        $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
+        //从中间表取出所以学生信息
+        $students = Score::where('course_id',$courseinfo->course->id)->select();
+        // dump($students);
+        // 建一个空数组储存学生信息
+        $ids = [];
+        //对于每个学生取出ID
+        foreach ($students as $key => $astudent) {
+            $ids[$key] = $astudent->student_id;
+        }
+        //打乱顺序
+        shuffle($ids);
+        //取第一个值，揪出这个倒霉孩子
+        $thestudent = Student::where('id',$ids[0])->find();
+
+        //向V层传值
+        $this->assign('courseinfo',$courseinfo);
+        $this->assign('student',$thestudent->name);
+        return $this->fetch();
+    }
+
+    public function entercourse()
+    {
+        echo $this->request->param('id');
+    }
+
+    //教师模块上课模式——刘宇轩
+    public function incourse ()
+    {
+        $teacher = Teacher::where('id',Session::get('teacherId'))->find();
+        $littleClass = Term::littleClass();
+
+        echo $littleClass;
+        return $this->fetch();
+    }
 
     //教师模块成绩录入界面——刘宇轩
     public function grade()
@@ -455,7 +541,7 @@ class TeacherController extends TIndexController
         $id = $this->request->param('id/d');
         $courses = new course();
         $course = course::get($id);
-        $info = $courses->courseinfo()->where('course_id',$id)->select();
+        $info = $courses->courseinfo()->where('course_id',$id)->order('week')->order('weekday')->select();
         $this->assign('course',$course);
         $this->assign('info',$info);
         return $this->fetch();
@@ -481,7 +567,7 @@ class TeacherController extends TIndexController
     public function gradeadd()
     {
         $id = $this->request->param('id/d');
-        $course = course::get($id);
+        $course = Course::get($id);
         $score = new Score;
         $scores = $score->where('course_id',$id)->select();
         $this->assign('course',$course);
@@ -516,6 +602,7 @@ class TeacherController extends TIndexController
         }
         return $this->success($message,url('grade'));
     }
+
 
 }
 
