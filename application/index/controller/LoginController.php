@@ -9,7 +9,7 @@ use app\index\model\Admin;
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-07-19 16:24:26
+ * @Last Modified time: 2019-08-29 22:08:13
  */
 class LoginController extends Controller
 {

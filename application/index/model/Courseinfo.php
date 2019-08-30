@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-08-14 21:26:00
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-22 20:32:30
+ * @Last Modified time: 2019-08-28 09:03:15
  */
 namespace app\index\model;
 use think\Model;
@@ -12,19 +12,19 @@ use think\Model;
 class courseinfo extends Model
 {
 
-	public function classroom()
+	public function Classroom()
 	{
-		return $this->belongsTo('classroom');
+		return $this->belongsTo('Classroom');
 	}
 
-	public function teacher()
+	public function Teacher()
 	{
-		return $this->belongsTo('teacher');
+		return $this->belongsTo('Teacher');
 	}
 
-	public function course()
+	public function Course()
 	{
-		return $this->belongsTo('course');
+		return $this->belongsTo('Course');
 	}
 
 	//获取特定课程、星期和时段的所有课——刘宇轩

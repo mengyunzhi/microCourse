@@ -53,12 +53,40 @@
       <div class="col-md-12">
             {block name="search"}
             <hr />
-              
-              <div class="alert alert-success" role="alert">当前状态：系统运行正常</div>
-              <h3>当前时间：X年X月X日&nbsp&nbsp星期X&nbsp&nbsp第X大节</h3>
+              {eq name='$time[0]' value='0'}   
+              <div class="alert alert-danger" role="alert">激活学期已结束或未开始</div>
+              {else}
+              <div class="alert alert-success" role="alert">{$time[1]}&nbsp&nbsp第{$time[2]}教学周&nbsp&nbsp{$time[3]}&nbsp&nbsp第{$time[4]}大节</div>
+              <h3></h3>
+              {/eq}
               <a href="http://localhost/microcourse/public/index.php/index/teacher/incourse" class="btn btn-default navbar-btn">开始上课</a>
               
             <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
+            <h3>您的今日课程:</h3>
+            <table class="table table-bordered">
+                <tr class="info">
+                  <th>序号</th>
+                  <th>节次</th>
+                  <th>教室</th>
+                  <th>课程名称</th>
+                  <th>课程类型</th>
+                  <th>班级</th>
+                  <th>进入课堂</th>
+                </tr>
+                {volist name="courseinfo" id="courseinfo" $key="key"}
+                  <tr>
+                    <td>{$key}</td>
+                    <td>{$courseinfo->begin .'~'.($courseinfo->begin+$courseinfo->length-1)}</td>
+                    <td>{$courseinfo->classroom->classroomplace." ".$courseinfo->classroom->classroomname}</td>
+                    <td>{$courseinfo->Course->name}</td>
+                    <td>{eq name='$courseinfo->Course->type' value='0'} 选修 {else /} 必修 {/eq} </td>
+                    
+                    <td>{eq name='courseinfo->Course->type' value='0' } 123{else /} 456 {/eq}</td>
+                    <td><a href="onlinehome?id={$courseinfo->id}" class="btn btn-primary">&nbsp;详情</a></td>
+                  </tr>
+                {/volist}
+            </table>
+
         </div>
     </div>
 </body>

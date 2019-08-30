@@ -9,18 +9,17 @@ use app\index\model\KlassCourse;
 use app\index\model\Course;
 use app\index\model\Teacher;
 use app\index\model\Score;
-use app\index\model\Term;
-use app\index\model\Course;
-use app\index\model\Score;
-use app\index\model\Student;
-use app\index\model\Klass;
+use app\index\model\Courseinfo;
+use app\index\model\Oncourse;
+use think\facade\Session;
+use app\index\model\Classroom;
 
 /**
  * $studentId = session('studentId');  //得到本学生Id
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-22 15:09:20
+ * @Last Modified time: 2019-08-29 20:25:05
  */
 
 
@@ -33,6 +32,13 @@ class StudentController extends SIndexController
 
 	public function online()
 	{
+		$time[0] = Term::TermLength();  //获取学期
+        $time[1] = date('Y-m-d H:i:s'); //获取日期
+        $time[2] = Term::getWeek();     //获取教学周次
+        $time[3] = Term::getWeekday(Term::weekday());   //获取星期
+        $time[4] = Term::largeClass();  //获取大节
+
+		$this->assign('time',$time);    //发送各种时间变量
 		return $this->fetch();
 	}
 
@@ -99,9 +105,90 @@ class StudentController extends SIndexController
 		return $this->fetch();
 	}
 
-	public function seat()
+	//学生模式——扫码进入课堂——刘宇轩
+	public function entercourse()
+    {
+        $courseinfo = Courseinfo::where('id',$this->request->param('id'))->find();
+        $course = $courseinfo->Course;
+        $id = $course->id;
+        $student = Student::where('id',Session::get('studentId'))->find();
+        $classroom = $courseinfo->Classroom;
+
+        if(is_null(Score::where('course_id',$id)->where('student_id',$student->id)->find()))
+        {
+        	$score = new Score;
+        	$score->student_id = $student->id;
+        	$score->course_id = $id;
+        	$score->score1 = $score->score2 = $score->scoresum = $score->arrivals = $score->responds = 0; 
+        	$score->save();
+        }
+
+        $oncourse = Oncourse::where('student_id',$student->id)->where('courseinfo_id',$courseinfo->id)->find();
+
+        if (is_null($oncourse)) 
+        {
+        	$oncourse = new Oncourse;
+        	$oncourse->student_id = $student->id;
+        	$oncourse->courseinfo_id = $courseinfo->id;
+        	$oncourse->column = $oncourse->row = $oncourse->arrival = $oncourse->respond = 0;
+        	$oncourse->save();
+        } 
+
+        $oncourse = Oncourse::where('student_id',$student->id)->where('courseinfo_id',$courseinfo->id)->find();
+        dump ($oncourse);
+
+        $this->assign('oncourse',$oncourse);
+        $this->assign('course',$course);
+        $this->assign('courseinfo',$courseinfo);
+        $this->assign('classroom',$classroom);
+
+        $time[0] = Term::TermLength();  //获取学期
+        $time[1] = date('Y-m-d H:i:s'); //获取日期
+        $time[2] = Term::getWeek();     //获取教学周次
+        $time[3] = Term::getWeekday(Term::weekday());   //获取星期
+        $time[4] = Term::largeClass();  //获取大节
+        $courseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
+        $this->assign('time',$time);    //发送各种时间变量
+        dump($classroom);
+        return $this->fetch();
+    }
+
+	//学生模块——座位信息储存
+	public function seatsave()
 	{
-		return $this->fetch();
+		$seat = $this->request->post();
+		$oncourse = Oncourse::where('id',$seat["oncourse_id"])->find();
+		if (is_null($oncourse)) 
+        {
+        	return $this->error('课程信息异常，请重新扫码进入');
+        } 
+        if ($seat["column"] == "") 
+        {
+        	return $this->error('行号为空，请重新输入');
+        } 
+        if ($seat["row"] == "") 
+        {
+        	return $this->error('列号为空，请重新输入');
+        } 
+        if (($seat["column"])>($seat["classroom_column"])) 
+        {
+        	return $this->error('列号输入超出范围，请重新输入');
+        } 
+        if (($seat["row"])>($seat["classroom_row"])) 
+        {
+        	return $this->error('行号输入超出范围，请重新输入');
+        } 
+        $oncourse->column = $seat["column"];
+        $oncourse->row = $seat["row"];
+        $oncourse->arrival = 1;
+        if ($oncourse->save()) {
+        	// return $this->success('恭喜您已完成签到',url('entercourse?id='.$seat['courseinfo_id']));
+        	return $this->success('恭喜您已完成签到',url('online?success=1'));
+        }
+
+		dump($seat);
+		// return $this->fetch();
+		return $this->error('提交失败，请重新扫码进入');
 	}
     
     // 学生成绩查询——赵凯强

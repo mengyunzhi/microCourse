@@ -77,7 +77,7 @@ class Course extends Model
     	return self::$validate->check($this);
     }
 
-    public function scores()
+    public function Score()
     {
     	return $this->hasMany('Score');
     }
@@ -87,18 +87,18 @@ class Course extends Model
 		return $this->belongsTo('Term');
 	}
 
-	public function teacher()
+	public function Teacher()
 	{
-		return $this->belongsTo('teacher');
+		return $this->belongsTo('Teacher');
 	}
 
-	public function courseinfo()
+	public function Courseinfo()
     {
-        return $this->hasMany('courseinfo');
+        return $this->hasMany('Courseinfo');
     }
 
-    public function klass()
+    public function Klass()
     {
-    	return $this->belongsToMany('klass',config('database.prefix') . 'klass_course');
+    	return $this->belongsToMany('Klass',config('database.prefix') . 'klass_course');
     }
 }
