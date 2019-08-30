@@ -5,6 +5,7 @@ use app\index\model\Classroom;
 use app\index\model\Student; 
 use app\index\model\Teacher;
 use think\Request;     // 引用Request
+use app\index\model\Klass;
 /**
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:43:05
@@ -248,11 +249,146 @@ class AdminController extends AIndexController
 		}
 	}
 
+	// 管理员界面班级管理————赵凯强
+	public function klass()
+	{
+		$klasses = Klass::paginate();
+        $this->assign('klasses', $klasses);
+		return $this->fetch();
+	}
+
+	// 管理员界面班级增加————赵凯强
+	public function klassadd()
+	{
+		return $this->fetch();
+	}
+
+	// 管理员界面班级增加保存————赵凯强
+	public function klasssave()
+    {
+    	$request = $this->request;
+    	$Klass = new Klass();
+
+    	$data = [
+	    	'name' => $request->param('name'),
+	    	'academy' => $request->param('academy'),
+	    	'major' => $request->param('major'),
+	    	'grade' => $request->param('grade'),
+	    ];
+
+	    $validate = new \app\index\validate\KlassValidate;
+	    if (!$validate->check($data)) {
+	    	return $this->error('数据添加错误：' . $Klass->getError());
+	    } else {
+	    	
+	    	$Klass->name = $request->param('name');
+	    	$Klass->academy = $request->param('academy');
+	    	$Klass->major = $request->param('major');
+	    	$Klass->grade = $request->param('grade');
+	    	if(!$Klass->save()) {
+	    		return $this->error('数据添加错误：' . $Klass->getError());
+	    	} else {
+	    		return $this->success('数据添加成功', url('klass'));
+	    	}
+	    }
+    }
+    
+    // 管理员界面课程编辑跳转————赵凯强
+    public function klassedit()
+    {
+    	$id = $this->request->param('id/d');
+        // 获取用户操作的班级信息
+        if (false === $Klass = Klass::get($id))
+        {
+        	return $this->error('未找到ID为' . $id . '的记录');
+        }
+
+        $this->assign('Klass', $Klass);
+        return $this->fetch();
+    }
+    
+    // 班级模块数据更新————赵凯强
+    public function klassupdate()
+    {
+
+    	$id = $this->request->param('id/d');
+
+    	// 获取传入的班级信息
+    	$Klass = Klass::get($id);
+    	if (is_null($Klass)) {
+    		return $this->error('未找到ID为' . $id . '的记录');
+    	}
+        $request = $this->request;
+    	$data = [
+	    	'name' => $request->param('name'),
+	    	'academy' => $request->param('academy'),
+	    	'major' => $request->param('major'),
+	    	'grade' => $request->param('grade'),
+	    ];
+
+	    $validate = new \app\index\validate\KlassValidate;
+	    if (!$validate->check($data)) {
+	    	return $this->error('数据更新错误：' . $Klass->getError());
+	    } else {
+	    	
+	    	$Klass->name = $request->param('name');
+	    	$Klass->academy = $request->param('academy');
+	    	$Klass->major = $request->param('major');
+	    	$Klass->grade = $request->param('grade');
+	    	if(!$Klass->save()) {
+	    		return $this->error('数据更新错误：' . $Klass->getError());
+	    	} else {
+	    		return $this->success('数据更新成功', url('klass'));
+	    	}
+	    }
+    }
+
+    // 班级模块数据删除————赵凯强
+    public function klassdelete()
+    {
+    	$id = $this->request->param('id/d');
+
+    	if(is_null($id) || 0 === $id) {
+    		return $this->error('未获取到ID信息');
+
+    	}
+
+    	// 获取到要删除的对象
+    	$Klass = Klass::get($id);
+    	if (is_null($Klass)) {
+    		return $this->error('不存在id为' . $id . '的班级');
+    	}
+
+    	// 删除对象
+    	$students = Student::where('klass_id', $id)->select();
+        
+    	 if (count($students)>0) {
+    	 	return $this->error('删除失败,班级中有学生' . $Klass->getError());
+    	} else {
+    		if (!$Klass->delete()) {
+    			return $this->error('删除失败：' . $Klass->getError());
+    		}
+    	}
+
+    	 //进行跳转
+         return $this->success('删除成功', url('klass'));
+
+
+
+    }
+
 	// 管理员界面学生管理--李美娜
 	public function student()
 	{
+		$id = $this->request->param('id/d');
+		if (is_null($id)) {
+			return $this->fetch('klass');
+		}
+
+
 		$Student = new Student();
-        $students = $Student->select();
+        $students = $Student->where('klass_id', $id)->select();
+
 
         // 向V层传数据
         $this->assign('students',$students);
@@ -267,6 +403,8 @@ class AdminController extends AIndexController
 	// 管理员界面学生的增加--李美娜
 	public function studentadd()
 	{
+		$klasses = Klass::paginate();
+		$this->assign('klasses', $klasses);
 		return $this->fetch();
 	}
 
@@ -283,8 +421,7 @@ class AdminController extends AIndexController
 		$Student->name = $postData['name'];
 		$Student->num = $postData['num'];
 		$Student->sex = $postData['sex'];
-		$Student->academy = $postData['academy'];
-		$Student->major = $postData['major'];
+		$Student->password = $postData['password'];
 		$Student->klass_id = $postData['klass_id'];
 		
 		// 添加数据
@@ -292,7 +429,7 @@ class AdminController extends AIndexController
 			return $this->error('数据添加错误：' . $Student->getError());
 		}
 
-		return $this->success('操作成功', url('student'));
+		return $this->success('操作成功', url('student?id=' . $Student->getData('klass_id')));
 		
 	}
 
@@ -320,12 +457,16 @@ class AdminController extends AIndexController
 			}
 
 		// 进行跳转
-		return $this->success('删除成功', url('student'));
+		return $this->success('删除成功', url('student?id=' . $Student->getData('klass_id')));
 	}
 
 	//管理员学生的编辑--李美娜
 	public function studentedit()
 	{
+
+		$klasses = Klass::paginate();
+		$this->assign('klasses', $klasses);
+
 		// 获取pathinfo传入的ID值
 		$id = $this->request->param('id/d');  // "/d"表示将数值转化为“整型”
 
@@ -347,6 +488,7 @@ class AdminController extends AIndexController
 	//管理员学生编辑数据的更新--李美娜
 	public function studentupdate()
 	{
+
 		// 接收数据，获取要更新的关键字信息
         $id = $this->request->param('id/d');  // "/d"表示将数值转化为“整型”
 
@@ -354,12 +496,11 @@ class AdminController extends AIndexController
         $Student = Student::get($id);
 
         // 写入要更新的数据
-        $Student->name = $this->request->post('name');
-        $Student->num = $this->request->post('num');
-        $Student->sex = $this->request->post('sex/d');
-        $Student->academy = $this->request->post('academy');
-        $Student->major = $this->request->post('major');
-        $Student->klass_id = $this->request->post('klass_id');
+        $Student->name = $this->request->param('name');
+        $Student->num = $this->request->param('num');
+        $Student->sex = $this->request->param('sex/d');
+        $Student->password = $this->request->param('password');
+        $Student->klass_id = $this->request->param('klass_id');
 
         // 更新
         $message = '更新成功';
@@ -367,8 +508,10 @@ class AdminController extends AIndexController
             $message =  '更新失败' . $Student->getError();
         }
 
+
         // 进行跳转
-		return $this->success($message, url('student'));
+        
+		return $this->success($message, url('student?id=' . $Student->getData('klass_id')));
 	}
 
 	//管理员模块教室管理——刘宇轩

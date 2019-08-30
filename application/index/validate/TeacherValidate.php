@@ -8,6 +8,6 @@ use think\Validate;   // 内置验证类
  		'name' => 'require|length:2,25',
  		'num' => 'require|unique:teacher',
  		'sex' => 'in:0,1',
- 		'password' => 'require|length:6,30',
+ 		'password' => 'require|length:3,30',
  	];
  }
