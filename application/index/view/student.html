@@ -30,21 +30,18 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="page">学生主页</a></li>
-                    <li class="active"><a href="online">上课模式 <span class="sr-only">(current)</span></a></li>
+                    <li {eq name="$isaction" value="page"}class="active"{/eq}><a href="/index/student/page">学生主页</a></li>
+                    <li {eq name="$isaction" value="online"}class="active"{/eq}><a href="/index/student/online">上课模式</a></li>
+                    <li {eq name="$isaction" value="course"}class="active"{/eq}><a href="/index/student/course">课程查询</a></li>
+                    <li {eq name="$isaction" value="score"}class="active"{/eq}><a href="/index/student/score">成绩查询</a></li>
+                    <li {eq name="$isaction" value="info"}class="active"{/eq}><a href="/index/student/info">个人信息</a></li>
                     <!--是这个标签是当前标签 -->
-                    <li><a href="course">课程查询</a></li>
-                    <li><a href="score">成绩查询</a></li>
-                    <li><a href="info">个人信息</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Link</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">您好，亲爱的同学 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="password">设置</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="../login/login">注销</a></li>
+                            <li><a href="/index/login/SlogOut">注销</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -52,23 +49,8 @@
         </div><!-- /.container-fluid -->
     </nav>
     <br><br>
-    <div class="row">
-        <div class="col-md-12">
-            {block name="search"}
-            <hr />
-            <div class="alert alert-success" role="alert">当前状态：系统运行正常，成功签到，正在上课，此时可以离开界面</div>
-            <h3>时间：X年X月X日&nbsp&nbsp星期X&nbsp&nbsp第X大节</h3>
-            <h3>教室：12教 A101</h3>
-            <h3>课程：高等数学1B</h3>
-            <h3>课程编码： 1234567</h3>
-            <h3>任课教师： 你猜啊</h3>
-            <h3>姓名：刘宇轩</h3>
-            <h3>学号：182511</h3>
-            <button type="button" class="btn btn-default navbar-btn">举手</button>
-            <a href="online" type="button" class="btn btn-default navbar-btn">返回</a>
-            <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
-        </div>
-    </div>
+    {block name="body"}
+    {/block}
 </body>
 
 </html>

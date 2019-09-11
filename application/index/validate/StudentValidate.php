@@ -4,12 +4,22 @@ use think\Validate;    //内置验证类
 
 class StudentValidate extends Validate
 {
-	protected $rule = [
+	protected $rules = [
 		'name' => 'require|length:2,25',
 		'num' => 'require|unique:student',
 		'sex' => 'in:0,1',
-		'academy' => 'require',
-		'major' => 'require',
+		Student::$password => 'require|length:5,60',
 		'klass_id' => 'require|number',
     ];
+
+    protected $scene = [
+        'update'  =>  ['password'],
+    ];
+
+
+    // public static function getUpdateValidate() {
+    // 	return [
+    // 		'password' => 'require|length:3,40',
+	   //  ];
+    // }
 }

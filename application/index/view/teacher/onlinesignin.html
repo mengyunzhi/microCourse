@@ -15,9 +15,13 @@
 
   <div class="jumbotron">
   <h3>请下面的同学回答问题：</h3>
-  <h1>{$student}</h1>
+  <h1>{$student->name}&nbsp;&nbsp;{$student->num}</h1>
   
-  <p><a class="btn btn-primary btn-lg" href="onlinehome?id={$courseinfo->id}" role="button">返回</a></p>
+  <p>
+    <a class="btn btn-primary btn-lg" href="onlinehome?id={$courseinfo->id}" role="button">返回</a>
+    <a class="btn btn-primary btn-lg" href="/index/teacher/onlinesignin?id={$courseinfo->id}" role="button">刷新</a>
+  </p>
+  
   </div>
 
 </body>

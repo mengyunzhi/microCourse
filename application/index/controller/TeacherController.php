@@ -6,7 +6,6 @@ use app\index\model\Academy;
 use app\index\model\Klass;
 use app\index\model\Teacher;
 use app\index\model\KlassCourse;
-use think\Request;     // 引用Request
 use app\common\model\Index;
 use app\index\model\Oncourse;
 use app\index\model\Courseinfo;
@@ -15,8 +14,11 @@ use think\Controller;
 use app\index\model\Classroom;
 use think\facade\Session;
 use app\index\model\Student;
+use think\facade\Request;
 
 /**
+ * $teacherId = session('teacherId'); 
+ * Request::action(); // 获取当前方法名
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
@@ -26,6 +28,13 @@ class TeacherController extends TIndexController
 {
 	public function page()
 	{
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+        
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
         return $this->fetch();
 	}	
     
@@ -33,9 +42,22 @@ class TeacherController extends TIndexController
     // 课程——赵凯强
     public function course()
     {
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
         
-        $courses = Course::paginate();
+        $Course = new Course();
+
+        // 得到本教师id
+        $Id = session('teacherId');
+        
+        $courses = $Course->where(['teacher_id' => $Id])->paginate(5);
+
         $this->assign('courses', $courses);
+       
     	return $this->fetch();
     }
     
@@ -43,11 +65,10 @@ class TeacherController extends TIndexController
     public function courseadd()
     {
 
-        $terms = Term::paginate();
+        $terms = Term::all();
         $this->assign('terms', $terms);
-        //$academys = Academy::paginate();
-        //$this->assign('academys', $academys);
-        $teachers = Teacher::paginate();
+        
+        $teachers = Teacher::all();
         $this->assign('teachers', $teachers);
         $klass = new Klass;
         $this->assign('Klasses', $klass->select());
@@ -104,9 +125,9 @@ class TeacherController extends TIndexController
 
         $this->assign('Course', $Course);
         
-        $terms = Term::paginate();
+        $terms = Term::all();
         $this->assign('terms', $terms);
-        $teachers = Teacher::paginate();
+        $teachers = Teacher::all();
         $this->assign('teachers', $teachers);
         $klass = new Klass;
         $this->assign('Klasses', $klass->select());
@@ -185,7 +206,11 @@ class TeacherController extends TIndexController
     // 教师模块课程管理查看上课时间——刘宇轩
     public function coursesee()
     {
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
         $id = $this->request->param('id/d');
+
         $acourse = new Course;
         $course = $acourse->where('id',$id)->find();
         $this->assign('course',$course);
@@ -271,8 +296,7 @@ class TeacherController extends TIndexController
     public function courseweekdelete()
     {
         $id = $this->request->param('id');
-        // dump($id);
-        // return ; 
+        
         $weekday = $this->request->param('weekday');
         $begin = $this->request->param('begin');
         if (false === Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begin)->delete()) {
@@ -281,21 +305,29 @@ class TeacherController extends TIndexController
         return $this->success('删除成功',url('coursesee?id=' . $id));
     }
 
-    public function coursetime()// 废弃
+    public function coursetime() // 废弃
     {
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
     	return $this->fetch();
     }
 
     // 教师界面教室管理--李美娜
     public function classroom()
     {
-    	$pageSize = 5; // 每页显示5条数据
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
 
         // 实例化classroom
         $Classroom = new Classroom();
 
         // 调用分页
-        $classrooms = $Classroom->paginate($pageSize);
+        $classrooms = $Classroom->paginate(5);
         $page = $classrooms->render();
 
         // 向V层传数据
@@ -424,11 +456,18 @@ class TeacherController extends TIndexController
     //教师模块上课模式——刘宇轩
     public function online()
     {
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
         $teacher = Teacher::where('id',Session::get('teacherId'))->find();                         //获取教师信息
         $time[0] = Term::TermLength();  //获取学期
         $time[1] = date('Y-m-d H:i:s'); //获取日期
         $time[2] = Term::getWeek();     //获取教学周次
-        $time[3] = Term::getWeekday(Term::weekday());   //获取星期
+        $time[3] = Term::getWeekday(Term::weekday()-1);   //获取星期
         $time[4] = Term::largeClass();  //获取大节
         $courseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
         
@@ -440,6 +479,9 @@ class TeacherController extends TIndexController
     //教师模块课程首页——刘宇轩
     public function onlinehome()
     {
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
         $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
         $time[0] = Term::TermLength();  //获取学期
         $time[1] = date('Y-m-d H:i:s'); //获取日期
@@ -473,9 +515,8 @@ class TeacherController extends TIndexController
     {
         //取出本节课的课程信息
         $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
-        //从中间表取出所以学生信息
+        //从中间表取出所有学生信息
         $students = Score::where('course_id',$courseinfo->course->id)->select();
-        // dump($students);
         // 建一个空数组储存学生信息
         $ids = [];
         //对于每个学生取出ID
@@ -486,10 +527,12 @@ class TeacherController extends TIndexController
         shuffle($ids);
         //取第一个值，揪出这个倒霉孩子
         $thestudent = Student::where('id',$ids[0])->find();
+        
 
         //向V层传值
         $this->assign('courseinfo',$courseinfo);
-        $this->assign('student',$thestudent->name);
+        $this->assign('student',$thestudent);
+
         return $this->fetch();
     }
 
@@ -511,8 +554,16 @@ class TeacherController extends TIndexController
     //教师模块成绩录入界面——刘宇轩
     public function grade()
     {
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+        
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
     	$course = new course;
-        $courses = $course->select();//取出全部课程
+        $courses = $course->paginate(5);//取出全部课程
+        // $page = $courses->render();
 
         $klass = new Klass;
         $klasscourse = new klasscourse;
@@ -531,26 +582,46 @@ class TeacherController extends TIndexController
             $acourse->klass = $str;
         }
         //发送课程信息
-        $this->assign('course',$courses);
+        $this->assign('courses',$courses);
+        // $this->assign('page', $page);
         return $this->fetch();
     }
 
     //教师模块成绩录入二级界面课程详情——刘宇轩
     public function gradeinfo()
     {
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+        
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+        
         $id = $this->request->param('id/d');
         $courses = new course();
         $course = course::get($id);
-        $info = $courses->courseinfo()->where('course_id',$id)->order('week')->order('weekday')->select();
+        $infos = $courses->courseinfo()->where('course_id',$id)->order('week')->order('weekday')->paginate(5);
+
+         // $page = $info->render();
+
         $this->assign('course',$course);
-        $this->assign('info',$info);
+        $this->assign('infos',$infos);
+         // $this->assign('page', $page);
         return $this->fetch();
     }
 
     //教师模块成绩录入三级界面出勤详情——刘宇轩
     public function gradeoncourse()
     {
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+        
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
         $id = $this->request->param('id/d');
+
         $courseinfo = Courseinfo::get($id);
         $course = $courseinfo->course()->find();
         $oncourse = new Oncourse;
@@ -566,6 +637,13 @@ class TeacherController extends TIndexController
     //教师模块成绩录入-录入界面——刘宇轩
     public function gradeadd()
     {
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
         $id = $this->request->param('id/d');
         $course = Course::get($id);
         $score = new Score;

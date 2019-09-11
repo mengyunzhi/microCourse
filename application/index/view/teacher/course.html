@@ -1,63 +1,11 @@
-<!DOCTYPE html>
-<html lang="zh-cn">
-<head>
-    <meta charset="UTF-8">
-    <title>微课堂-梦云智出品</title>
-    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-</head>
-
-<body class="container">
-    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
-    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">微课堂</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav ">
-            	<li><a href="http://localhost/microcourse/public/index.php/index/teacher/page">首页</a></li>
-              <li class="active"><a href="http://localhost/microcourse/public/index.php/index/teacher/course">课程管理 <span class="sr-only">(current)</span></a></li>
-              <!--是这个标签是当前标签 -->
-              <li><a href="http://localhost/microcourse/public/index.php/index/teacher/classroom">教室管理</a></li>
-              <li><a href="http://localhost/microcourse/public/index.php/index/teacher/online">上课模式</a></li>
-              <li><a href="http://localhost/microcourse/public/index.php/index/teacher/grade">成绩录入</a></li>
-              
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-              
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">你好，敬爱的教师<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  
-                  <li><a href="http://localhost/microcourse/public/index.php/index/login/TlogOut">注销</a></li>
-                </ul>
-              </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
-    <br><br>
+{extend name="teacher"/}
+{block name="body"}
     <div class="container">
       <div class="col-md-12">
-            {block name="search"}
+            
             <hr />
               
-              <div class="alert alert-success" role="alert">激活学期已结束或未开始</div>
+              <div class="alert {eq name='ifterm' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="ifterm" value="1"}已开始{else /}已结束{/eq}</div>
               <h3>学期名:</h3>
             <hr />
                 <div class="row">
@@ -71,7 +19,7 @@
                     </form>
                   </div>
                   <div class="col-md-4 text-right">
-                      <a href="http://127.0.0.1/microcourse/public/index/teacher/courseadd" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>&nbsp;增加</a>
+                      <a href="/index/teacher/courseadd" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>&nbsp;增加</a>
                     </div>
                 </div>
                 
@@ -104,11 +52,9 @@
                 </tr>
                 {/volist}
             </table>
-          
+            {$courses|raw}
               <br><br>
-             <hr /> {/block} {block name="content"} {/block} {block name="page"} {/block}
+             <hr /> 
         </div>
     </div>
-</body>
-
-</html>
+{/block}

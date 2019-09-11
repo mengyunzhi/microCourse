@@ -2,6 +2,7 @@
 namespace app\index\controller;
 use app\index\model\Index;
 use think\Controller;
+use think\Validate;
 use app\index\model\Student;
 use app\index\model\Term;
 use app\index\model\Klass;
@@ -11,11 +12,15 @@ use app\index\model\Teacher;
 use app\index\model\Score;
 use app\index\model\Courseinfo;
 use app\index\model\Oncourse;
+use app\index\model\Common;
 use think\facade\Session;
 use app\index\model\Classroom;
+use \app\index\validate\StudentValidate;
+use think\facade\Request;
 
 /**
  * $studentId = session('studentId');  //得到本学生Id
+ * Request::url();  // 获取完整URL地址 不带域名
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
@@ -27,11 +32,25 @@ class StudentController extends SIndexController
 {	
 	public function page()
 	{
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
 		return $this->fetch();
 	}
 
 	public function online()
 	{
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
 		$time[0] = Term::TermLength();  //获取学期
         $time[1] = date('Y-m-d H:i:s'); //获取日期
         $time[2] = Term::getWeek();     //获取教学周次
@@ -45,17 +64,25 @@ class StudentController extends SIndexController
 	// 学生界面的课程查询--李美娜
 	public function course()
 	{
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
 		// 查找已激活的学期，主要用于状态栏的显示
 		$term = Term::where('state',1)->find();	
 		if ($term === null) {
 			$termid = 0;
 		} else {
 			$termid = $term->id;
-		}		
+		}	
+
 		$this->assign('termid', $termid);
 
 		// 获取所有学期
-		$terms = Term::paginate();
+		$terms = Term::all();
 		$this->assign('terms', $terms);
 
 		// 获取请求查询的学期课程，若没有就找最近的学期
@@ -74,24 +101,35 @@ class StudentController extends SIndexController
 		}		
 		$Term = Term::get($id);
 		$this->assign('Term', $Term);
-						
-		// 先默认获取ID为1的学生所对应的课 此处默认score表的数据是自动写入的！！！
-		$ids = '1';
-		$student = Student::get('$ids');
-		$courses = [];
-        if (is_null($course = Score::where('student_id',$ids)->select())) {
-            $this->assign('courses', $courses);
-        } else {
-        	foreach ($course as $acourse) {       		
-           		if ($acourse->Course->term_id == $id) {
-           			array_push($courses, $acourse->Course);  // 该生的选修课和必修课
-           		}
-        	}       	
-        }
-        // $course = $courses->where('term_id',$Term_id);  // 获取请求学期的课程
-        $this->assign('courses', $courses);
 
-        // 取回打包后的数据，显示给用户
+        $courses = $Term->Course;
+        $courseIds = [];
+        foreach ($courses  as $value) {
+          array_push($courseIds, $value->id);
+        }
+
+        // 获取本学生id
+        $studentId = session('studentId');
+
+        $score = new Score();
+        $getScore =  $score->where(['course_id'=>$courseIds, 'student_id'=>$studentId])->select();
+        
+        // 得到本学期本学生所有课程成绩所对应的course_id
+        $course = new Course();
+        if(is_null($getScore)) {
+            $courses = [];
+        } else {
+            $scoreIds = [];
+            foreach ($getScore as $score) {
+                array_push($scoreIds, $score->course_id);
+            }
+            
+            // 通过成绩对应course_id得到本学期本学生所有课程
+            $courses = $course->where(['id'=>$scoreIds])->paginate(5);
+            
+        }
+         // 获取请求学期的课程
+        $this->assign('courses', $courses);
 		return $this->fetch();	
 	}
 
@@ -194,9 +232,18 @@ class StudentController extends SIndexController
     // 学生成绩查询——赵凯强
 	public function score()
 	{
-		$terms = Term::paginate();
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+        
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
+		$terms = Term::all();
         $this->assign('terms', $terms);
         $id = $this->request->param('id/d');
+        
         if (is_null($id)) {
         	$i = 0;
 	        foreach($terms as $term){
@@ -209,28 +256,43 @@ class StudentController extends SIndexController
 	        	}
 	        }
         }
+        // 获取本学期id
+        $isTerm = Term::get($id);
+        $this->assign('isTerm', $isTerm);
         
-        $studentId = session('studentId');
-        $Term = Term::get($id);
-        $this->assign('Term', $Term);
-        $courses = $Term->Course;
-        $score = new Score();
-        $scores = [];
-        foreach ($courses as $key => $course) {
-            if (!is_null($scoree = $score->where('course_id',$course->id)->where('student_id',$studentId)->find())){
-                array_push($scores, $scoree);
-            }
-        	
+        // 得到本学期所有课程id
+        $courses = $isTerm->Course;
+       
+        $courseIds = [];
+        foreach ($courses  as $value) {
+            array_push($courseIds, $value->id);
         }
 
-        $this->assign('scores', $scores);
-        return $this->fetch();
+        // 获取本学生id
+        $studentId = session('studentId');
+
+        // 得到本学期本学生所有课程成绩
+        $score = new Score();
+        $getScore =  $score->where(['course_id'=>$courseIds, 'student_id'=>$studentId])->paginate(5);
+
+        
+        $this->assign('scores', $getScore);
+        return $this->fetch();   
 	}
 
     // 学生信息页面————赵凯强
 	public function info()
 	{
-		$id = session('studentId');;
+        // 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+        // 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+        
+        // 获取本学生id
+		$id = session('studentId');
+
 		$student = Student::get($id);
 		$this->assign('student', $student);
 		return $this->fetch();
@@ -248,12 +310,12 @@ class StudentController extends SIndexController
       }
 
       $this->assign('Student', $Student);
-      $klasses = Klass::paginate();
+      $klasses = Klass::all();
       $this->assign('klasses', $klasses);
       return $this->fetch();
     }
     // 学生信息编辑保存————赵凯强
-    public function infoupdate()
+    public function infoUpdate()
     {
     	$id = $this->request->param('id/d');
 
@@ -263,14 +325,22 @@ class StudentController extends SIndexController
     		return $this->error('系统未找到ID为' . $id . '的记录');
     	}
 
-    	// 数据更新
-    	$Student->password = $this->request->param('password');
-    	$Student->klass_id = $this->request->param('klass_id/d');
-        if (!$Student->save()) {
-        	return $this->error('更新错误：' . $Student->getError());
+        $Student->password = $this->request->param('password');
+
+        $validate = new \app\index\validate\StudentValidate();
+        // $validate = Validate::make(StudentValidate::getUpdateValidate());
+
+        if (!$validate->check($Student)) {
+            return $this->error('修改数据不符合规范：' . $validate->getError());
         } else {
-        	return $this->success('操作成功', url('info'));
+            $Student->password = $this->request->param('password');
+            if (!$Student->save()) {
+                return $this->error('更新错误：' . $Student->getError());
+            } else {
+                return $this->success('操作成功', url('info'));
+            }
         }
+    	
     }	
 
     public function password()
