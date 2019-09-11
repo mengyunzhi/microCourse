@@ -5,9 +5,9 @@ use think\Validate;
 class KlassValidate extends Validate
 {
 	protected $rule = [
-        'name' => 'require|length:2,100',
-        'academy' => 'require|length:2,100',
-        'major' => 'require|length:2,100',
-        'grade' => 'require|length:2,100',
+        'name' => 'require|unique:klass',
+        'academy' => 'require|length:2,20',
+        'major' => 'require|length:2,20',
+        'grade' => 'require|length:2,20',
 	];
 }

@@ -4,8 +4,8 @@ use app\index\model\Term;
 use app\index\model\Classroom;
 use app\index\model\Student; 
 use app\index\model\Teacher;
-use think\Request;     // 引用Request
 use app\index\model\Klass;
+use think\facade\Request;
 /**
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:43:05
@@ -17,15 +17,31 @@ class AdminController extends AIndexController
 
 	public function page()
 	{
+		// 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+		// 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
 		 return $this->fetch();
 		
 	}
 
 	public function term()
 	{
+		// 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+		// 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
 		$Term = new Term;
-		$Terms = $Term->select();
+		$Terms = $Term->paginate(5);
+		$page = $Terms->render();
 		$this->assign('Term',$Terms);
+		$this->assign('page', $page);
 		return $this->fetch();
 	}
 
@@ -134,11 +150,20 @@ class AdminController extends AIndexController
 
 	public function teacher()
 	{
+		// 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+		// 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
 		$Teacher = new Teacher;
-		$teachers = $Teacher->select();
+		$teachers = $Teacher->paginate(5);
+		$page  = $teachers->render();
 		 
 		// 向v层传数据
 		$this->assign('teachers', $teachers);
+		$this->assign('page', $page);
 
 		// 取回打包后的数据
 		$htmls = $this->fetch();
@@ -147,6 +172,12 @@ class AdminController extends AIndexController
 		return $htmls;
 	}
     
+    //  teacher导入增加页面
+	public function teacheradd()
+	{
+		return $this->fetch();
+	}
+	
     // 新增数据保存方法
 	public function teachersave()  // 数据增加
 	{
@@ -170,11 +201,6 @@ class AdminController extends AIndexController
         return $this->success('操作成功', url('teacher'));
 	}
 
-    //  teacher导入增加页面
-	public function teacheradd()
-	{
-		return $this->fetch();
-	}
     
     // teacher删除方法
 	public function teacherdelete()
@@ -252,8 +278,17 @@ class AdminController extends AIndexController
 	// 管理员界面班级管理————赵凯强
 	public function klass()
 	{
-		$klasses = Klass::paginate();
+		// 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+		// 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
+		$klasses = Klass::paginate(5);
+		$page = $klasses->render();
         $this->assign('klasses', $klasses);
+        $this->assign('page', $page);
 		return $this->fetch();
 	}
 
@@ -380,6 +415,13 @@ class AdminController extends AIndexController
 	// 管理员界面学生管理--李美娜
 	public function student()
 	{
+		// 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+		// 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+
 		$id = $this->request->param('id/d');
 		if (is_null($id)) {
 			return $this->fetch('klass');
@@ -387,11 +429,12 @@ class AdminController extends AIndexController
 
 
 		$Student = new Student();
-        $students = $Student->where('klass_id', $id)->select();
-
+        $students = $Student->where('klass_id', $id)->paginate(5);
+        
 
         // 向V层传数据
         $this->assign('students',$students);
+        
 
         // 取回打包后的数据
         $htmls = $this->fetch();
@@ -403,7 +446,7 @@ class AdminController extends AIndexController
 	// 管理员界面学生的增加--李美娜
 	public function studentadd()
 	{
-		$klasses = Klass::paginate();
+		$klasses = Klass::all();
 		$this->assign('klasses', $klasses);
 		return $this->fetch();
 	}
@@ -464,7 +507,7 @@ class AdminController extends AIndexController
 	public function studentedit()
 	{
 
-		$klasses = Klass::paginate();
+		$klasses = Klass::all();
 		$this->assign('klasses', $klasses);
 
 		// 获取pathinfo传入的ID值
@@ -517,9 +560,21 @@ class AdminController extends AIndexController
 	//管理员模块教室管理——刘宇轩
 	public function classroom()
 	{
+		// 获取当前方法名
+        $this->assign('isaction',Request::action());
+
+		// 获取当前学期状态
+        $ifterm = Term::ifterm();
+        $this->assign('ifterm', $ifterm);
+        
 		$classroom = new Classroom;
-		$classroom = $classroom->select();
-		$this->assign('classroom',$classroom);
+		$classrooms = $classroom->paginate(5);
+
+		// $page = $classrooms->render();
+        
+        // 向v层传输数据
+		$this->assign('classrooms',$classrooms);
+		// $this->assign('page',$page);
 		return $this->fetch();
 	}
 

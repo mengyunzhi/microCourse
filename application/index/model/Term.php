@@ -183,4 +183,18 @@ class Term extends Model
     {
         return $this->hasMany('Course');
     }
+    
+    // 学期函数：判断当前学期状态————赵凯强
+    // 不传参
+    static public function ifterm()
+    {
+        $terms = Term::all();
+        foreach ($terms as $term) {
+            if ($term->state == 1) {
+                return 1;
+            }
+        }
+
+        return 0;
+    }
 }

@@ -4,6 +4,8 @@ use app\index\model\Index;
 use think\Controller;
 use app\index\model\Student;  // 引入学生
 
+
+
 /**
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
@@ -27,6 +29,6 @@ class SIndexController extends Controller
 
 	public function index()
 	{
-
+          
 	}
 }

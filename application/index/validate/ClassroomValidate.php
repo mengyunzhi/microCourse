@@ -7,7 +7,7 @@ class ClassroomValidate extends Validate
  	protected $rule = [
  		'classroomplace' => 'require|length:2,25',
  		'classroomname' => 'require|length:2,25',
- 		'row' => 'require|number',
- 		'column' => 'require|number',
+ 		'row' => 'number|between:1,50',
+ 		'column' => 'number|between:1,50',
  	];
 }

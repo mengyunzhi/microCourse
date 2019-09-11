@@ -5,6 +5,7 @@ use app\index\model\Student;
 use app\index\model\Klass;
 use app\index\model\Teacher;
 use app\index\model\Admin;
+
 /**
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
@@ -28,17 +29,34 @@ class LoginController extends Controller
 		$request = $this->request;
 
 		// 实例化学生并赋值
-		$Student = new Student();
-		$Student->name = $request->param('name');
-		$Student->num = $request->param('num');
-		$Student->sex = $request->param('sex');
-		$Student->password = $request->param('password');
-		$Student->klass_id = $request->param('klass_id');
+		$data = [
+            
+			'name' => $request->param('name'),
+			'num' => $request->param('num'),
+			'sex' => $request->param('sex'),
+			'password' => $request->param('password'),
+			'klass_id' => $request->param('klass_id'),
 
-		// 添加数据
-		if (!$Student->save()) {
-			return $this->error('注册失败：', $Student->getError());
-		} 
+		];
+
+		$validate = new \app\index\validate\StudentValidate;
+
+		if (!$validate->check($data)) {
+			return $this->error('数据不符合规范：' . $validate->getError());
+		} else {
+			$Student = new Student();
+			$Student->name = $request->param('name');
+			$Student->num = $request->param('num');
+			$Student->sex = $request->param('sex');
+			$Student->password = $request->param('password');
+			$Student->klass_id = $request->param('klass_id');
+
+			// 添加数据
+			if (!$Student->save()) {
+				return $this->error('注册失败：', $Student->getError());
+			} 
+		}
+		
 
 		return $this->success('操作成功', url('index'));
 	}
@@ -46,6 +64,8 @@ class LoginController extends Controller
     // 登录页面跳转————赵凯强
 	public function index()
 	{
+		$name = "Test";
+		$this->assign('name', $name);
 		// 显示登录表单
 		return $this->fetch();
 	}
