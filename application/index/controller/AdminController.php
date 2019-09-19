@@ -36,6 +36,9 @@ class AdminController extends AIndexController
 		// 获取当前学期状态
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
+        
+        $nowweek = Term::getWeek();
+        $this->assign('nowweek', $nowweek);
 
 		$Term = new Term;
 		$Terms = $Term->paginate(5);
@@ -136,16 +139,22 @@ class AdminController extends AIndexController
 			return $this->error('未获取ID信息');
 		}
 		$Term = Term::get($id);
-        if ($Term->state == 0) {
+        if ($Term->state == 0&& Term::TermLength()==0) {
             $Term->state = 1;
-        } else {
+            if (false === $Term->save()) {
+	            $message =  '状态切换失败';
+	        }
+			return $this->success('状态切换成功',url('term'));
+        } else if ($Term->state == 1){
         	$Term->state = 0;
+        	if (false === $Term->save())
+	        {
+	            $message =  '状态切换失败';
+	        }
+			return $this->success('状态切换成功',url('term'));
+        } else {
+        	return $this->error('状态切换失败');
         }
-        if (false === $Term->save())
-        {
-            $message =  '状态切换失败';
-        }
-		return $this->success('状态切换成功',url('term'));
 	}
 
 	public function teacher()
@@ -354,22 +363,18 @@ class AdminController extends AIndexController
     		return $this->error('未找到ID为' . $id . '的记录');
     	}
         $request = $this->request;
-    	$data = [
-	    	'name' => $request->param('name'),
-	    	'academy' => $request->param('academy'),
-	    	'major' => $request->param('major'),
-	    	'grade' => $request->param('grade'),
-	    ];
-
-	    $validate = new \app\index\validate\KlassValidate;
-	    if (!$validate->check($data)) {
-	    	return $this->error('数据更新错误：' . $Klass->getError());
-	    } else {
-	    	
+    
 	    	$Klass->name = $request->param('name');
 	    	$Klass->academy = $request->param('academy');
 	    	$Klass->major = $request->param('major');
 	    	$Klass->grade = $request->param('grade');
+	   
+
+	    $validate = new \app\index\validate\KlassValidate;
+	    if (!$validate->check($Klass)) {
+	    	return $this->error('数据更新错误：' . $validate->getError());
+	    } else {
+	    	
 	    	if(!$Klass->save()) {
 	    		return $this->error('数据更新错误：' . $Klass->getError());
 	    	} else {

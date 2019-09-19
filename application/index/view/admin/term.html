@@ -5,6 +5,7 @@
             <hr />
             <!--  表前查询 -->
             <div class="alert {eq name='ifterm' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="ifterm" value="1"}已开始{else /}已结束{/eq}</div>
+            <h3>当前周次：第{$nowweek}周</h3>
             <hr />
             <div class="row">
                 <div class="col-md-8">
@@ -17,7 +18,7 @@
                     </form>
                 </div>
                 <div class="col-md-4 text-right">
-                    <a class="btn btn-primary" href="http://localhost/microCourse/public/index.php/index/admin/termadd">&nbsp;增加</a>
+                    <a class="btn btn-primary" href="/index/admin/termadd">&nbsp;增加</a>
                 </div>
             </div>
             <hr />
@@ -31,7 +32,6 @@
                         <th>结束时间</th>
                         <th>学期长度</th>
                         <th>状态</th>
-                        <th>当前周次</th>
                         <th>操作</th>
                     </tr>
                     {volist name="Term" id="Term" key="key"}
@@ -42,7 +42,7 @@
                         <td>{$Term->getdata('end')}</td>
                         <td>{$Term->getdata('length')}</td>
                         <td>{eq name='Term->getData("state")' value='0'}已冻结{else /}已激活{/eq}</td>
-                        <td>000</td>
+                        
                         <td>
                             <a class="btn btn-primary" href="termedit?id={$Term->getData('id')}">&nbsp;编辑</a>
                             <a href="termdelete?id={$Term->getData('id')}" class="btn btn-danger">&nbsp;删除</a>
