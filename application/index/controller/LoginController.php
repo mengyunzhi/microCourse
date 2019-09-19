@@ -10,19 +10,20 @@ use app\index\model\Admin;
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-29 22:08:13
+ * @Last Modified time: 2019-09-19 21:06:37
  */
 class LoginController extends Controller
 {
-	// 学生注册页面跳转————赵凯强
-	public function register()
+	// 学生注册页面跳转————赵凯强——（已增加微信）
+	public function register($id)
 	{
 		$klasses = Klass::paginate();
+		$this->assign('id', $id);
 		$this->assign('klasses', $klasses);
 		return $this->fetch();
 	}
     
-    // 保存注册信息————赵凯强
+    // 保存注册信息————赵凯强——（以增加微信）
 	public function save()
 	{
        // 实例化请求信息
@@ -44,7 +45,8 @@ class LoginController extends Controller
 		if (!$validate->check($data)) {
 			return $this->error('数据不符合规范：' . $validate->getError());
 		} else {
-			$Student = new Student();
+			//以前是新建对象，改为查找id是新增加的id的对象
+			$Student = Student::where('id',$this->request->param('id'))->find();
 			$Student->name = $request->param('name');
 			$Student->num = $request->param('num');
 			$Student->sex = $request->param('sex');
@@ -56,9 +58,10 @@ class LoginController extends Controller
 				return $this->error('注册失败：', $Student->getError());
 			} 
 		}
-		
-
-		return $this->success('操作成功', url('index'));
+		//存session，登陆
+		Student::WxloginID($this->request->param('id'));
+		//直接回主页
+		return $this->success('注册成功', url('student/page'));
 	}
     
     // 登录页面跳转————赵凯强

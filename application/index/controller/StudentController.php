@@ -24,7 +24,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-29 20:25:05
+ * @Last Modified time: 2019-09-19 20:21:52
  */
 
 
@@ -359,5 +359,11 @@ class StudentController extends SIndexController
 		// $diff = index::weekday($day2);
 		// echo $diff;
       	// return $this->fetch();
+    }
+
+    public function OpenIdtest()
+    {
+    	$test = "我是Student控制器的一个方法";
+    	dump ($test);
     }
 }

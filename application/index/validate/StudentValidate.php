@@ -8,7 +8,7 @@ class StudentValidate extends Validate
 		'name' => 'require|length:2,25',
 		'num' => 'require|unique:student',
 		'sex' => 'in:0,1',
-		Student::$password => 'require|length:5,60',
+		'password' => 'require|length:5,60',
 		'klass_id' => 'require|number',
     ];
 

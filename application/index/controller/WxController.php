@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-09-09 20:36:04
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-11 09:35:29
+ * @Last Modified time: 2019-09-18 22:09:05
  */
 namespace app\index\controller;
 use think\Controller;
@@ -25,8 +25,8 @@ class WxController extends Controller{
     //你的微信公众号secret 
  
  	//拼接URL
-    public function accredit($redirect_url){
-        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->appid}&redirect_uri={$redirect_url}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+    public function accredit($redirect_url,$state){
+        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->appid}&redirect_uri={$redirect_url}&response_type=code&scope=snsapi_userinfo&state={$state}#wechat_redirect";
         $this->redirect($url);
     }
 
