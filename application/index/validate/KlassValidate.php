@@ -10,4 +10,10 @@ class KlassValidate extends Validate
         'major' => 'require|length:2,20',
         'grade' => 'require|length:2,20',
 	];
+
+	protected $scene = [
+        'update'  =>  ['name'],
+    ];
+
+   
 }

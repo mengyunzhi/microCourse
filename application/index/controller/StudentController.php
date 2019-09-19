@@ -333,7 +333,6 @@ class StudentController extends SIndexController
         if (!$validate->check($Student)) {
             return $this->error('修改数据不符合规范：' . $validate->getError());
         } else {
-            $Student->password = $this->request->param('password');
             if (!$Student->save()) {
                 return $this->error('更新错误：' . $Student->getError());
             } else {
