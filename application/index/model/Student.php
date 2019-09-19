@@ -68,7 +68,35 @@ class Student extends Model
 		}
 		return false;
 	}
+
+	// 学生通过微信登录————刘宇轩
+	static public function Wxlogin($openid)
+	{
+		// 验证用户是否存在
+		$map = array('openid' => $openid);
+		$Student = self::get($map);
+
+		if (!is_null($Student)) {
+			session('studentId', $Student->getData('id'));
+			return true;
+		}
+		return false;
+	}
     
+	// 学生通过微信登录(传ID)————刘宇轩
+	static public function WxloginID($openid)
+	{
+		// 验证用户是否存在
+		$map = array('id' => $openid);
+		$Student = self::get($map);
+
+		if (!is_null($Student)) {
+			session('studentId', $Student->getData('id'));
+			return true;
+		}
+		return false;
+	}
+
     // 学生登录密码验证————赵凯强
 	public function checkPassword($password)
 	{
