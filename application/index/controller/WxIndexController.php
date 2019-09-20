@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-19 21:06:43
+ * @Last Modified time: 2019-09-19 22:01:28
  */
 namespace app\index\controller;
 use app\index\controller\WxController;
@@ -43,7 +43,8 @@ class WxIndexController extends WxController {
         $access_token = $we_chat->getAccessToken($code); //根据code获取token
         //根据access_token和openid获取到用户信息
         $we_chat_user_info = $we_chat->getWeChatUserInfo($access_token['access_token'],$access_token['openid']);
-        $this->gogogo($state,$we_chat_user_info["openid"]);
+        var_dump($we_chat_user_info);
+        // $this->gogogo($state,$we_chat_user_info["openid"]);
         // var_dump($we_chat_user_info );
         // var_dump($state);
     }
