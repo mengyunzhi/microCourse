@@ -43,18 +43,18 @@ class Teacher extends Model
     }
     
     // 教师通过微信登录————刘宇轩——废弃
-    static public function login($openid)
-    {
-        // 验证用户是否存在
-        $map = array('openid' => $openid);
-        $Teacher = self::get($map);
+    // static public function login($openid)
+    // {
+    //     // 验证用户是否存在
+    //     $map = array('openid' => $openid);
+    //     $Teacher = self::get($map);
 
-        if (!is_null($Teacher)) {
-            session('teacherId', $Teacher->getData('id'));
-            return true;
-        }
-        return false;
-    }
+    //     if (!is_null($Teacher)) {
+    //         session('teacherId', $Teacher->getData('id'));
+    //         return true;
+    //     }
+    //     return false;
+    // }
     
     // 老师登录密码验证————赵凯强
     public function checkPassword($password)

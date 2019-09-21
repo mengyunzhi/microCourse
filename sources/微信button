@@ -1,0 +1,50 @@
+{
+    "button": [
+        {
+            "name": "菜单", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "学生主页", 
+                    "url": "http://awjdjsz.jincheng4917.cn/index/WxIndex/page"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "课程查询", 
+                    "url": "http://awjdjsz.jincheng4917.cn/index/WxIndex/course"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "成绩查询", 
+                    "url": "http://awjdjsz.jincheng4917.cn/index/WxIndex/score"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "个人信息", 
+                    "url": "http://awjdjsz.jincheng4917.cn/index/WxIndex/info"
+                }
+            ]
+        }, 
+        {
+            "name": "开发者作品", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "小轩", 
+                    "url": "http://hebut.mengyunzhi.cn/182511/"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "小强", 
+                    "url": "http://hebut.mengyunzhi.cn/185762/"
+                }
+            ]
+        }, 
+        {
+            "type": "view", 
+            "name": "OpenID测试", 
+            "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4b4890b3f8c0ada5redirect_uri=http%3A%2F%2Fawjdjsz.jincheng4917.cn%2Findex%2FWxIndex%2FgetChatInforesponse_type=codescope=snsapi_userinfo#wechat_redirect", 
+            "sub_button": [ ]
+        }
+    ]
+}

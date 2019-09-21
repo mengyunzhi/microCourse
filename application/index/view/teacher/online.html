@@ -3,15 +3,6 @@
     <div class="container">
       <div class="col-md-12">
             
-            <hr />
-              {eq name='$time[0]' value='0'}   
-              <div class="alert {eq name='ifterm' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="ifterm" value="1"}已开始{else /}已结束{/eq}</div>
-              {else}
-              <div class="alert alert-success" role="alert">{$time[1]}&nbsp&nbsp第{$time[2]}教学周&nbsp&nbsp{$time[3]}&nbsp&nbsp第{$time[4]}大节</div>
-              <h3></h3>
-              {/eq}
-              
-            <hr /> 
             <h3>您的今日课程:</h3>
             <table class="table table-bordered">
                 <tr class="info">

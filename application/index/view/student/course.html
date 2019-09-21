@@ -2,9 +2,7 @@
 {block name="body"}
     <div class="row">
         <div class="col-md-12">
-            <hr />
-            <div class="alert {eq name='ifterm' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="ifterm" value="1"}已开始{else /}已结束{/eq}</div>
-            <h3>当前学期名:{eq name="$termid" value='0'}已结束{else /}{:$Term->name}{/eq}</h3>
+            
             <table>
                 <tr>
                     <th>

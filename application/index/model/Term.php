@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-08-13 10:09:10
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-28 20:32:07
+ * @Last Modified time: 2019-09-21 16:11:04
  */
 namespace app\index\model;
 use think\Model;
@@ -16,6 +16,28 @@ class Term extends Model
 
     // public static $domainname = "http://192.168.2.66";
     public static $domainname = "http://localhost";
+
+    public static $term;            //学期
+    public static $date;    //日期
+    public static $week;            //周次
+    public static $weekday;//星期
+    public static $largeClass;              //大节
+    public static $littleClass;         //小节
+    public static $length;
+
+    public static function timeAll()
+    {
+        $time = new Term();
+        $time->term = Term::ifterm();
+        $time->date = date('Y-m-d H:i:s');
+        $time->week = Term::getWeek();
+        $time->weekday = Term::getWeekday(Term::weekday());
+        $time->largeClass = Term::largeClass();
+        $time->littleClass =Term::littleClass();
+        $time->length = Term::TermLength();
+
+        return $time;
+    }
 
     public function save($data = [], $where = [], $sequence = null)
     {
@@ -186,6 +208,7 @@ class Term extends Model
     
     // 学期函数：判断当前学期状态————赵凯强
     // 不传参
+    
     static public function ifterm()
     {
         $terms = Term::all();
