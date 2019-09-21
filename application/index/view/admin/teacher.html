@@ -11,12 +11,12 @@
                     <form class="form-inline">
                         <div class="form-group">
                             <label  class="sr-only" for="name">条件:</label>
-                            <select class="btn btn-default">
+                            <!-- <select class="btn btn-default">
                                 <option>姓名</option>
                                 </option>
                                 <option>工号</option>
-                            </select>
-                            <input type="text" class="form-control" placeholder="输入...">
+                            </select> -->
+                            <input name="name" type="text" class="form-control" placeholder="输入..." value="{:input('get.name')}">
                         </div>
                         <button type="submit" class="btn btn-default">&nbsp;查询</button>
                     </form>
@@ -48,7 +48,7 @@
                 </tr>
                 {/volist}
             </table>
-            {$page|raw}
+            {$teachers|raw}
             <hr /> 
         </div>
     </div>

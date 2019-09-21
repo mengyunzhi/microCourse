@@ -24,6 +24,13 @@ class AdminController extends AIndexController
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
 
+        $time[0] = Term::TermLength();  //获取学期
+        $time[1] = date('Y-m-d H:i:s'); //获取日期
+        $time[2] = Term::getWeek();     //获取教学周次
+        $time[3] = Term::getWeekday(Term::weekday()-1);   //获取星期
+        $time[4] = Term::largeClass();  //获取大节
+        $this->assign('time',$time);    //发送各种时间变量
+
 		 return $this->fetch();
 		
 	}
@@ -40,11 +47,19 @@ class AdminController extends AIndexController
         $nowweek = Term::getWeek();
         $this->assign('nowweek', $nowweek);
 
-		$Term = new Term;
-		$Terms = $Term->paginate(5);
-		$page = $Terms->render();
-		$this->assign('Term',$Terms);
-		$this->assign('page', $page);
+        $Term = new Term;
+
+        // 获取查询信息
+        $name = $this->request->get('name');
+
+		$terms = $Term->where('name', 'like', '%' . $name . '%')->paginate(5, false, [
+			'query' =>[
+				'name' => $name,
+			],
+		]);
+		
+		$this->assign('terms',$terms);
+		
 		return $this->fetch();
 	}
 
@@ -167,12 +182,20 @@ class AdminController extends AIndexController
         $this->assign('ifterm', $ifterm);
 
 		$Teacher = new Teacher;
-		$teachers = $Teacher->paginate(5);
-		$page  = $teachers->render();
+
+		// 获取查询信息
+        $name = $this->request->get('name');
+
+		$teachers = $Teacher->where('name', 'like', '%' . $name . '%')->paginate(5, false, [
+			'query' =>[
+				'name' => $name,
+			],
+		]);
+		
 		 
 		// 向v层传数据
 		$this->assign('teachers', $teachers);
-		$this->assign('page', $page);
+		
 
 		// 取回打包后的数据
 		$htmls = $this->fetch();
@@ -294,10 +317,20 @@ class AdminController extends AIndexController
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
 
-		$klasses = Klass::paginate(5);
-		$page = $klasses->render();
+        $Klass = new Klass;
+
+        // 获取查询信息
+        $name = $this->request->get('name');
+
+		$klasses = $Klass->where('name', 'like', '%' . $name . '%')->paginate(5, false, [
+			'query' =>[
+				'name' => $name,
+			],
+		]);
+
+		
         $this->assign('klasses', $klasses);
-        $this->assign('page', $page);
+        
 		return $this->fetch();
 	}
 
@@ -434,7 +467,15 @@ class AdminController extends AIndexController
 
 
 		$Student = new Student();
-        $students = $Student->where('klass_id', $id)->paginate(5);
+		// 获取查询信息
+        $name = $this->request->get('name');
+
+		$students = $Student->where('klass_id', $id)->where('name', 'like', '%' . $name . '%')->paginate(5, false, [
+			'query' =>[
+				'name' => $name,
+			],
+		]);
+        // $students = $Student->where('klass_id', $id)->paginate(5);
         
 
         // 向V层传数据
@@ -572,14 +613,19 @@ class AdminController extends AIndexController
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
         
-		$classroom = new Classroom;
-		$classrooms = $classroom->paginate(5);
+		$Classroom = new Classroom;
 
-		// $page = $classrooms->render();
+		// 获取查询信息
+        $name = $this->request->get('name');
+
+		$classrooms = $Classroom->where('classroomname', 'like', '%' . $name . '%')->paginate(5, false, [
+			'query' =>[
+				'name' => $name,
+			],
+		]);
         
         // 向v层传输数据
 		$this->assign('classrooms',$classrooms);
-		// $this->assign('page',$page);
 		return $this->fetch();
 	}
 

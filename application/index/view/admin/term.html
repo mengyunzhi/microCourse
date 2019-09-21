@@ -12,7 +12,7 @@
                     <form class="form-inline">
                         <div class="form-group">
                             <label class="sr-only" for="name">学期名称</label>
-                            <input type="text" class="form-control" placeholder="学期名称...">
+                            <input name="name" type="text" class="form-control" placeholder="学期名称..." value="{:input('get.name')}">
                         </div>
                         <button type="submit" class="btn btn-default">&nbsp;查询</button>
                     </form>
@@ -34,24 +34,24 @@
                         <th>状态</th>
                         <th>操作</th>
                     </tr>
-                    {volist name="Term" id="Term" key="key"}
+                    {volist name="terms" id="term" key="key"}
                     <tr>
                         <td>{$key}</td>
-                        <td>{$Term->getdata('name')}</td>
-                        <td>{$Term->getdata('start')}</td>
-                        <td>{$Term->getdata('end')}</td>
-                        <td>{$Term->getdata('length')}</td>
-                        <td>{eq name='Term->getData("state")' value='0'}已冻结{else /}已激活{/eq}</td>
+                        <td>{$term->getdata('name')}</td>
+                        <td>{$term->getdata('start')}</td>
+                        <td>{$term->getdata('end')}</td>
+                        <td>{$term->getdata('length')}</td>
+                        <td>{eq name='term->getData("state")' value='0'}已冻结{else /}已激活{/eq}</td>
                         
                         <td>
-                            <a class="btn btn-primary" href="termedit?id={$Term->getData('id')}">&nbsp;编辑</a>
-                            <a href="termdelete?id={$Term->getData('id')}" class="btn btn-danger">&nbsp;删除</a>
-                            <a href="termcheck?id={$Term->getData('id')}" class="btn btn-success">{eq name='Term->getData("state")' value='0'}激活{else /}冻结{/eq}</a>
+                            <a class="btn btn-primary" href="termedit?id={$term->getData('id')}">&nbsp;编辑</a>
+                            <a href="termdelete?id={$term->getData('id')}" class="btn btn-danger">&nbsp;删除</a>
+                            <a href="termcheck?id={$term->getData('id')}" class="btn btn-success">{eq name='term->getData("state")' value='0'}激活{else /}冻结{/eq}</a>
                         </td>
                     </tr>
                     {/volist}
                 </table>
-                {$page|raw}
+                {$terms|raw}
             </div>
         </div>
     </div>

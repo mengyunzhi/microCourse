@@ -5,9 +5,14 @@
             
             <hr />
             
-            <div class="alert {eq name='ifterm' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="ifterm" value="1"}已开始{else /}已结束{/eq}</div>
-            <h3>当前学期:</h3>
-            <div class="dropdown">
+           {eq name='$time[0]' value='0'}   
+              <div class="alert {eq name='ifterm' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="ifterm" value="1"}已开始{else /}已结束{/eq}</div>
+              {else}
+              <div class="alert alert-success" role="alert">{$time[1]}&nbsp&nbsp第{$time[2]}教学周&nbsp&nbsp{$time[3]}&nbsp&nbsp第{$time[4]}大节</div>
+              <h3></h3>
+              {/eq}
+            <!-- <h3>当前学期:</h3> -->
+            <!-- <div class="dropdown">
                 <h4>选择周次:</h4>
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     第一周
@@ -20,7 +25,7 @@
                     <li role="separator" class="divider"></li>
                     <li><a href="#">......</a></li>
                 </ul>
-            </div>
+            </div> -->
             <br>
             <br>
             
