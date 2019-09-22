@@ -13,14 +13,14 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
-
+<br>
   <div class="jumbotron">
   <h3>请下面的同学回答问题：</h3>
   <h1>{$student->name}&nbsp;&nbsp;{$student->num}</h1>
   
   <p>
-    <a class="btn btn-primary btn-lg" href="onlinehome?id={$courseinfo->id}" role="button">返回</a>
-    <a class="btn btn-primary btn-lg" href="/index/teacher/onlinesignin?id={$courseinfo->id}" role="button">刷新</a>
+    <a class="btn btn-primary btn-lg" href="/index/teacher/onlinehome?id={$courseinfo->id}" role="button">返回</a>
+    <a class="btn btn-primary btn-lg" href="/index/teacher/onlinesignin/id/{$courseinfo->id}/student/{$student->id}" role="button">刷新</a>
   </p>
   
   </div>

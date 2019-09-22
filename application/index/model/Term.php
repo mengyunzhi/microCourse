@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-08-13 10:09:10
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-21 16:11:04
+ * @Last Modified time: 2019-09-22 19:30:24
  */
 namespace app\index\model;
 use think\Model;
@@ -15,7 +15,7 @@ class Term extends Model
 	private static $validate;
 
     // public static $domainname = "http://192.168.2.66";
-    public static $domainname = "http://localhost";
+    // public static $domainname = "http://localhost";
 
     public static $term;            //学期
     public static $date;    //日期
@@ -31,7 +31,7 @@ class Term extends Model
         $time->term = Term::ifterm();
         $time->date = date('Y-m-d H:i:s');
         $time->week = Term::getWeek();
-        $time->weekday = Term::getWeekday(Term::weekday());
+        $time->weekday = Term::getWeekday(Term::weekday()-1);
         $time->largeClass = Term::largeClass();
         $time->littleClass =Term::littleClass();
         $time->length = Term::TermLength();

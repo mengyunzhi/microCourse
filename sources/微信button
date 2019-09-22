@@ -9,6 +9,12 @@
                     "url": "http://awjdjsz.jincheng4917.cn/index/WxIndex/page"
                 }, 
                 {
+                    "type": "scancode_push", 
+                    "name": "扫码进入课堂", 
+                    "key": "rselfmenu_0_1", 
+                    "sub_button": [ ]
+                }, 
+                {
                     "type": "view", 
                     "name": "课程查询", 
                     "url": "http://awjdjsz.jincheng4917.cn/index/WxIndex/course"
