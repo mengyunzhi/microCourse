@@ -2,6 +2,7 @@
 namespace app\index\controller;
 use app\index\model\Course;
 use app\index\model\Term;
+use app\index\model\Time;
 use app\index\model\Academy;
 use app\index\model\Klass;
 use app\index\model\Teacher;
@@ -22,10 +23,11 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-29 21:28:43
+ * @Last Modified time: 2019-09-21 16:44:18
  */
 class TeacherController extends TIndexController
 {
+
 	public function page()
 	{
         // 获取当前方法名
@@ -34,7 +36,8 @@ class TeacherController extends TIndexController
         // 获取当前学期状态
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
-
+        $time = Term::timeAll();
+        $this->assign('time', $time);
         return $this->fetch();
 	}	
     
@@ -474,7 +477,7 @@ class TeacherController extends TIndexController
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
 
-        $teacher = Teacher::where('id',Session::get('teacherId'))->find();                         //获取教师信息
+        $teacher = Teacher::where('id',Session::get('teacherId'))->find(); //获取教师信息
         $time[0] = Term::TermLength();  //获取学期
         $time[1] = date('Y-m-d H:i:s'); //获取日期
         $time[2] = Term::getWeek();     //获取教学周次

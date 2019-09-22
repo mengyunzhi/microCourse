@@ -5,6 +5,8 @@ use think\Validate;    //内置验证类
 class StudentValidate extends Validate
 {
 	protected $rule = [
+
+    'id' => 'require|length:1,25',
 		'name' => 'require|length:2,25',
 		'num' => 'require|unique:student',
 		'sex' => 'in:0,1',

@@ -24,7 +24,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-19 20:21:52
+ * @Last Modified time: 2019-09-21 16:15:27
  */
 
 
@@ -179,6 +179,8 @@ class StudentController extends SIndexController
         $this->assign('course',$course);
         $this->assign('courseinfo',$courseinfo);
         $this->assign('classroom',$classroom);
+
+
 
         $time[0] = Term::TermLength();  //获取学期
         $time[1] = date('Y-m-d H:i:s'); //获取日期
@@ -362,6 +364,8 @@ class StudentController extends SIndexController
 		// $diff = index::weekday($day2);
 		// echo $diff;
       	// return $this->fetch();
+        $time = new Time();
+        dump($time->time);
     }
 
     public function OpenIdtest()

@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-19 21:06:43
+ * @Last Modified time: 2019-09-21 11:26:27
  */
 namespace app\index\controller;
 use app\index\controller\WxController;
@@ -15,6 +15,9 @@ use app\index\model\Student;
 class WxIndexController extends WxController {
 	public static $openIdTest = 'openIdTest';
 	public static $page = 'page';
+	public static $score = 'score';
+	public static $course = 'course';
+	public static $info = 'info';
 
     public function openIdTest() {  //OpsnId测试
     	$this->weChatAccredit($this::$openIdTest);
@@ -22,6 +25,18 @@ class WxIndexController extends WxController {
 
     public function page(){ // 跳转到主页
 		$this->weChatAccredit($this::$page);
+    }
+
+    public function course(){ // 跳转到课程查询
+		$this->weChatAccredit($this::$course);
+    }
+
+    public function score(){ // 跳转到成绩查询
+		$this->weChatAccredit($this::$score);
+    }
+
+    public function info(){ // 跳转到个人信息
+		$this->weChatAccredit($this::$info);
     }
 
     /**
@@ -39,12 +54,13 @@ class WxIndexController extends WxController {
     public function getChatInfo(){
         $we_chat = new WxController();//实例化微信类
         $code = $_GET['code'];  	//获取跳转后的code
+        //var_dump($code);
    		$state = $_GET['state'];	//获取state
         $access_token = $we_chat->getAccessToken($code); //根据code获取token
+        //var_dump($access_token);
         //根据access_token和openid获取到用户信息
         $we_chat_user_info = $we_chat->getWeChatUserInfo($access_token['access_token'],$access_token['openid']);
         $this->gogogo($state,$we_chat_user_info["openid"]);
-        // var_dump($we_chat_user_info );
         // var_dump($state);
     }
 
@@ -71,6 +87,18 @@ class WxIndexController extends WxController {
     		//首页
     		case 'page':
     			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/page');
+    			break;
+    		//课程查询	
+    		case 'course':
+    			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/course');
+    			break;
+    		//成绩查询	
+    		case 'score':
+    			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/score');
+    			break;
+    		//个人信息	
+    		case 'info':
+    			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/info');
     			break;
     		//暂不处理
     		default:

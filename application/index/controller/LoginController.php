@@ -5,12 +5,13 @@ use app\index\model\Student;
 use app\index\model\Klass;
 use app\index\model\Teacher;
 use app\index\model\Admin;
+use app\index\validate\StudentValidate;
 
 /**
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-19 21:06:37
+ * @Last Modified time: 2019-09-21 11:38:23
  */
 class LoginController extends Controller
 {
@@ -30,28 +31,26 @@ class LoginController extends Controller
 		$request = $this->request;
 
 		// 实例化学生并赋值
-		$data = [
-            
-			'name' => $request->param('name'),
-			'num' => $request->param('num'),
-			'sex' => $request->param('sex'),
-			'password' => $request->param('password'),
-			'klass_id' => $request->param('klass_id'),
-
-		];
-
-		$validate = new \app\index\validate\StudentValidate;
-
-		if (!$validate->check($data)) {
-			return $this->error('数据不符合规范：' . $validate->getError());
-		} else {
-			//以前是新建对象，改为查找id是新增加的id的对象
+		//以前是新建对象，改为查找id是新增加的id的对象
 			$Student = Student::where('id',$this->request->param('id'))->find();
 			$Student->name = $request->param('name');
 			$Student->num = $request->param('num');
 			$Student->sex = $request->param('sex');
 			$Student->password = $request->param('password');
 			$Student->klass_id = $request->param('klass_id');
+
+		$validate = new StudentValidate;
+
+		if (!$validate->check($Student)) {
+			return $this->error('数据不符合规范：' . $validate->getError());
+		} else {
+			// //以前是新建对象，改为查找id是新增加的id的对象
+			// $Student = Student::where('id',$this->request->param('id'))->find();
+			// $Student->name = $request->param('name');
+			// $Student->num = $request->param('num');
+			// $Student->sex = $request->param('sex');
+			// $Student->password = $request->param('password');
+			// $Student->klass_id = $request->param('klass_id');
 
 			// 添加数据
 			if (!$Student->save()) {

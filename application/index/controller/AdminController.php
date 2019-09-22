@@ -10,7 +10,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:43:05
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-14 10:49:32
+ * @Last Modified time: 2019-09-21 16:26:14
  */
 class AdminController extends AIndexController	
 {
@@ -23,15 +23,10 @@ class AdminController extends AIndexController
 		// 获取当前学期状态
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
+        $time = new Term();
+        $this->assign('time', $time);
+		return $this->fetch();
 
-        $time[0] = Term::TermLength();  //获取学期
-        $time[1] = date('Y-m-d H:i:s'); //获取日期
-        $time[2] = Term::getWeek();     //获取教学周次
-        $time[3] = Term::getWeekday(Term::weekday()-1);   //获取星期
-        $time[4] = Term::largeClass();  //获取大节
-        $this->assign('time',$time);    //发送各种时间变量
-
-		 return $this->fetch();
 		
 	}
 
