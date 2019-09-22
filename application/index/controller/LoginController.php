@@ -16,13 +16,13 @@ use app\index\validate\StudentValidate;
 class LoginController extends Controller
 {
 	// 学生注册页面跳转————赵凯强——（已增加微信）
-	public function register($id)
+	public function register()
 	{
-		$klasses = Klass::paginate();
+		$klasses = Klass::all();
 		$this->assign('id', $id);
 		$this->assign('klasses', $klasses);
 		return $this->fetch();
-	}
+	} 
     
     // 保存注册信息————赵凯强——（以增加微信）
 	public function save()

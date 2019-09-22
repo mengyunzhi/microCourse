@@ -34,19 +34,19 @@ class Student extends Model
 	public function klass()
 	{
 		return $this->belongsTo('klass');
-	}
+	}   
 
-    // 性别转换————赵凯强
-    // public function getSexAttr($value)
-    // {
-    //         $status = [1=>'女',0=>'男'];
-    //         if ($value === null)
-    //         {
-    //                 return '未设定';
-    //         }
 
-    //         else{return $status[$value];}
-    // }
+	// 性别转换————赵凯强
+	// public function getSexAttr($value)
+	// {
+	// 	$status = [1=>'女',0=>'男'];
+	// 	if ($value==null) {
+ //           return '未设定';
+	// 	}
+	// 	return $status[$value];
+	// }
+
 
     // 学生得到班级名字————赵凯强
 	public function getKlass()

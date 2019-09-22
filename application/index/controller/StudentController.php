@@ -327,13 +327,17 @@ class StudentController extends SIndexController
     		return $this->error('系统未找到ID为' . $id . '的记录');
     	}
 
-        $Student->password = $this->request->param('password');
+         if($Student->password != $this->request->param('oldpassword')){
+            return $this->error('原密码不正确');
+         }
+
+         $Student->password = $this->request->param('newpassword');
 
         $validate = new \app\index\validate\StudentValidate();
         // $validate = Validate::make(StudentValidate::getUpdateValidate());
 
         if (!$validate->check($Student)) {
-            return $this->error('修改数据不符合规范：' . $validate->getError());
+            return $this->error('密码不符合规范：' . $validate->getError());
         } else {
             if (!$Student->save()) {
                 return $this->error('更新错误：' . $Student->getError());

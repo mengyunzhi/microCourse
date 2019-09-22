@@ -51,13 +51,20 @@ class TeacherController extends TIndexController
         // 获取当前学期状态
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
-        
-        $Course = new Course();
 
         // 得到本教师id
         $Id = session('teacherId');
         
-        $courses = $Course->where(['teacher_id' => $Id])->paginate(5);
+        $Course = new Course();
+
+        // 获取查询信息
+        $name = $this->request->get('name');
+
+        $courses = $Course->where(['teacher_id' => $Id])->where('name', 'like', '%' . $name . '%')->paginate(5, false, [
+            'query' =>[
+                'name' => $name,
+            ],
+        ]);
 
         $this->assign('courses', $courses);
        
@@ -328,14 +335,18 @@ class TeacherController extends TIndexController
 
         // 实例化classroom
         $Classroom = new Classroom();
+        
+        // 获取查询信息
+        $name = $this->request->get('name');
 
-        // 调用分页
-        $classrooms = $Classroom->paginate(5);
-        $page = $classrooms->render();
-
+        $classrooms = $Classroom->where('classroomname', 'like', '%' . $name . '%')->paginate(5, false, [
+            'query' =>[
+                'name' => $name,
+            ],
+        ]);
+        
         // 向V层传数据
         $this->assign('classrooms',$classrooms);
-        $this->assign('page',$page);
 
         // 取回打包后的数据
         $htmls = $this->fetch();
