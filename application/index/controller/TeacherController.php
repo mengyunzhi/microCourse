@@ -23,7 +23,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-21 16:44:18
+ * @Last Modified time: 2019-09-22 20:05:21
  */
 class TeacherController extends TIndexController
 {
@@ -48,10 +48,6 @@ class TeacherController extends TIndexController
         // 获取当前方法名
         $this->assign('isaction',Request::action());
 
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-
         // 得到本教师id
         $Id = session('teacherId');
         
@@ -74,7 +70,6 @@ class TeacherController extends TIndexController
     // 课程增加跳转——赵凯强
     public function courseadd()
     {
-
         $terms = Term::all();
         $this->assign('terms', $terms);
         
@@ -473,19 +468,18 @@ class TeacherController extends TIndexController
         // 获取当前方法名
         $this->assign('isaction',Request::action());
 
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
 
         $teacher = Teacher::where('id',Session::get('teacherId'))->find(); //获取教师信息
-        $time[0] = Term::TermLength();  //获取学期
-        $time[1] = date('Y-m-d H:i:s'); //获取日期
-        $time[2] = Term::getWeek();     //获取教学周次
-        $time[3] = Term::getWeekday(Term::weekday()-1);   //获取星期
-        $time[4] = Term::largeClass();  //获取大节
-        $courseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
         
-        $this->assign('time',$time);    //发送各种时间变量
+        $allcourseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
+        
+        $courseinfo = [];     //依次判断每节课是否为本教师的课程
+        foreach ($allcourseinfo as $key => $acourse) {
+            if ($acourse->course->teacher_id == Session::get('teacherId')) {
+                $courseinfo[$key] = $acourse;
+            }
+        }
+
         $this->assign('courseinfo',$courseinfo);
     	return $this->fetch();
     }
@@ -497,14 +491,9 @@ class TeacherController extends TIndexController
         $this->assign('isaction',Request::action());
 
         $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
-        $time[0] = Term::TermLength();  //获取学期
-        $time[1] = date('Y-m-d H:i:s'); //获取日期
-        $time[2] = Term::getWeek();     //获取教学周次
-        $time[3] = Term::getWeekday(Term::weekday());   //获取星期
-        $time[4] = Term::largeClass();  //获取大节
-        $courseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
+
         // dump($courseinfo);
-        $this->assign('time',$time);    //发送各种时间变量
+
         $this->assign('courseinfo',$courseinfo);
         return $this->fetch();
     }
@@ -513,12 +502,12 @@ class TeacherController extends TIndexController
     public function setcourse()
     {
         $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
-        $classroom[0] = $courseinfo->classroom->classroomplace . $courseinfo->classroom->classroomname;
-        $classroom[1] = $courseinfo->classroom->row;
-        $classroom[2] = $courseinfo->classroom->column;
-        $url = Term::$domainname . url('student/entercourse?id=' . $courseinfo->getData('id'));
-
-        $this->assign('classroom',$classroom);
+        // $classroom[0] = $courseinfo->classroom->classroomplace . $courseinfo->classroom->classroomname;
+        // $classroom[1] = $courseinfo->classroom->row;
+        // $classroom[2] = $courseinfo->classroom->column;
+        // $url = Term::$domainname . url('student/entercourse?id=' . $courseinfo->getData('id'));
+        $url = 'http://'.$_SERVER['HTTP_HOST'].'/index/Wxindex/online?id='.$courseinfo->getData('id') ;
+        // $this->assign('classroom',$classroom);
         $this->assign('courseinfo',$courseinfo);
         $this->assign('url',$url);
         return $this->fetch();
@@ -539,10 +528,19 @@ class TeacherController extends TIndexController
         }
         //打乱顺序
         shuffle($ids);
+        //如果传入数据为空，并且传入id等于随机数id，则再次随机
+        if ($this->request->param('student') != null && count($ids) != 1 && count($ids) != 0) {
+            if ($ids[0] == $this->request->param('student')){
+                $id = $ids[1];
+            }else{
+                $id = $ids[0];
+            }}
+        else{
+            $id = $ids[0];
+        }
         //取第一个值，揪出这个倒霉孩子
-        $thestudent = Student::where('id',$ids[0])->find();
-        
-
+        $thestudent = Student::where('id',$id)->find();
+        // dump($id);
         //向V层传值
         $this->assign('courseinfo',$courseinfo);
         $this->assign('student',$thestudent);

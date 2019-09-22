@@ -24,7 +24,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-21 16:15:27
+ * @Last Modified time: 2019-09-22 17:03:25
  */
 
 
@@ -44,18 +44,9 @@ class StudentController extends SIndexController
 
 	public function online()
 	{
+
         // 获取当前方法名
         $this->assign('isaction',Request::action());
-
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-
-		$time[0] = Term::TermLength();  //获取学期
-        $time[1] = date('Y-m-d H:i:s'); //获取日期
-        $time[2] = Term::getWeek();     //获取教学周次
-        $time[3] = Term::getWeekday(Term::weekday());   //获取星期
-        $time[4] = Term::largeClass();  //获取大节
 
 		$this->assign('time',$time);    //发送各种时间变量
 		return $this->fetch();
@@ -146,17 +137,18 @@ class StudentController extends SIndexController
 	//学生模式——扫码进入课堂——刘宇轩
 	public function entercourse()
     {
+        //根据传入参数，获取本节课的课程信息
         $courseinfo = Courseinfo::where('id',$this->request->param('id'))->find();
+        //获取本节课的课程信息对应的课程
         $course = $courseinfo->Course;
-        $id = $course->id;
         $student = Student::where('id',Session::get('studentId'))->find();
         $classroom = $courseinfo->Classroom;
 
-        if(is_null(Score::where('course_id',$id)->where('student_id',$student->id)->find()))
+        if(is_null(Score::where('course_id',$course->id)->where('student_id',$student->id)->find()))
         {
         	$score = new Score;
         	$score->student_id = $student->id;
-        	$score->course_id = $id;
+        	$score->course_id = $course->id;
         	$score->score1 = $score->score2 = $score->scoresum = $score->arrivals = $score->responds = 0; 
         	$score->save();
         }
@@ -180,15 +172,7 @@ class StudentController extends SIndexController
         $this->assign('courseinfo',$courseinfo);
         $this->assign('classroom',$classroom);
 
-
-
-        $time[0] = Term::TermLength();  //获取学期
-        $time[1] = date('Y-m-d H:i:s'); //获取日期
-        $time[2] = Term::getWeek();     //获取教学周次
-        $time[3] = Term::getWeekday(Term::weekday());   //获取星期
-        $time[4] = Term::largeClass();  //获取大节
         $courseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
-        $this->assign('time',$time);    //发送各种时间变量
         dump($classroom);
         return $this->fetch();
     }
@@ -223,7 +207,7 @@ class StudentController extends SIndexController
         $oncourse->arrival = 1;
         if ($oncourse->save()) {
         	// return $this->success('恭喜您已完成签到',url('entercourse?id='.$seat['courseinfo_id']));
-        	return $this->success('恭喜您已完成签到',url('online?success=1'));
+        	return $this->success('恭喜您已完成签到',url('page'));
         }
 
 		dump($seat);

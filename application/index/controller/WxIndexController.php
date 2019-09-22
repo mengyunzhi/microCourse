@@ -5,7 +5,7 @@
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
 <<<<<<< HEAD
- * @Last Modified time: 2019-09-19 22:01:28
+ * @Last Modified time: 2019-09-22 18:16:32
 =======
  * @Last Modified time: 2019-09-21 11:26:27
 >>>>>>> e94378ad1760a82bb7e19fa552e6a3cb66616ea1
@@ -22,6 +22,7 @@ class WxIndexController extends WxController {
 	public static $score = 'score';
 	public static $course = 'course';
 	public static $info = 'info';
+    public static $online = 'online';
 
     public function openIdTest() {  //OpsnId测试
     	$this->weChatAccredit($this::$openIdTest);
@@ -43,13 +44,24 @@ class WxIndexController extends WxController {
 		$this->weChatAccredit($this::$info);
     }
 
+    public function online(){//上课签到
+        $this->_weChatAccredit($this::$online,$this->request->param('id'));
+    }
+
     /**
      * 微信按钮跳转授权
      */
     public function weChatAccredit($buttonType) {
         $url = 'http://'.$_SERVER['HTTP_HOST'].'/index/WxIndex/getChatInfo';
-        $we_chat = new WxController(); //实例化类
+        $we_chat = new WxController();  //实例化类
         $we_chat->accredit($url,$buttonType); //调用方法
+    }
+
+    //上一个函数的重载，仅提供扫码签到的功能
+    public function _weChatAccredit($buttonType,$id) {
+        $url = 'http://'.$_SERVER['HTTP_HOST'].'/index/WxIndex/getChatInfo';
+        $we_chat = new WxController();  //实例化类
+        $we_chat->accredit($url,$id);   //state实际上是传了课程信息ID！！
     }
 
     /**
@@ -60,12 +72,15 @@ class WxIndexController extends WxController {
         $code = $_GET['code'];  	//获取跳转后的code
         //var_dump($code);
    		$state = $_GET['state'];	//获取state
+        // dump($_GET);
+        // return;
+
         $access_token = $we_chat->getAccessToken($code); //根据code获取token
         //var_dump($access_token);
         //根据access_token和openid获取到用户信息
         $we_chat_user_info = $we_chat->getWeChatUserInfo($access_token['access_token'],$access_token['openid']);
-        var_dump($we_chat_user_info);
-        // $this->gogogo($state,$we_chat_user_info["openid"]);
+        // var_dump($we_chat_user_info);
+        $this->gogogo($state,$we_chat_user_info["openid"]);
         // var_dump($we_chat_user_info );
         // var_dump($state);
     }
@@ -106,9 +121,10 @@ class WxIndexController extends WxController {
     		case 'info':
     			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/info');
     			break;
-    		//暂不处理
+                
+    		//扫码签到，state作为课程信息ID来使用
     		default:
-
+                $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/entercourse?id='.$state);
     			break;
     	}
     	

@@ -18,15 +18,18 @@
     <br><br>
     <div class="container">
       <div class="col-md-12">
-            {block name="search"}
               
               <div class="page-header">
               <h1 class="text-center">提交座位<small>微课堂</small></h1>
               </div>
-              {eq name='$time[0]' value='0'}   
-              <div class="alert alert-danger" role="alert">激活学期已结束或未开始</div>
+            <?php use app\index\model\Term; ?>
+            <?php $time = Term::timeAll(); ?>
+
+            <br />
+              {eq name='$time->term' value='0'}   
+              <div class="alert {eq name='$time->term' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="$time->term" value="1"}已开始{else /}已结束{/eq}</div>
               {else}
-              <div class="alert alert-success" role="alert">&nbsp第{$time[4]}大节</div>
+              <div class="alert alert-success" role="alert">{$time->date}&nbsp&nbsp第{$time->week}教学周&nbsp&nbsp{$time->weekday}&nbsp&nbsp第{$time->largeClass}大节</div>
               <h3></h3>
               {/eq}
               <form class="form-horizontal" action="{:url('seatsave')}" method="post">

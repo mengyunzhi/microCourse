@@ -6,11 +6,12 @@ use app\index\model\Student;
 use app\index\model\Teacher;
 use app\index\model\Klass;
 use think\facade\Request;
+use app\index\widget\MenuWidget;
 /**
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:43:05
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-21 16:26:14
+ * @Last Modified time: 2019-09-22 17:42:19
  */
 class AdminController extends AIndexController	
 {
