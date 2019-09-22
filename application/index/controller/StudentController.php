@@ -24,7 +24,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-19 20:21:52
+ * @Last Modified time: 2019-09-21 16:15:27
  */
 
 
@@ -180,6 +180,8 @@ class StudentController extends SIndexController
         $this->assign('courseinfo',$courseinfo);
         $this->assign('classroom',$classroom);
 
+
+
         $time[0] = Term::TermLength();  //获取学期
         $time[1] = date('Y-m-d H:i:s'); //获取日期
         $time[2] = Term::getWeek();     //获取教学周次
@@ -325,13 +327,17 @@ class StudentController extends SIndexController
     		return $this->error('系统未找到ID为' . $id . '的记录');
     	}
 
-        $Student->password = $this->request->param('password');
+         if($Student->password != $this->request->param('oldpassword')){
+            return $this->error('原密码不正确');
+         }
+
+         $Student->password = $this->request->param('newpassword');
 
         $validate = new \app\index\validate\StudentValidate();
         // $validate = Validate::make(StudentValidate::getUpdateValidate());
 
         if (!$validate->check($Student)) {
-            return $this->error('修改数据不符合规范：' . $validate->getError());
+            return $this->error('密码不符合规范：' . $validate->getError());
         } else {
             if (!$Student->save()) {
                 return $this->error('更新错误：' . $Student->getError());
@@ -358,6 +364,8 @@ class StudentController extends SIndexController
 		// $diff = index::weekday($day2);
 		// echo $diff;
       	// return $this->fetch();
+        $time = new Time();
+        dump($time->time);
     }
 
     public function OpenIdtest()

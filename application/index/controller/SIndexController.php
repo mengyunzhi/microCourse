@@ -3,14 +3,14 @@ namespace app\index\controller;
 use app\index\model\Index;
 use think\Controller;
 use app\index\model\Student;  // 引入学生
-
+use think\facade\Session;
 
 
 /**
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-13 10:46:39
+ * @Last Modified time: 2019-09-20 20:01:36
  */
 class SIndexController extends Controller
 {
@@ -23,7 +23,11 @@ class SIndexController extends Controller
 
 		// 验证用户是否登录
 		if (!Student::isLogin()) {
-				return $this->error('学生未登录', url('Login/index'));
+			return $this->error('学生未登录', url('Login/index'));
+		}
+		$id = Session::get('studentId');
+		if (Student::where('id',$id)->find()->name === Null){
+			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/register?id='.$id);
 		}
 	}
 

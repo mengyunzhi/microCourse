@@ -2,6 +2,7 @@
 namespace app\index\model;
 use think\Model;    //  导入think\Model类
 use app\index\validate\StudentValidate; 
+
 /**
  * @Author: limeina1
  * @Date:   2019-08-13 10:47:26
@@ -33,14 +34,19 @@ class Student extends Model
 	public function klass()
 	{
 		return $this->belongsTo('klass');
-	}
+	}   
+
 
 	// 性别转换————赵凯强
-	public function getSexAttr($value)
-	{
-		$status = [1=>'女',0=>'男'];
-		return $status[$value];
-	}
+	// public function getSexAttr($value)
+	// {
+	// 	$status = [1=>'女',0=>'男'];
+	// 	if ($value==null) {
+ //           return '未设定';
+	// 	}
+	// 	return $status[$value];
+	// }
+
 
     // 学生得到班级名字————赵凯强
 	public function getKlass()

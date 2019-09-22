@@ -29,29 +29,23 @@
                 </button>
                 <a class="navbar-brand">微课堂</a>
             </div>
+            {:widget('MenuWidget/index')}
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav ">
-                    <li {eq name="$isaction" value="page"}class="active"{/eq}><a href="/index/admin/page">首页</a></li>
-                    <li {eq name="$isaction" value="term"}class="active"{/eq}><a href="/index/admin/term">学期控制</a></li>
-                    <li {eq name="$isaction" value="teacher"}class="active"{/eq}><a href="/index/admin/teacher">教师管理</a></li>
-                    <li {eq name="$isaction" value="klass"}class="active"{/eq}><a href="/index/admin/klass">班级管理</a></li>
-                    <!-- 这个标签是当前标签 -->
-                    <li {eq name="$isaction" value="classroom"}class="active"{/eq}><a href="/index/admin/classroom">教室管理</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理员模式<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            
-                            <li><a href="/index/login/AlogOut">注销</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div><!-- /.navbar-collapse -->
+            
         </div><!-- /.container-fluid -->
     </nav>
     <br><br>
+            <?php use app\index\model\Term; ?>
+            <?php $time = Term::timeAll(); ?>
+
+            <br />
+              {eq name='$time->term' value='0'}   
+              <div class="alert {eq name='$time->term' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="$time->term" value="1"}已开始{else /}已结束{/eq}</div>
+              {else}
+              <div class="alert alert-success" role="alert">{$time->date}&nbsp&nbsp第{$time->week}教学周&nbsp&nbsp{$time->weekday}&nbsp&nbsp第{$time->largeClass}大节</div>
+              <h3></h3>
+              {/eq}
+
     {block name="body"}
     {/block}
 </body>
