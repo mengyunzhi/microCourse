@@ -23,7 +23,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-22 20:05:21
+ * @Last Modified time: 2019-09-24 19:23:57
  */
 class TeacherController extends TIndexController
 {
@@ -216,15 +216,15 @@ class TeacherController extends TIndexController
     {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
-
+        //获取传入的课程ID
         $id = $this->request->param('id/d');
-
-        $acourse = new Course;
-        $course = $acourse->where('id',$id)->find();
+        //从数据库取出此课程
+        $course = Course::where('id',$id)->find();
         $this->assign('course',$course);
+        //取出此课程的课程时间
         $Tables = Courseinfo::getCourseTable($id);
-
         $this->assign('table',$Tables);
+        //传入教室对象
         $classroom = new classroom;
         $this->assign('classroom',$classroom);
         // dump($Tables);
@@ -484,6 +484,7 @@ class TeacherController extends TIndexController
         }
 
         $this->assign('courseinfo',$courseinfo);
+        dump($teacher);
     	return $this->fetch();
     }
 

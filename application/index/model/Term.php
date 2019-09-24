@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-08-13 10:09:10
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-22 19:30:24
+ * @Last Modified time: 2019-09-23 22:17:32
  */
 namespace app\index\model;
 use think\Model;
@@ -221,6 +221,9 @@ class Term extends Model
         return 0;
     }
 
+
+    public static $timetable = ['0','(08:30-09:15)','(09:20-10:05)','(10:25-11:10)','(11:15-12:00)','(14:00-14:45)','(14:50-15:35)','(15:55-16:40)','(16:45-17:30)','(18:40-19:25)','(19:30-20:15)','(20:20-21:05)'];
+
     // 判断是否有学期
     // 无传参
     static public function NoTerm()
@@ -232,4 +235,5 @@ class Term extends Model
             return 0;
         }
     } 
+
 }
