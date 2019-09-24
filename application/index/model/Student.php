@@ -106,13 +106,18 @@ class Student extends Model
     // 学生登录密码验证————赵凯强
 	public function checkPassword($password)
 	{
-		if ($this->getData('password') === $password)
+		if ($this->getData('password') === $this::encryptPassword($password))
 		{
 			return true;
 		} else {
 			return false;
 		}
 	}
+
+	// 密码加密算法
+	static public function encryptPassword($password){
+		return sha1($password);
+	} 
     
     // 学生注销————赵凯强
 	static public function logOut()

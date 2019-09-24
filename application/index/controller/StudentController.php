@@ -62,15 +62,15 @@ class StudentController extends SIndexController
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
 
-		// 查找已激活的学期，主要用于状态栏的显示
-		$term = Term::where('state',1)->find();	
-		if ($term === null) {
-			$termid = 0;
-		} else {
-			$termid = $term->id;
-		}	
+		// // 查找已激活的学期，主要用于状态栏的显示
+		// $term = Term::where('state',1)->find();	
+		// if ($term === null) {
+		// 	$termid = 0;
+		// } else {
+		// 	$termid = $term->id;
+		// }	
 
-		$this->assign('termid', $termid);
+		// $this->assign('termid', $termid);
 
 		// 获取所有学期
 		$terms = Term::all();
@@ -79,21 +79,29 @@ class StudentController extends SIndexController
 		// 获取请求查询的学期课程，若没有就找最近的学期
 		$id = $this->request->param('id/d');
 		if (is_null($id)) {
-			$i = 0;
-			foreach ($terms as $aterm) {
-			 	$i++;
-			 }
-			 $id = $terms[$i-1]->id;
-			 foreach ($terms as $aaterm) {
-			 	if ($aaterm->state === 1) {
-			 		$id = $aaterm->id;			 		
-			 	}
-			 }
+			
+			$i = count($terms);
+            if ($i === 0){
+                $isTerm = '管理员未设置学期';
+                $this->assign('Termname', $isTerm);
+            } else {
+                $termid = $terms[$i-1]->id;
+                foreach ($terms as $aaterm) {
+                    if ($aaterm->state === 1) {
+                        $id = $aaterm->id;                  
+                    }
+                }
+                $isTerm = Term::get($termid);
+                $this->assign('Termname', $isTerm->name);
+            }		 
 		}		
-		$Term = Term::get($id);
-		$this->assign('Term', $Term);
-
-        $courses = $Term->Course;
+		
+		
+        if($isTerm == '管理员未设置学期') {
+            $courses = [];
+        } else {
+            $courses = $isTerm->Course;
+        }
         $courseIds = [];
         foreach ($courses  as $value) {
           array_push($courseIds, $value->id);
@@ -226,29 +234,37 @@ class StudentController extends SIndexController
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
 
-		$terms = Term::all();
+		// 获取所有学期
+        $terms = Term::all();
         $this->assign('terms', $terms);
+
+        // 获取请求查询的学期课程，若没有就找最近的学期
         $id = $this->request->param('id/d');
-        
         if (is_null($id)) {
-        	$i = 0;
-	        foreach($terms as $term){
-	        	$i++;
-	        }
-	        $id = $terms[$i-1]->id;
-	        foreach ($terms as $term){
-	        	if ($term->state === 1){
-	                $id = $term->id;
-	        	}
-	        }
-        }
-        // 获取本学期id
-        $isTerm = Term::get($id);
-        $this->assign('isTerm', $isTerm);
-        
+            
+            $i = count($terms);
+            if ($i === 0){
+                $isTerm = '管理员未设置学期';
+                $this->assign('Termname', $isTerm);
+            } else {
+                $termid = $terms[$i-1]->id;
+                foreach ($terms as $aaterm) {
+                    if ($aaterm->state === 1) {
+                        $id = $aaterm->id;                  
+                    }
+                }
+                $isTerm = Term::get($termid);
+                $this->assign('Termname', $isTerm->name);
+            }     
+        }       
+
         // 得到本学期所有课程id
-        $courses = $isTerm->Course;
-       
+        if($isTerm == '管理员未设置学期') {
+            $courses = [];
+        } else {
+            $courses = $isTerm->Course;
+        }
+        
         $courseIds = [];
         foreach ($courses  as $value) {
             array_push($courseIds, $value->id);
@@ -311,7 +327,7 @@ class StudentController extends SIndexController
     		return $this->error('系统未找到ID为' . $id . '的记录');
     	}
 
-         if($Student->password != $this->request->param('oldpassword')){
+         if($Student->password != sha1($this->request->param('oldpassword'))){
             return $this->error('原密码不正确');
          }
 
@@ -323,6 +339,7 @@ class StudentController extends SIndexController
         if (!$validate->check($Student)) {
             return $this->error('密码不符合规范：' . $validate->getError());
         } else {
+            $Student->password = sha1($Student->password);
             if (!$Student->save()) {
                 return $this->error('更新错误：' . $Student->getError());
             } else {

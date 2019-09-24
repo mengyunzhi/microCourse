@@ -22,14 +22,14 @@
                 </tr>
                 <tr>
                     <td>性别</td>
-                    <td>{$student->sex}</td>
+                    <td>{eq name='$student->sex' value='0'}男{else /}女{/eq}</td>
                 </tr>
                 <tr>
                     <td>班级</td>
                     <td>{$student->klass->name}</td>
                 </tr>
             </table>
-            <a href="{:url('infoedit?id=' . $student->getData('id'))}" type="button" class="btn btn-default navbar-btn">编辑</a>
+            <a href="{:url('infoedit?id=' . $student->getData('id'))}" type="button" class="btn btn-default navbar-btn">修改密码</a>
             <hr /> 
         </div>
     </div>

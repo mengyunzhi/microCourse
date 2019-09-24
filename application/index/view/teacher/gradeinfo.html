@@ -1,15 +1,12 @@
 {extend name="teacher"/}
 {block name="body"}
-    <div class="container">
-      <div class="col-md-12">
-           
+
             <hr />
               
-              <div class="alert {eq name='ifterm' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="ifterm" value="1"}已开始{else /}已结束{/eq}</div>
               <h3>课程名:{$course->getdata('name')}</h3>
               <h3>课程编码:{$course->getdata('num')}</h3>
               <a href="gradeadd?id={$course->getData('id')}" class="btn btn-primary">&nbsp;录入成绩</a>
-              <a href="grade?id={$course->getdata('id')}" class="btn btn-primary">&nbsp;返回</a>
+              <a href="grade" class="btn btn-primary">&nbsp;返回</a>
               <hr />
               <table class="table table-bordered">
                 <tr class="info">
@@ -36,7 +33,5 @@
             
             
             <hr /> 
-        </div>
-    </div>
     
 {/block}

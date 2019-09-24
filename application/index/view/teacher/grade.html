@@ -1,8 +1,5 @@
 {extend name="teacher"/}
 {block name="body"}
-    <div class="container">
-      <div class="col-md-12"> 
-              <h3>学期名:</h3>
               <table class="table table-bordered">
                 <tr class="info">
                   <th>序号</th>
@@ -25,15 +22,13 @@
                     <td>{eq name='course->getData("type")' value='0'}选修{else /}必修{/eq}</td>
                     <td>{$course->getdata('klass')}</td>
                     
-                    <td><a href="gradeinfo?id={$course->getData('id')}" class="btn btn-primary">&nbsp;详情</a></td>
-                    <td><a href="gradeadd?id={$course->getData('id')}" class="btn btn-primary">&nbsp;录入</a></td>
+                    <td><a href="gradeinfo/id/{$course->getData('id')}" class="btn btn-primary">&nbsp;详情</a></td>
+                    <td><a href="gradeadd/id/{$course->getData('id')}" class="btn btn-primary">&nbsp;录入</a></td>
                   </tr>
                 {/volist}
             </table>
             {$courses|raw}
               <br><br>
             
-            <hr /> 
-        </div>
-    </div>   
+            <hr />   
 {/block}

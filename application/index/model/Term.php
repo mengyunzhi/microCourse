@@ -220,4 +220,16 @@ class Term extends Model
 
         return 0;
     }
+
+    // 判断是否有学期
+    // 无传参
+    static public function NoTerm()
+    {
+        $terms = Term::all();
+        if (empty($terms)){
+            return 1;
+        } else {
+            return 0;
+        }
+    } 
 }

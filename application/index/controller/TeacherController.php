@@ -27,9 +27,11 @@ use think\facade\Request;
  */
 class TeacherController extends TIndexController
 {
+    
 
 	public function page()
 	{
+
         // 获取当前方法名
         $this->assign('isaction',Request::action());
         
@@ -44,6 +46,7 @@ class TeacherController extends TIndexController
 
     // 课程——赵凯强
     public function course()
+
     {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
@@ -612,13 +615,14 @@ class TeacherController extends TIndexController
         $id = $this->request->param('id/d');
         $courses = new course();
         $course = course::get($id);
-        $infos = $courses->courseinfo()->where('course_id',$id)->order('week')->order('weekday')->paginate(5);
+
+        $infos = $courses->courseinfo()->where('course_id',$id)->order('week')->order('weekday')->paginate(5, false,['query'=>request()->param()]);
 
          // $page = $info->render();
 
         $this->assign('course',$course);
         $this->assign('infos',$infos);
-         // $this->assign('page', $page);
+         // $this->assign('page', $page);   
         return $this->fetch();
     }
 
@@ -660,6 +664,10 @@ class TeacherController extends TIndexController
         $course = Course::get($id);
         $score = new Score;
         $scores = $score->where('course_id',$id)->select();
+        // dump($scores);
+        // return ;
+        // if (empty($scores[0]))
+        //     $scorse = [];
         $this->assign('course',$course);
         $this->assign('score',$scores);
         return $this->fetch();
