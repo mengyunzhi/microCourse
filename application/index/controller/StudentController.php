@@ -24,7 +24,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-22 17:03:25
+ * @Last Modified time: 2019-09-23 22:17:11
  */
 
 
@@ -35,10 +35,98 @@ class StudentController extends SIndexController
         // 获取当前方法名
         $this->assign('isaction',Request::action());
 
+        // 获取所有学期
+        $terms = Term::all();
+
         // 获取当前学期状态
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
 
+        //获取要查询的周次，若没有，就查询本周
+        $week = $this->request->param('week');
+        if (is_null($week)) {
+            $week = Term::getWeek();
+        }
+
+        // 获取请求查询的学期课程，若没有就找最近的学期
+        $id = $this->request->param('id/d');
+        if (is_null($id)) {
+            $i = 0;
+            foreach ($terms as $aterm) {
+                $i++;
+             }
+             $id = $terms[$i-1]->id;
+             foreach ($terms as $aaterm) {
+                if ($aaterm->state === 1) {
+                    $id = $aaterm->id;                  
+                }
+             }
+        }       
+        $Term = Term::get($id);
+        $this->assign('Term', $Term);
+
+        //取出本学期的所有课程，编为一个数组
+        $courses = $Term->Course;
+        //储存所有课程的ID
+        $courseIds = [];
+        foreach ($courses  as $value) {
+          array_push($courseIds, $value->id);
+        }
+
+        // 获取本学生id
+        $studentId = session('studentId');
+
+        //查询本学期本本学生的所有课程
+        $score = new Score();
+        $getScore =  $score->where(['course_id'=>$courseIds, 'student_id'=>$studentId])->select();
+        
+        //本学生本星期的课程表
+        //前面是小节，后面是星期
+        //0没用了！！！！！！！！！
+        
+        $nullcourseinfo = new Courseinfo();
+        $coursetable = array('1' => array('0','0','0','0','0','0','0','0') , 
+            '2' => array('0','0','0','0','0','0','0','0') , 
+            '3' => array('0','0','0','0','0','0','0','0') , 
+            '4' => array('0','0','0','0','0','0','0','0') , 
+            '5' => array('0','0','0','0','0','0','0','0') , 
+            '6' => array('0','0','0','0','0','0','0','0') , 
+            '7' => array('0','0','0','0','0','0','0','0') , 
+            '8' => array('0','0','0','0','0','0','0','0') , 
+            '9' => array('0','0','0','0','0','0','0','0') , 
+            '10' => array('0','0','0','0','0','0','0','0') , 
+            '11' => array('0','0','0','0','0','0','0','0')) ;
+
+        // 得到本学期本学生所有课程成绩所对应的course_id
+        $course = new Course();
+        if(is_null($getScore)) {
+            $courseinfos = [];
+        } else {
+            //储存本学期本学生所有课程的course_id
+            $scoreIds = [];
+            foreach ($getScore as $score) {
+                array_push($scoreIds, $score->course_id);
+            }
+
+            $courseinfos = Courseinfo::where(['course_id'=>$courseIds, 'week'=>$week])->select();
+
+            foreach ($courseinfos as $key => $acourseinfo) {
+                {
+                    $coursetable[$acourseinfo->begin][$acourseinfo->weekday] = $acourseinfo;
+                }
+            }
+            // dump($coursetable);
+            // dump($courseinfos);
+            // return;
+            // 通过成绩对应course_id得到本学期本学生所有课程
+            // $courses = $course->where(['id'=>$scoreIds])->paginate(5);
+        }
+
+        //传入课程表
+        $this->assign('coursetable',$coursetable);
+        //传入要查询的星期
+        $this->assign('week',$week);
+        $this->assign('timetable',Term::$timetable);
 		return $this->fetch();
 	}
 
@@ -57,20 +145,6 @@ class StudentController extends SIndexController
 	{
         // 获取当前方法名
         $this->assign('isaction',Request::action());
-
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-
-		// 查找已激活的学期，主要用于状态栏的显示
-		$term = Term::where('state',1)->find();	
-		if ($term === null) {
-			$termid = 0;
-		} else {
-			$termid = $term->id;
-		}	
-
-		$this->assign('termid', $termid);
 
 		// 获取所有学期
 		$terms = Term::all();
@@ -126,6 +200,8 @@ class StudentController extends SIndexController
 
 	public function coursetime()
 	{
+        // 获取当前方法名
+        $this->assign('isaction','coursetime');
 		return $this->fetch();
 	}
 
@@ -348,8 +424,9 @@ class StudentController extends SIndexController
 		// $diff = index::weekday($day2);
 		// echo $diff;
       	// return $this->fetch();
-        $time = new Time();
-        dump($time->time);
+        // $time = new Time();
+        // dump($time->time);
+        return $this->fetch();
     }
 
     public function OpenIdtest()
