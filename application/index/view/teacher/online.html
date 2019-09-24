@@ -1,8 +1,6 @@
 {extend name="teacher"/}
 {block name="body"}
-    <div class="container">
-      <div class="col-md-12">
-            
+
             <h3>您的今日课程:</h3>
             <table class="table table-bordered">
                 <tr class="info">
@@ -28,8 +26,5 @@
                 {/volist}
             </table>
 
-        </div>
-    </div>
 {/block}
 
-{eq name='$coursetable[$i][1]' value='0'} none {else /} table {/eq}

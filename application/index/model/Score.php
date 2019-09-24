@@ -14,12 +14,12 @@ class score extends Model
 	// 通过score表调用course表——赵凯强
 	public function Course()
 	{
-		return $this->belongsTo('Course');
+		return $this->belongsTo('course');
 	}
 
 	public function Student()
 	{
-		return $this->belongsTo('Student');
+		return $this->belongsTo('student');
 	}
 
 }

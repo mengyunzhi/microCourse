@@ -3,6 +3,7 @@ namespace app\index\controller;
 use app\index\model\Index;
 use think\Controller;
 use app\index\model\Teacher;
+use app\index\model\Term;
 /**
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
@@ -20,8 +21,12 @@ class TIndexController extends Controller
 
 		// 验证用户是否登录
 		if (!Teacher::isLogin()) {
-				return $this->error('老师未登录', url('Login/index'));
+			return $this->error('老师未登录', url('Login/index'));
 		}
+		if(Term::NoTerm()) {
+            // return $this->fetch('Login/noterm');
+            return $this->error('系统尚未初始化', url('Login/noterm'));
+        }
 	}
 
 	public function index()

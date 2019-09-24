@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <td>性别</td>
-                    <td>{$student->sex}</td>
+                    <td>{eq name='$student->sex' value='0'}男{else /}女{/eq}</td>
                 </tr>
                 <tr>
                     <td>班级</td>
