@@ -16,7 +16,7 @@ use app\index\validate\StudentValidate;
 class LoginController extends Controller
 {
 	// 学生注册页面跳转————赵凯强——（已增加微信）
-	public function register()
+	public function register($id)
 	{
 		$klasses = Klass::all();
 		$this->assign('id', $id);
@@ -36,7 +36,7 @@ class LoginController extends Controller
 			$Student->name = $request->param('name');
 			$Student->num = $request->param('num');
 			$Student->sex = $request->param('sex');
-			$Student->password = $request->param('password');
+			$Student->password = sha1($request->param('password'));
 			$Student->klass_id = $request->param('klass_id');
 
 		$validate = new StudentValidate;
@@ -117,5 +117,10 @@ class LoginController extends Controller
 		} else {
 			return $this->error('退出失败', url('admin/page'));
 		}
+	}
+
+	public function Noterm()
+	{
+		return $this->fetch();
 	}
 }
