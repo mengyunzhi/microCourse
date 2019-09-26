@@ -15,5 +15,10 @@ class Klass extends Model
     {
         return $this->belongsToMany('course');
     }
+
+    public function college()
+	{
+		return $this->belongsTo('college');
+	}   
 } 
 

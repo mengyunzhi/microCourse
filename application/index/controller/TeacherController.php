@@ -23,15 +23,13 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-24 19:23:57
+ * @Last Modified time: 2019-09-24 21:28:19
  */
 class TeacherController extends TIndexController
 {
-    
 
 	public function page()
 	{
-
         // 获取当前方法名
         $this->assign('isaction',Request::action());
         
@@ -46,7 +44,6 @@ class TeacherController extends TIndexController
 
     // 课程——赵凯强
     public function course()
-
     {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
@@ -76,8 +73,9 @@ class TeacherController extends TIndexController
         $terms = Term::all();
         $this->assign('terms', $terms);
         
-        $teachers = Teacher::all();
-        $this->assign('teachers', $teachers);
+        $teacherId = session('teacherId');
+        $teacher = Teacher::get($teacherId);
+        $this->assign('teacher', $teacher);
         $klass = new Klass;
         $this->assign('Klasses', $klass->select());
         $this->assign('Course', new Course);
@@ -99,7 +97,7 @@ class TeacherController extends TIndexController
 
         // 验证
         if (!$Course->save()) {
-            return $this->error('保存错误：' . $Course->getError());
+            return $this->error('保存错误1：' . $Course->getError());
         }
 
         //--------------------增加班级课程信息------------
@@ -135,8 +133,9 @@ class TeacherController extends TIndexController
         
         $terms = Term::all();
         $this->assign('terms', $terms);
-        $teachers = Teacher::all();
-        $this->assign('teachers', $teachers);
+        $teacherId = session('teacherId');
+        $teacher = Teacher::get($teacherId);
+        $this->assign('teacher', $teacher);
         $klass = new Klass;
         $this->assign('Klasses', $klass->select());
 
@@ -158,7 +157,8 @@ class TeacherController extends TIndexController
         $Course->term_id = $this->request->param('term_id/d');
         $Course->teacher_id = $this->request->param('teacher_id/d');
         $Course->type = $this->request->param('type/d');
-        if (is_null($Course->save())) {
+        
+        if (!$Course->save()) {
             return $this->error('课程信息更新发生错误：' . $Course->getError());
         }
 
@@ -466,7 +466,7 @@ class TeacherController extends TIndexController
     }
 
     //教师模块上课模式——刘宇轩
-    public function online()
+    public function online() 
     {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
@@ -482,9 +482,11 @@ class TeacherController extends TIndexController
                 $courseinfo[$key] = $acourse;
             }
         }
-
+        // echo Term::weekday();
+        // echo Term::getWeek();
         $this->assign('courseinfo',$courseinfo);
-        dump($teacher);
+        // dump($allcourseinfo);
+        // return;
     	return $this->fetch();
     }
 
@@ -616,14 +618,13 @@ class TeacherController extends TIndexController
         $id = $this->request->param('id/d');
         $courses = new course();
         $course = course::get($id);
-
-        $infos = $courses->courseinfo()->where('course_id',$id)->order('week')->order('weekday')->paginate(5, false,['query'=>request()->param()]);
+        $infos = $courses->courseinfo()->where('course_id',$id)->order('week')->order('weekday')->paginate(5);
 
          // $page = $info->render();
 
         $this->assign('course',$course);
         $this->assign('infos',$infos);
-         // $this->assign('page', $page);   
+         // $this->assign('page', $page);
         return $this->fetch();
     }
 
@@ -665,10 +666,6 @@ class TeacherController extends TIndexController
         $course = Course::get($id);
         $score = new Score;
         $scores = $score->where('course_id',$id)->select();
-        // dump($scores);
-        // return ;
-        // if (empty($scores[0]))
-        //     $scorse = [];
         $this->assign('course',$course);
         $this->assign('score',$scores);
         return $this->fetch();
@@ -679,9 +676,10 @@ class TeacherController extends TIndexController
     {
         $scores = $this->request->post();
         $key = $this->request->post('key');
-        //dump ($key);
-        //dump ($scores);
-        //dump ($scores["id"]["0"]);
+        dump ($key);
+        dump ($scores);
+        dump ($scores["id"]["0"]);
+        return ;
         $message = '更新成功';
         for ($i=0; $i < $key - 1; $i++) { 
             $score = score::get($scores["id"][$i]);
