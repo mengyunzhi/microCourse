@@ -19,7 +19,7 @@
                     <th>期末成绩</th>
                     <th>总成绩</th>
                   </tr>
-                  {volist name="score" id="score" $key="key"}
+                  {volist name="score" id="score" key="key"}
                     <tr>
                       <td>{$key}</td>
                       <input type="hidden" name="key" value="{$score->id}">

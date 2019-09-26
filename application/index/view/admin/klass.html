@@ -34,7 +34,7 @@
                 <tr>
                   <td>{$key}</td>
                   <td>{$klass->getData('name')}</td>
-                  <td>{$klass->getData('academy')}</td>
+                  <td>{$klass->college->name}</td>
                   <td>{$klass->getData('major')}</td>
                   <td>{$klass->getData('grade')}</td>
                   <td><a href="{:url('student?id=' . $klass->getData('id'))}" type="button" class="btn btn-default">点击查看</a></td>

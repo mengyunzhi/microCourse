@@ -5,6 +5,7 @@ use app\index\model\Classroom;
 use app\index\model\Student; 
 use app\index\model\Teacher;
 use app\index\model\Klass;
+use app\index\model\college;
 use think\facade\Request;
 use app\index\widget\MenuWidget;
 /**
