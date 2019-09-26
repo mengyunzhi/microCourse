@@ -24,7 +24,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-23 22:17:11
+ * @Last Modified time: 2019-09-25 22:44:30
  */
 
 
@@ -64,6 +64,14 @@ class StudentController extends SIndexController
         }       
         $Term = Term::get($id);
         $this->assign('Term', $Term);
+
+
+        $termlength = $Term->length;
+        $weeks = array();
+        for ($i=0; $i < $termlength; $i++) { 
+            $weeks[$i] = $i+1;
+        }
+        $this->assign('weeks',$weeks);
 
         //取出本学期的所有课程，编为一个数组
         $courses = $Term->Course;
