@@ -5,7 +5,7 @@
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
 <<<<<<< HEAD
- * @Last Modified time: 2019-09-22 18:16:32
+ * @Last Modified time: 2019-09-26 20:50:58
 =======
  * @Last Modified time: 2019-09-21 11:26:27
 >>>>>>> e94378ad1760a82bb7e19fa552e6a3cb66616ea1
@@ -46,6 +46,10 @@ class WxIndexController extends WxController {
 
     public function online(){//上课签到
         $this->_weChatAccredit($this::$online,$this->request->param('id'));
+    }
+
+    public function Wx(){
+        $this->request->param('echostr');
     }
 
     /**
