@@ -63,11 +63,14 @@
                 </div>
             </div>
             
-            {volist name="Klasses" id="klass"}
+            {volist name="colleges" id="college" key="key"}
+            <label>{$college->name}:&nbsp;</label>
+            {volist name="college->Klasses" id="klass"}
             <input type="checkbox" name="klass_id[]" id="klass_id_{$klass->id}" value="{$klass->id}" />
             <label for="klass_id_{$klass->id}">{$klass->name}&nbsp;&nbsp;&nbsp;&nbsp;</label>
             {/volist}
-
+            <br />
+            {/volist}
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-default">保存</button>

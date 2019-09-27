@@ -25,49 +25,49 @@
                     {eq name="$table[0][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[0][0]} <br> 
                     长度：{$table[0][1]}<br>
-                    教室：{$classroom->get($table[0][2])->classroomplace . $classroom->get($table[0][2])->classroomname}
+                    教室：{$classroom->get($table[0][2])->area->name . $classroom->get($table[0][2])->classroomname}
                     {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=2&begin=1' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[1][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[1][0]}<br>
                     长度：{$table[1][1]}<br>
-                    教室：{$classroom->get($table[1][2])->classroomplace . $classroom->get($table[1][2])->classroomname}
+                    教室：{$classroom->get($table[1][2])->area->name . $classroom->get($table[1][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=3&begin=1'  )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[2][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[2][0]}<br>
                     长度：{$table[2][1]}<br>
-                    教室：{$classroom->get($table[2][2])->classroomplace . $classroom->get($table[2][2])->classroomname}
+                    教室：{$classroom->get($table[2][2])->area->name . $classroom->get($table[2][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=4&begin=1' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[3][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[3][0]}<br>
                     长度：{$table[3][1]}<br>
-                    教室：{$classroom->get($table[3][2])->classroomplace . $classroom->get($table[3][2])->classroomname}
+                    教室：{$classroom->get($table[3][2])->area->name . $classroom->get($table[3][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=5&begin=1' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[4][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[4][0]}<br>
                     长度：{$table[4][1]}<br>
-                    教室：{$classroom->get($table[4][2])->classroomplace . $classroom->get($table[4][2])->classroomname}
+                    教室：{$classroom->get($table[4][2])->area->name . $classroom->get($table[4][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=6&begin=1' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[5][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[5][0]}<br>
                     长度：{$table[5][1]}<br>
-                    教室：{$classroom->get($table[5][2])->classroomplace . $classroom->get($table[5][2])->classroomname}5
+                    教室：{$classroom->get($table[5][2])->area->name . $classroom->get($table[5][2])->classroomname}5
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=7&begin=1' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[6][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[6][0]}<br>
                     长度：{$table[6][1]}<br>
-                    教室：{$classroom->get($table[6][2])->classroomplace . $classroom->get($table[6][2])->classroomname}
+                    教室：{$classroom->get($table[6][2])->area->name . $classroom->get($table[6][2])->classroomname}
                 {/eq}</td>
             </tr>
             <tr>
@@ -77,49 +77,49 @@
                     {eq name="$table[7][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[7][0]} <br> 
                     长度：{$table[7][1]}<br>
-                    教室：{$classroom->get($table[7][2])->classroomplace . $classroom->get($table[7][2])->classroomname}
+                    教室：{$classroom->get($table[7][2])->area->name . $classroom->get($table[7][2])->classroomname}
                     {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=2&begin=2' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[8][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[8][0]}<br>
                     长度：{$table[8][1]}<br>
-                    教室：{$classroom->get($table[8][2])->classroomplace . $classroom->get($table[8][2])->classroomname}
+                    教室：{$classroom->get($table[8][2])->area->name . $classroom->get($table[8][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=3&begin=2' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[9][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[9][0]}<br>
                     长度：{$table[9][1]}<br>
-                    教室：{$classroom->get($table[9][2])->classroomplace . $classroom->get($table[9][2])->classroomname}
+                    教室：{$classroom->get($table[9][2])->area->name . $classroom->get($table[9][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=4&begin=2' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[10][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[10][0]}<br>
                     长度：{$table[10][1]}<br>
-                    教室：{$classroom->get($table[10][2])->classroomplace . $classroom->get($table[10][2])->classroomname}10
+                    教室：{$classroom->get($table[10][2])->area->name . $classroom->get($table[10][2])->classroomname}10
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=5&begin=2' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[11][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[11][0]}<br>
                     长度：{$table[11][1]}<br>
-                    教室：{$classroom->get($table[11][2])->classroomplace . $classroom->get($table[11][2])->classroomname}
+                    教室：{$classroom->get($table[11][2])->area->name . $classroom->get($table[11][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=6&begin=2' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[12][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[12][0]}<br>
                     长度：{$table[12][1]}<br>
-                    教室：{$classroom->get($table[12][2])->classroomplace . $classroom->get($table[12][2])->classroomname}
+                    教室：{$classroom->get($table[12][2])->area->name . $classroom->get($table[12][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=7&begin=2' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[13][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[13][0]}<br>
                     长度：{$table[13][1]}<br>
-                    教室：{$classroom->get($table[13][2])->classroomplace . $classroom->get($table[13][2])->classroomname}
+                    教室：{$classroom->get($table[13][2])->area->name . $classroom->get($table[13][2])->classroomname}
                 {/eq}</td>
             </tr>
             <tr>
@@ -130,49 +130,49 @@
                     {eq name="$table[14][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[14][0]} <br> 
                     长度：{$table[14][1]}<br>
-                    教室：{$classroom->get($table[14][2])->classroomplace . $classroom->get($table[14][2])->classroomname}
+                    教室：{$classroom->get($table[14][2])->area->name . $classroom->get($table[14][2])->classroomname}
                     {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=2&begin=3' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[15][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[15][0]}<br>
                     长度：{$table[15][1]}<br>
-                    教室：{$classroom->get($table[15][2])->classroomplace . $classroom->get($table[15][2])->classroomname}
+                    教室：{$classroom->get($table[15][2])->area->name . $classroom->get($table[15][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=3&begin=3' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[16][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[16][0]}<br>
                     长度：{$table[16][1]}<br>
-                    教室：{$classroom->get($table[16][2])->classroomplace . $classroom->get($table[16][2])->classroomname}
+                    教室：{$classroom->get($table[16][2])->area->name . $classroom->get($table[16][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=4&begin=3' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[17][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[17][0]}<br>
                     长度：{$table[17][1]}<br>
-                    教室：{$classroom->get($table[17][2])->classroomplace . $classroom->get($table[17][2])->classroomname}
+                    教室：{$classroom->get($table[17][2])->area->name . $classroom->get($table[17][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=5&begin=3' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[18][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[18][0]}<br>
                     长度：{$table[18][1]}<br>
-                    教室：{$classroom->get($table[18][2])->classroomplace . $classroom->get($table[18][2])->classroomname}
+                    教室：{$classroom->get($table[18][2])->area->name . $classroom->get($table[18][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=6&begin=3' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[19][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[19][0]}<br>
                     长度：{$table[19][1]}<br>
-                    教室：{$classroom->get($table[19][2])->classroomplace . $classroom->get($table[19][2])->classroomname}
+                    教室：{$classroom->get($table[19][2])->area->name . $classroom->get($table[19][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=7&begin=3' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[20][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[20][0]}<br>
                     长度：{$table[20][1]}<br>
-                    教室：{$classroom->get($table[20][2])->classroomplace . $classroom->get($table[20][2])->classroomname}
+                    教室：{$classroom->get($table[20][2])->area->name . $classroom->get($table[20][2])->classroomname}
                 {/eq}</td>
             </tr>
             <tr>
@@ -182,46 +182,46 @@
                     {eq name="$table[21][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[21][0]} <br> 
                     长度：{$table[21][1]}<br>
-                    教室：{$classroom->get($table[21][2])->classroomplace . $classroom->get($table[21][2])->classroomname}
+                    教室：{$classroom->get($table[21][2])->area->name . $classroom->get($table[21][2])->classroomname}
                     {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=2&begin=4' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[22][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[22][0]}<br>
                     长度：{$table[22][1]}<br>
-                    教室：{$classroom->get($table[22][2])->classroomplace . $classroom->get($table[22][2])->classroomname}
+                    教室：{$classroom->get($table[22][2])->area->name . $classroom->get($table[22][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=3&begin=4' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[23][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[23][0]}<br>
                     长度：{$table[23][1]}<br>
-                    教室：{$classroom->get($table[23][2])->classroomplace . $classroom->get($table[23][2])->classroomname}
+                    教室：{$classroom->get($table[23][2])->area->name . $classroom->get($table[23][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=4&begin=4' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[24][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[24][0]}<br>
                     长度：{$table[24][1]}<br>
-                    教室：{$classroom->get($table[24][2])->classroomplace . $classroom->get($table[24][2])->classroomname}
+                    教室：{$classroom->get($table[24][2])->area->name . $classroom->get($table[24][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=5&begin=4' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[25][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[25][0]}<br>
-                    长度：{$table[25][1]}<br>教室：{$classroom->get($table[25][2])->classroomplace . $classroom->get($table[25][2])->classroomname}
+                    长度：{$table[25][1]}<br>教室：{$classroom->get($table[25][2])->area->name . $classroom->get($table[25][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=6&begin=4' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[26][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[26][0]}<br>
-                    长度：{$table[26][1]}<br>教室：{$classroom->get($table[26][2])->classroomplace . $classroom->get($table[26][2])->classroomname}
+                    长度：{$table[26][1]}<br>教室：{$classroom->get($table[26][2])->area->name . $classroom->get($table[26][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=7&begin=4' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[27][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[27][0]}<br>
-                    长度：{$table[27][1]}<br>教室：{$classroom->get($table[27][2])->classroomplace . $classroom->get($table[27][2])->classroomname}
+                    长度：{$table[27][1]}<br>教室：{$classroom->get($table[27][2])->area->name . $classroom->get($table[27][2])->classroomname}
                 {/eq}</td>
             </tr>
             <tr>
@@ -232,48 +232,48 @@
                     {eq name="$table[28][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[28][0]} <br> 
                     长度：{$table[28][1]}<br>
-                    教室：{$classroom->get($table[28][2])->classroomplace . $classroom->get($table[28][2])->classroomname}
+                    教室：{$classroom->get($table[28][2])->area->name . $classroom->get($table[28][2])->classroomname}
                     {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=2&begin=5' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[29][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[29][0]}<br>
-                    长度：{$table[29][1]}<br>教室：{$classroom->get($table[29][2])->classroomplace . $classroom->get($table[29][2])->classroomname}
+                    长度：{$table[29][1]}<br>教室：{$classroom->get($table[29][2])->area->name . $classroom->get($table[29][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=3&begin=5' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[30][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[30][0]}<br>
                     长度：{$table[30][1]}<br>
-                    教室：{$classroom->get($table[30][2])->classroomplace . $classroom->get($table[30][2])->classroomname}
+                    教室：{$classroom->get($table[30][2])->area->name . $classroom->get($table[30][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=4&begin=5' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[31][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[31][0]}<br>
                     长度：{$table[31][1]}<br>
-                    教室：{$classroom->get($table[31][2])->classroomplace . $classroom->get($table[31][2])->classroomname}
+                    教室：{$classroom->get($table[31][2])->area->name . $classroom->get($table[31][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=5&begin=5' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[32][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[32][0]}<br>
                     长度：{$table[32][1]}<br>
-                    教室：{$classroom->get($table[32][2])->classroomplace . $classroom->get($table[32][2])->classroomname}
+                    教室：{$classroom->get($table[32][2])->area->name . $classroom->get($table[32][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=6&begin=5' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[33][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[33][0]}<br>
                     长度：{$table[33][1]}<br>
-                    教室：{$classroom->get($table[33][2])->classroomplace . $classroom->get($table[33][2])->classroomname}
+                    教室：{$classroom->get($table[33][2])->area->name . $classroom->get($table[33][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=7&begin=5' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[34][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[34][0]}<br>
                     长度：{$table[34][1]}<br>
-                    教室：{$classroom->get($table[34][2])->classroomplace . $classroom->get($table[34][2])->classroomname}
+                    教室：{$classroom->get($table[34][2])->area->name . $classroom->get($table[34][2])->classroomname}
                 {/eq}</td>
             </tr>
             <tr>
@@ -283,46 +283,46 @@
                     {eq name="$table[35][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[35][0]} <br> 
                     长度：{$table[35][1]}<br>
-                    教室：{$classroom->get($table[35][2])->classroomplace . $classroom->get($table[35][2])->classroomname}
+                    教室：{$classroom->get($table[35][2])->area->name . $classroom->get($table[35][2])->classroomname}
                     {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=2&begin=6' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[36][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[36][0]}<br>
                     长度：{$table[36][1]}<br>
-                    教室：{$classroom->get($table[36][2])->classroomplace . $classroom->get($table[36][2])->classroomname}
+                    教室：{$classroom->get($table[36][2])->area->name . $classroom->get($table[36][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=3&begin=6' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[37][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[37][0]}<br>
                     长度：{$table[37][1]}<br>
-                    教室：{$classroom->get($table[37][2])->classroomplace . $classroom->get($table[37][2])->classroomname}
+                    教室：{$classroom->get($table[37][2])->area->name . $classroom->get($table[37][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=4&begin=6' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[38][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[38][0]}<br>
-                    长度：{$table[38][1]}<br>教室：{$classroom->get($table[38][2])->classroomplace . $classroom->get($table[38][2])->classroomname}
+                    长度：{$table[38][1]}<br>教室：{$classroom->get($table[38][2])->area->name . $classroom->get($table[38][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=5&begin=6' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[39][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[39][0]}<br>
-                    长度：{$table[39][1]}<br>教室：{$classroom->get($table[39][2])->classroomplace . $classroom->get($table[39][2])->classroomname}
+                    长度：{$table[39][1]}<br>教室：{$classroom->get($table[39][2])->area->name . $classroom->get($table[39][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=6&begin=6' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[40][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[40][0]}<br>
-                    长度：{$table[40][1]}<br>教室：{$classroom->get($table[40][2])->classroomplace . $classroom->get($table[40][2])->classroomname}
+                    长度：{$table[40][1]}<br>教室：{$classroom->get($table[40][2])->area->name . $classroom->get($table[40][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=7&begin=6' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[41][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[41][0]}<br>
                     长度：{$table[41][1]}<br>
-                    教室：{$classroom->get($table[41][2])->classroomplace . $classroom->get($table[41][2])->classroomname}
+                    教室：{$classroom->get($table[41][2])->area->name . $classroom->get($table[41][2])->classroomname}
                 {/eq}</td>
             </tr>
             <tr>
@@ -333,49 +333,49 @@
                     {eq name="$table[42][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[42][0]} <br> 
                     长度：{$table[42][1]}<br>
-                    教室：{$classroom->get($table[42][2])->classroomplace . $classroom->get($table[42][2])->classroomname}
+                    教室：{$classroom->get($table[42][2])->area->name . $classroom->get($table[42][2])->classroomname}
                     {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=2&begin=7' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[43][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[43][0]}<br>
                     长度：{$table[43][1]}<br>
-                    教室：{$classroom->get($table[43][2])->classroomplace . $classroom->get($table[43][2])->classroomname}
+                    教室：{$classroom->get($table[43][2])->area->name . $classroom->get($table[43][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=3&begin=7' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[44][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[44][0]}<br>
                     长度:{$table[44][1]}<br>
-                    教室：{$classroom->get($table[44][2])->classroomplace . $classroom->get($table[44][2])->classroomname}
+                    教室：{$classroom->get($table[44][2])->area->name . $classroom->get($table[44][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=4&begin=7' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[45][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[45][0]}<br>
                     长度:{$table[45][1]}<br>
-                    教室：{$classroom->get($table[45][2])->classroomplace . $classroom->get($table[45][2])->classroomname}
+                    教室：{$classroom->get($table[45][2])->area->name . $classroom->get($table[45][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=5&begin=7' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[46][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[46][0]}<br>
                     长度:{$table[46][1]}<br>
-                    教室：{$classroom->get($table[46][2])->classroomplace . $classroom->get($table[46][2])->classroomname}
+                    教室：{$classroom->get($table[46][2])->area->name . $classroom->get($table[46][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=6&begin=7' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[47][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[47][0]}<br>
                     长度:{$table[47][1]}<br>
-                    教室：{$classroom->get($table[47][2])->classroomplace . $classroom->get($table[47][2])->classroomname}
+                    教室：{$classroom->get($table[47][2])->area->name . $classroom->get($table[47][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=7&begin=7' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[48][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[48][0]}<br>
                     长度：{$table[48][1]}<br>
-                    教室：{$classroom->get($table[48][2])->classroomplace . $classroom->get($table[48][2])->classroomname}
+                    教室：{$classroom->get($table[48][2])->area->name . $classroom->get($table[48][2])->classroomname}
                 {/eq}</td>
             </tr>
             <tr>
@@ -385,49 +385,49 @@
                     {eq name="$table[49][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[49][0]} <br> 
                     长度：{$table[49][1]}<br>
-                    教室：{$classroom->get($table[49][2])->classroomplace . $classroom->get($table[49][2])->classroomname}
+                    教室：{$classroom->get($table[49][2])->area->name . $classroom->get($table[49][2])->classroomname}
                     {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=2&begin=8' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[50][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[50][0]}<br>
                     长度：{$table[50][1]}<br>
-                    教室：{$classroom->get($table[50][2])->classroomplace . $classroom->get($table[50][2])->classroomname}
+                    教室：{$classroom->get($table[50][2])->area->name . $classroom->get($table[50][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=3&begin=8' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[51][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[51][0]}<br>
                     长度：{$table[51][1]}<br>
-                    教室：{$classroom->get($table[51][2])->classroomplace . $classroom->get($table[51][2])->classroomname}
+                    教室：{$classroom->get($table[51][2])->area->name . $classroom->get($table[51][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=4&begin=8' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[52][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[52][0]}<br>
                     长度：{$table[52][1]}<br>
-                    教室：{$classroom->get($table[52][2])->classroomplace . $classroom->get($table[52][2])->classroomname}
+                    教室：{$classroom->get($table[52][2])->area->name . $classroom->get($table[52][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=5&begin=8' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[53][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[53][0]}<br>
                     长度：{$table[53][1]}<br>
-                    教室：{$classroom->get($table[53][2])->classroomplace . $classroom->get($table[53][2])->classroomname}
+                    教室：{$classroom->get($table[53][2])->area->name . $classroom->get($table[53][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=6&begin=8' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[54][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[54][0]}<br>
                     长度：{$table[54][1]}<br>
-                    教室：{$classroom->get($table[54][2])->classroomplace . $classroom->get($table[54][2])->classroomname}
+                    教室：{$classroom->get($table[54][2])->area->name . $classroom->get($table[54][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=7&begin=8' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[55][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[55][0]}<br>
                     长度：{$table[55][1]}<br>
-                    教室：{$classroom->get($table[55][2])->classroomplace . $classroom->get($table[55][2])->classroomname}
+                    教室：{$classroom->get($table[55][2])->area->name . $classroom->get($table[55][2])->classroomname}
                 {/eq}</td>
             </tr>
             <tr>
@@ -438,48 +438,48 @@
                     {eq name="$table[56][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[56][0]} <br> 
                     长度：{$table[56][1]}<br>
-                    教室：{$classroom->get($table[56][2])->classroomplace . $classroom->get($table[56][2])->classroomname}
+                    教室：{$classroom->get($table[56][2])->area->name . $classroom->get($table[56][2])->classroomname}
                     {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=2&begin=9' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[57][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[57][0]}<br>
                     长度：{$table[57][1]}<br>
-                    教室：{$classroom->get($table[57][2])->classroomplace . $classroom->get($table[57][2])->classroomname}
+                    教室：{$classroom->get($table[57][2])->area->name . $classroom->get($table[57][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=3&begin=9' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[58][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[58][0]}<br>
                     长度：{$table[58][1]}<br>
-                    教室：{$classroom->get($table[58][2])->classroomplace . $classroom->get($table[58][2])->classroomname}
+                    教室：{$classroom->get($table[58][2])->area->name . $classroom->get($table[58][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=4&begin=9' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[59][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[59][0]}<br>
                     长度：{$table[59][1]}<br>
-                    教室：{$classroom->get($table[59][2])->classroomplace . $classroom->get($table[59][2])->classroomname}
+                    教室：{$classroom->get($table[59][2])->area->name . $classroom->get($table[59][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=5&begin=9' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[60][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[60][0]}<br>
                     长度：{$table[60][1]}<br>
-                    教室：{$classroom->get($table[60][2])->classroomplace . $classroom->get($table[60][2])->classroomname}
+                    教室：{$classroom->get($table[60][2])->area->name . $classroom->get($table[60][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=6&begin=9' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[61][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[61][0]}<br>
-                    长度：{$table[61][1]}<br>教室：{$classroom->get($table[61][2])->classroomplace . $classroom->get($table[61][2])->classroomname}
+                    长度：{$table[61][1]}<br>教室：{$classroom->get($table[61][2])->area->name . $classroom->get($table[61][2])->classroomname}
                 {/eq}</td>
                 <td>
                     <a class="btn btn-primary" href="{:url('courseweek?id=' . $course->getData('id') . '&weekday=7&begin=9' )}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>选择周次</a>
                     {eq name="$table[62][0]" value=""}<br><br><br><br> {else /}
                     <br>周次：{$table[62][0]}<br>
                     长度：{$table[62][1]}<br>
-                    教室：{$classroom->get($table[62][2])->classroomplace . $classroom->get($table[62][2])->classroomname}
+                    教室：{$classroom->get($table[62][2])->area->name . $classroom->get($table[62][2])->classroomname}
                 {/eq}</td>
             </tr>
             <tr>

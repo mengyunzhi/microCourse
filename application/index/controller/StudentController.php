@@ -158,16 +158,6 @@ class StudentController extends SIndexController
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
 
-		// // 查找已激活的学期，主要用于状态栏的显示
-		// $term = Term::where('state',1)->find();	
-		// if ($term === null) {
-		// 	$termid = 0;
-		// } else {
-		// 	$termid = $term->id;
-		// }	
-
-		// $this->assign('termid', $termid);
-
 		// 获取所有学期
 		$terms = Term::all();
 		$this->assign('terms', $terms);
@@ -177,37 +167,32 @@ class StudentController extends SIndexController
 		if (is_null($id)) {
 			
 			$i = count($terms);
-            if ($i === 0){
-                $isTerm = '管理员未设置学期';
-                $this->assign('Termname', $isTerm);
-            } else {
-                $termid = $terms[$i-1]->id;
-                foreach ($terms as $aaterm) {
-                    if ($aaterm->state === 1) {
-                        $id = $aaterm->id;                  
-                    }
+            
+            $id = $terms[$i-1]->id;
+            foreach ($terms as $aaterm) {
+                if ($aaterm->state === 1) {
+                    $id = $aaterm->id;                  
                 }
-                $isTerm = Term::get($termid);
-                $this->assign('Termname', $isTerm->name);
-            }		 
-		}		
+            }   		 
+		}	
+
+		$isTerm = Term::get($id);
+         $this->assign('isTerm', $isTerm);
 		
-		
-        if($isTerm == '管理员未设置学期') {
-            $courses = [];
-        } else {
-            $courses = $isTerm->Course;
-        }
+        // 取出本学期所有课程
+        $termCourses = $isTerm->Course;
+
+        
         $courseIds = [];
-        foreach ($courses  as $value) {
+        foreach ($termCourses  as $value) {
           array_push($courseIds, $value->id);
         }
-
+        
         // 获取本学生id
         $studentId = session('studentId');
 
         $score = new Score();
-        $getScore =  $score->where(['course_id'=>$courseIds, 'student_id'=>$studentId])->select();
+        $getScore = $score->where(['course_id'=>$courseIds, 'student_id'=>$studentId])->select();
         
         // 得到本学期本学生所有课程成绩所对应的course_id
         $course = new Course();
@@ -341,27 +326,22 @@ class StudentController extends SIndexController
         if (is_null($id)) {
             
             $i = count($terms);
-            if ($i === 0){
-                $isTerm = '管理员未设置学期';
-                $this->assign('Termname', $isTerm);
-            } else {
-                $termid = $terms[$i-1]->id;
+            
+                $id = $terms[$i-1]->id;
                 foreach ($terms as $aaterm) {
                     if ($aaterm->state === 1) {
                         $id = $aaterm->id;                  
                     }
                 }
-                $isTerm = Term::get($termid);
-                $this->assign('Termname', $isTerm->name);
-            }     
-        }       
+                
+                 
+        }    
+        $isTerm = Term::get($id);
+        $this->assign('Termname', $isTerm->name);   
 
         // 得到本学期所有课程id
-        if($isTerm == '管理员未设置学期') {
-            $courses = [];
-        } else {
-            $courses = $isTerm->Course;
-        }
+        $courses = $isTerm->Course;
+
         
         $courseIds = [];
         foreach ($courses  as $value) {
