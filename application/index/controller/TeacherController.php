@@ -23,7 +23,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-24 21:28:19
+ * @Last Modified time: 2019-09-27 20:41:18
  */
 class TeacherController extends TIndexController
 {
@@ -571,34 +571,32 @@ class TeacherController extends TIndexController
     {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
-        
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
 
-    	$course = new course;
-        $courses = $course->paginate(5);//取出全部课程
-        // $page = $courses->render();
+        // 得到本教师id
+        $id = session('teacherId');
+
+        //取出本教师的全部课程
+        $courses = Course::where('teacher_id',$id)->paginate(5);
 
         $klass = new Klass;
-        $klasscourse = new klasscourse;
-        $klasscourses = $klasscourse->select();//取出班级课程中间表的全部信息
+
+        $klasscourses = KlassCourse::select();//取出班级课程中间表的全部信息
         
         //对于每个课程，取出对应的多个班级信息
         foreach ($courses as $acourse) {
-            $klasses = $klasscourse->where('course_id',$acourse->id)->select();
+            $klasses = KlassCourse::where('course_id',$acourse->id)->select();
             $str = "";
             //对于每个班级，用ID取出班级名称，并连接字符串
             foreach ($klasses as $aclass) {
                 $str1 = klass::get($aclass->klass_id)->name;
-                $str = $str." ".$str1; 
+                $str = $str.",".$str1; 
             }
             //把字符串信息合并到课程信息中
-            $acourse->klass = $str;
+            $acourse->klass = substr($str,1,-1);
         }
         //发送课程信息
         $this->assign('courses',$courses);
-        // $this->assign('page', $page);
+
         return $this->fetch();
     }
 
@@ -606,22 +604,19 @@ class TeacherController extends TIndexController
     public function gradeinfo()
     {
         // 获取当前方法名
-        $this->assign('isaction',Request::action());
-        
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-        
+        $this->assign('isaction','grade');
+        //获取课程id
         $id = $this->request->param('id/d');
-        $courses = new course();
-        $course = course::get($id);
-        $infos = $courses->courseinfo()->where('course_id',$id)->order('week')->order('weekday')->paginate(5);
 
-         // $page = $info->render();
+        $courses = new course();
+        //通过课程id获取当前课程
+        $course = Course::get($id);
+        //根据课程取出所有课程信息（每节课）
+        $infos = $courses->Courseinfo()->where('course_id',$id)->order('week')->order('weekday')->paginate(10);
 
         $this->assign('course',$course);
         $this->assign('infos',$infos);
-         // $this->assign('page', $page);
+
         return $this->fetch();
     }
 
@@ -629,12 +624,8 @@ class TeacherController extends TIndexController
     public function gradeoncourse()
     {
         // 获取当前方法名
-        $this->assign('isaction',Request::action());
-        
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-
+        $this->assign('isaction','grade');
+    
         $id = $this->request->param('id/d');
 
         $courseinfo = Courseinfo::get($id);
@@ -653,19 +644,19 @@ class TeacherController extends TIndexController
     public function gradeadd()
     {
         // 获取当前方法名
-        $this->assign('isaction',Request::action());
-
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-
+        $this->assign('isaction','grade');
+        //根据传入课程id获取课程
         $id = $this->request->param('id/d');
         $course = Course::get($id);
-        $score = new Score;
-        $scores = $score->where('course_id',$id)->select();
+        //获取此课程所有学生的签到和成绩信息
+        $scores = Score::where('course_id',$id)->select();
+
         $this->assign('course',$course);
-        $this->assign('score',$scores);
+        $this->assign('scores',$scores);
         return $this->fetch();
+        // dump($course);
+        // dump($scores);
+        // return;
     }
 
     //教师模块成绩更新-刘宇轩
@@ -673,29 +664,34 @@ class TeacherController extends TIndexController
     {
         $scores = $this->request->post();
         $key = $this->request->post('key');
+
+        // dump($this->request->post());
         //dump ($key);
         //dump ($scores);
         //dump ($scores["id"]["0"]);
+        // return;
         $message = '更新成功';
-        for ($i=0; $i < $key - 1; $i++) { 
-            $score = score::get($scores["id"][$i]);
+        for ($i=0; $i <= $key; $i++) { 
+            $score = score::where('id',$scores["id"][$i])->find();
+
             if (!is_null($score)){
                 $score->score1 = $scores["score1"][$i];
                 $score->score2 = $scores["score2"][$i];
-                $score->scoresum = $scores["scoresum"][$i];
-                if (false === $score->save())
+                $score->scoresum = (int)$scores["scoresum"][$i];
+                                if (false === $score->save())
                 {
-                    $message = '更新失败' . $score->getError();
+                    $message = '更新失败';
+                    return $this->error($message,url('grade'));
                 }
             }else{
-                throw new \Exception("所更新的记录不存在", 1);
+                $message = '所更新的记录不存在';
+                return $this->error($message,url('grade'));
             }
 
-            //dump ($score);
+            
         }
         return $this->success($message,url('grade'));
     }
-
 
 }
 

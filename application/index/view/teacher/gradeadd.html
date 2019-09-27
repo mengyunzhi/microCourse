@@ -19,10 +19,10 @@
                     <th>期末成绩</th>
                     <th>总成绩</th>
                   </tr>
-                  {volist name="score" id="score" $key="key"}
+                  <?php $key = 0; ?>
+                  {volist name="scores" id="score" $key="key"}
                     <tr>
                       <td>{$key}</td>
-                      <input type="hidden" name="key" value="{$score->id}">
                       <input type="hidden" name="id[]" value="{$score->id}">
                       <td>{$score->Student->name}</td>
                       <td>{$score->Student->num}</td>
@@ -33,7 +33,7 @@
                       <td><input type="text" name="score2[]" value="{$score->score2}" /></td>
                       <td><input type="text" name="scoresum[]" value="{$score->scoresum}" /></td>
                     </tr>
-                  {/volist}
+                  {/volist}<input type="hidden" name="key" value="{$key}">
               </table>
               <button type="submit" class="btn btn-default">保存</button>
             </form>
