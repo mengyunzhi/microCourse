@@ -12,23 +12,10 @@ use app\index\validate\ClassroomValidate;
 
 class classroom extends Model
 {
-	private static $validate;
-    
-    public function save($data = [], $where = [], $sequence = null)
+
+    public function area()
     {
-    	if (!$this->validate($this)) {
-    		return false;
-    	}
-
-    	return parent::save($data, $where, $sequence);
-    }
-
-    private function validate() {
-    	if (is_null(self::$validate)) {
-    		self::$validate = new ClassroomValidate();
-    	}
-
-    	return self::$validate->check($this);
-    }
+        return $this->belongsTo('area');
+    }  
 }
 

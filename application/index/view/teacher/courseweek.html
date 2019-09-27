@@ -68,10 +68,14 @@
             </div>
             <div class="col-md-4">
                 <h3>选择教室:&nbsp;</h3>
-                {volist name="classroom" id="classroom" $key="key"}
+                {volist name="areas" id="area" key="key"}
+                <label>{$area->name}:&nbsp;</label>
+                {volist name="$area->Classroom" id="classroom" $key="key"}
                     <label class="radio-inline">
-                      <input type="radio" name="classroom_id" value="{$key + 1}" {eq name="classroom->getdata('id')" value="$classroom_id"} checked="checked"{/eq}> {$classroom->getdata('classroomplace') . $classroom->getdata('classroomname')}
+                      <input type="radio" name="classroom_id" value="{$key + 1}" {eq name="classroom->getdata('id')" value="$classroom_id"} checked="checked"{/eq}> {$classroom->area->name . $classroom->getdata('classroomname')}
                     </label>
+                {/volist}
+                <br />
                 {/volist}
             </div>
         </div>

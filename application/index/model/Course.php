@@ -29,10 +29,6 @@ class Course extends Model
 		return $Term;
 	}
 
-	public function Klasses()
-	{
-		return $this->belongsToMany('Klass', 'klass_course');
-	}
 
 	public function getIsChecked(Klass &$Klass)
 	{
