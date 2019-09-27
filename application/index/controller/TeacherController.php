@@ -1,6 +1,8 @@
 <?php
 namespace app\index\controller;
 use app\index\model\Course;
+use app\index\model\Area;
+use app\index\model\College;
 use app\index\model\Term;
 use app\index\model\Time;
 use app\index\model\Academy;
@@ -15,6 +17,7 @@ use think\Controller;
 use app\index\model\Classroom;
 use think\facade\Session;
 use app\index\model\Student;
+use think\Db;
 use think\facade\Request;
 
 /**
@@ -73,11 +76,13 @@ class TeacherController extends TIndexController
         $terms = Term::all();
         $this->assign('terms', $terms);
         
-        $teachers = Teacher::all();
-        $this->assign('teachers', $teachers);
-        $klass = new Klass;
-        $this->assign('Klasses', $klass->select());
-        $this->assign('Course', new Course);
+        $teacherId = session('teacherId');
+        $teacher = Teacher::get($teacherId);
+        $this->assign('teacher', $teacher);
+        
+        $colleges = College::all();
+        $this->assign('colleges', $colleges);
+
         return $this->fetch();
     }
 
@@ -96,7 +101,7 @@ class TeacherController extends TIndexController
 
         // 验证
         if (!$Course->save()) {
-            return $this->error('保存错误：' . $Course->getError());
+            return $this->error('保存错误1：' . $Course->getError());
         }
 
         //--------------------增加班级课程信息------------
@@ -129,13 +134,19 @@ class TeacherController extends TIndexController
         }
 
         $this->assign('Course', $Course);
-        
+
+        // 学期
         $terms = Term::all();
         $this->assign('terms', $terms);
-        $teachers = Teacher::all();
-        $this->assign('teachers', $teachers);
-        $klass = new Klass;
-        $this->assign('Klasses', $klass->select());
+
+        // 老师
+        $teacherId = session('teacherId');
+        $teacher = Teacher::get($teacherId);
+        $this->assign('teacher', $teacher);
+        
+        // 学院
+        $colleges = College::all();
+        $this->assign('colleges', $colleges);
 
         return $this->fetch();
     }
@@ -155,7 +166,8 @@ class TeacherController extends TIndexController
         $Course->term_id = $this->request->param('term_id/d');
         $Course->teacher_id = $this->request->param('teacher_id/d');
         $Course->type = $this->request->param('type/d');
-        if (is_null($Course->save())) {
+        
+        if (!$Course->save()) {
             return $this->error('课程信息更新发生错误：' . $Course->getError());
         }
 
@@ -239,14 +251,15 @@ class TeacherController extends TIndexController
         $begin = $this->request->param('begin/d');
         $weeks = array();
         $classroom_id = Courseinfo::getCourseClassroom($id,$weekdayorigin,$begin);
-        $classroom = Classroom::select();
+
+        $classrooms = Classroom::select();
         $termLength = Term::TermLength();
         for ($i=0; $i < $termLength; $i++) { 
             $weeks[$i] = $i;
         }
         $course = Course::get($id);
         $courseinfo = new Courseinfo;
-        $this->assign('classroom',$classroom);
+        $this->assign('classrooms',$classrooms);
         $this->assign('classroom_id',$classroom_id);
         $this->assign('courseinfo',$courseinfo);
         $this->assign('weekdayorigin',$weekdayorigin);
@@ -254,6 +267,9 @@ class TeacherController extends TIndexController
         $this->assign('begin',$begin);
         $this->assign('weeks',$weeks);
         $this->assign('course',$course);
+
+        $areas = Area::all();
+        $this->assign('areas', $areas);
         return $this->fetch();
     }
 
@@ -664,12 +680,12 @@ class TeacherController extends TIndexController
     {
         $scores = $this->request->post();
         $key = $this->request->post('key');
-
         // dump($this->request->post());
         //dump ($key);
         //dump ($scores);
         //dump ($scores["id"]["0"]);
         // return;
+
         $message = '更新成功';
         for ($i=0; $i <= $key; $i++) { 
             $score = score::where('id',$scores["id"][$i])->find();

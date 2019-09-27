@@ -11,14 +11,14 @@
               <hr />
               <table class="table table-bordered">
                 <tr class="info">
-                  <th>上课次数</th>
+                  <th>序号</th>
                   <th>上课周次</th>
                   <th>上课星期</th>
                   <th>上课时间</th>
                   <th>上课教室</th>
                   <th>出勤详情</th>
                 </tr>
-                {volist name="infos" id="info" $key="key"}
+                {volist name="infos" id="info" key="key"}
                   <tr>
                     <td>{$key}</td>
                     <td>{$info->getdata('week')}</td>

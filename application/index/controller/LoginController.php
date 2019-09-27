@@ -5,6 +5,7 @@ use app\index\model\Student;
 use app\index\model\Klass;
 use app\index\model\Teacher;
 use app\index\model\Admin;
+use app\index\model\College;
 use app\index\validate\StudentValidate;
 
 /**
@@ -19,8 +20,25 @@ class LoginController extends Controller
 	public function register($id)
 	{
 		$klasses = Klass::all();
+		$colleges = College::all();
+		// $index = 0;
+		// $colleges = [
+		// ];
+		// foreach ($klasses as $klass) {
+		// 	# code...
+		// 	$college = new College();
+		// 	$college->id = $index ++;
+		// 	$college->name = 'name' . $college->id;
+		// 	$klass->collegeId = $college->id;
+		// 	array_push($colleges, $college);
+		// }
+		// dump($klasses);
+		// echo '<br>';
+		// dump($colleges);
+		// return ;
 		$this->assign('id', $id);
 		$this->assign('klasses', $klasses);
+		$this->assign('colleges', $colleges);
 		return $this->fetch();
 	} 
     
@@ -124,3 +142,4 @@ class LoginController extends Controller
 		return $this->fetch();
 	}
 }
+

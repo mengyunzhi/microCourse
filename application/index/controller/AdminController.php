@@ -5,8 +5,11 @@ use app\index\model\Classroom;
 use app\index\model\Student; 
 use app\index\model\Teacher;
 use app\index\model\Klass;
+use app\index\model\College;
+use app\index\model\Area; 
 use think\facade\Request;
 use app\index\widget\MenuWidget;
+
 /**
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:43:05
@@ -333,6 +336,9 @@ class AdminController extends AIndexController
 	// 管理员界面班级增加————赵凯强
 	public function klassadd()
 	{
+		$colleges = College::all();
+		$this->assign('colleges', $colleges);
+
 		return $this->fetch();
 	}
 
@@ -342,22 +348,16 @@ class AdminController extends AIndexController
     	$request = $this->request;
     	$Klass = new Klass();
 
-    	$data = [
-	    	'name' => $request->param('name'),
-	    	'academy' => $request->param('academy'),
-	    	'major' => $request->param('major'),
-	    	'grade' => $request->param('grade'),
-	    ];
+    	$Klass->name = $request->param('name');
+    	$Klass->college_id = $request->param('college_id');
+    	$Klass->major = $request->param('major');
+    	$Klass->grade = $request->param('grade');
 
 	    $validate = new \app\index\validate\KlassValidate;
-	    if (!$validate->check($data)) {
+	    if (!$validate->check($Klass)) {
 	    	return $this->error('数据添加错误：' . $Klass->getError());
 	    } else {
 	    	
-	    	$Klass->name = $request->param('name');
-	    	$Klass->academy = $request->param('academy');
-	    	$Klass->major = $request->param('major');
-	    	$Klass->grade = $request->param('grade');
 	    	if(!$Klass->save()) {
 	    		return $this->error('数据添加错误：' . $Klass->getError());
 	    	} else {
@@ -375,8 +375,11 @@ class AdminController extends AIndexController
         {
         	return $this->error('未找到ID为' . $id . '的记录');
         }
-
         $this->assign('Klass', $Klass);
+
+        $colleges = College::all();
+		$this->assign('colleges', $colleges);
+
         return $this->fetch();
     }
     
@@ -394,7 +397,7 @@ class AdminController extends AIndexController
         $request = $this->request;
     
 	    	$Klass->name = $request->param('name');
-	    	$Klass->academy = $request->param('academy');
+	    	$Klass->college_id = $request->param('college_id');
 	    	$Klass->major = $request->param('major');
 	    	$Klass->grade = $request->param('grade');
 	   
@@ -628,6 +631,9 @@ class AdminController extends AIndexController
 	//管理员模块教室管理添加教室——刘宇轩
 	public function classroomadd()
 	{
+		$areas = Area::all();
+        $this->assign('areas', $areas);
+
 		return $this->fetch();
 	}
 
@@ -637,31 +643,37 @@ class AdminController extends AIndexController
 		$id = $this->request->param('id/d');
         $classroom = classroom::get($id);
         $this->assign('classroom', $classroom);
+
+        $areas = Area::all();
+        $this->assign('areas', $areas);
+
         $htmls = $this->fetch();
+
         return $htmls;
 	}
 
 	//管理员模块教室管理插入教室——刘宇轩--李美娜
 	public function classroomsave()
 	{
-		// 接收传入的数据
-		$postData = $this->request->post();
+		$request = $this->request;
+    	$Classroom = new Classroom();
 
-		// 实例化空classroom对象
-		$classroom = new Classroom();
+    	$Classroom->classroomname = $request->param('classroomname');
+    	$Classroom->area_id = $request->param('area_id');
+    	$Classroom->row = $request->param('row');
+    	$Classroom->column = $request->param('column');
 
-		// 为对象赋值
-		$classroom->classroomplace = $postData['classroomplace'];
-		$classroom->classroomname = $postData['classroomname'];
-		$classroom->row = $postData['row'];
-		$classroom->column = $postData['column'];
-
-		// 添加数据
-        if (!$classroom->save())       	
-        {
-            return $this->error('数据添加错误：' . $classroom->getError());
-        }
-        return $this->success('操作成功', url('classroom'));
+	    $validate = new \app\index\validate\ClassroomValidate;
+	    if (!$validate->check($Classroom)) {
+	    	return $this->error('数据添加错误：' . $Classroom->getError());
+	    } else {
+	    	
+	    	if(!$Classroom->save()) {
+	    		return $this->error('数据添加错误：' . $Classroom->getError());
+	    	} else {
+	    		return $this->success('数据添加成功', url('Classroom'));
+	    	}
+	    }
 	}
 
 	//管理员模块教室管理删除教室——刘宇轩
@@ -685,26 +697,31 @@ class AdminController extends AIndexController
 	//管理员模块教室管理更新教室——刘宇轩
 	public function classroomupdate()
 	{
-	    try {
-            $id = $this->request->post('id/d');
-            $message = '更新成功';
-            $classroom = classroom::get($id);
+	    $id = $this->request->param('id/d');
 
-            if (!is_null($classroom)) {
-                $classroom->classroomplace = $this->request->post('classroomplace');
-                $classroom->classroomname = $this->request->post('classroomname');
-                $classroom->row = $this->request->post('row');
-                $classroom->column = $this->request->post('column');
-                if (false === $classroom->save())
-                {
-                    $message =  '更新失败' . $classroom->getError();
-                }
-            } else {
-                throw new \Exception("所更新的记录不存在", 1);  
-            }
-        } catch (\Exception $e) {
-            $message = $e->getMessage();
-        }
-        return $this->success($message,url('classroom'));
+    	// 获取传入的教室信息
+    	$Classroom = Classroom::get($id);
+    	if (is_null($Classroom)) {
+    		return $this->error('未找到ID为' . $id . '的记录');
+    	}
+        $request = $this->request;
+    
+	    	$Classroom->classroomname = $request->param('classroomname');
+	    	$Classroom->area_id = $request->param('area_id');
+	    	$Classroom->row = $request->param('row');
+	    	$Classroom->column = $request->param('column');
+	   
+
+	    $validate = new \app\index\validate\ClassroomValidate;
+	    if (!$validate->check($Classroom)) {
+	    	return $this->error('数据更新错误：' . $validate->getError());
+	    } else {
+	    	
+	    	if(!$Classroom->save()) {
+	    		return $this->error('数据更新错误：' . $validate->getError());
+	    	} else {
+	    		return $this->success('数据更新成功', url('Classroom'));
+	    	}
+	    }
 	}
 }
