@@ -5,7 +5,6 @@
             
             <hr />
               
-              <div class="alert {eq name='ifterm' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="ifterm" value="1"}已开始{else /}已结束{/eq}</div>
               <h3>课程名:{$course->getdata('name')}</h3>
               <h3>课程编码:{$course->getdata('num')}</h3>
               <h3>上课时间:{$courseinfo->getdata('week')." ".$courseinfo->getdata('weekday') }</h3>

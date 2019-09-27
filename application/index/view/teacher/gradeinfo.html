@@ -3,10 +3,11 @@
 
             <hr />
               
+
               <h3>课程名:{$course->getdata('name')}</h3>
               <h3>课程编码:{$course->getdata('num')}</h3>
-              <a href="/index/teacher/gradeadd?id={$course->getData('id')}" class="btn btn-primary">&nbsp;录入成绩</a>
-              <a href="/index/teacher/grade" class="btn btn-primary">&nbsp;返回</a>
+              <a href="{:url('gradeadd?id='.$course->getData('id'))}" class="btn btn-primary">&nbsp;录入成绩</a>
+              <a href="grade" class="btn btn-primary">&nbsp;返回</a>
               <hr />
               <table class="table table-bordered">
                 <tr class="info">
@@ -21,10 +22,10 @@
                   <tr>
                     <td>{$key}</td>
                     <td>{$info->getdata('week')}</td>
-                    <td>{$info->getdata('weekday')}</td>
-                    <td>{$info->getdata('begin')."~".($info->getdata('begin') + $info->getdata('length') -1)}</td>
-                    <td>{$info->classroom->classroomname}</td>
-                    <td><a href="/index/teacher/gradeoncourse?id={$info->getData('id')}" class="btn btn-primary">&nbsp;详情</a></td>
+                    <td> <?php echo Term::getWeekday($info->getdata('weekday')-1); ?> </td>
+                    <td>{$info->getdata('begin')."~".($info->getdata('begin') + $info->getdata('length') -1)}小节</td>
+                    <td>{$info->classroom->classroomplace . $info->classroom->classroomname}</td>
+                    <td><a href="{:url('gradeoncourse?id='.$info->getData('id'))}" class="btn btn-primary">&nbsp;详情</a></td>
                   </tr>
                 {/volist}
             </table>

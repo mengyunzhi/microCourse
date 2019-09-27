@@ -6,7 +6,7 @@
                   <th>课程名称</th>
                   <th>学期</th>
                   <th>课程编码</th>
-                  <th>任课教师</th>
+<!--                   <th>任课教师</th> -->
                   <th>课程类型</th>
                   <th>班级</th>
                   <th>详细信息</th>
@@ -18,12 +18,14 @@
                     <td>{$course->getdata('name')}</td>
                     <td>{$course->Term->name}</td>
                     <td>{$course->getdata('num')}</td>
-                    <td>{$course->teacher->name}</td>
+<!--                     <td>{$course->teacher->name}</td> -->
                     <td>{eq name='course->getData("type")' value='0'}选修{else /}必修{/eq}</td>
                     <td>{$course->getdata('klass')}</td>
                     
-                    <td><a href="gradeinfo/id/{$course->getData('id')}" class="btn btn-primary">&nbsp;详情</a></td>
-                    <td><a href="gradeadd/id/{$course->getData('id')}" class="btn btn-primary">&nbsp;录入</a></td>
+                    <td><a href="{:url('gradeinfo?id='.$course->getData('id'))}" class="btn btn-primary">&nbsp;详情</a></td>
+                    
+                    <td><a href="{:url('gradeadd?id='.$course->getData('id'))}" class="btn btn-primary">&nbsp;录入</a></td>
+                    
                   </tr>
                 {/volist}
             </table>
