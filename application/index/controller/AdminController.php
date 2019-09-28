@@ -14,7 +14,7 @@ use app\index\widget\MenuWidget;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:43:05
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-22 17:42:19
+ * @Last Modified time: 2019-09-28 19:42:30
  */
 class AdminController extends AIndexController	
 {
@@ -724,4 +724,220 @@ class AdminController extends AIndexController
 	    	}
 	    }
 	}
+
+	//管理员模块教室管理——刘宇轩
+	public function area()
+	{
+		// 获取当前方法名
+        $this->assign('isaction','area');
+        
+		$areas = Area::all();
+
+		// // 获取查询信息
+  //       $name = $this->request->get('name');
+
+		// $areas = $area->where('areaname', 'like', '%' . $name . '%')->paginate(5, false, [
+		// 	'query' =>[
+		// 		'name' => $name,
+		// 	],
+		// ]);
+        
+        // 向v层传输数据
+		$this->assign('areas',$areas);
+		return $this->fetch();
+	}
+
+	//管理员模块添加教师区域——刘宇轩
+	public function areaadd()
+	{
+		return $this->fetch();
+	}
+
+	//管理员模块教室管理编辑教室——刘宇轩
+	public function areaedit()
+	{
+		$id = $this->request->param('id/d');
+        $area = area::get($id);
+        $this->assign('area', $area);
+
+        // $areas = Area::all();
+        // $this->assign('areas', $areas);
+
+        $htmls = $this->fetch();
+
+        return $htmls;
+	}
+
+	//管理员模块教室管理插入教室——刘宇轩--李美娜
+	public function areasave()
+	{
+		$request = $this->request;
+    	$area = new area();
+
+    	$area->name = $request->param('name');
+  
+
+	    
+	    	
+	    	if(!$area->save()) {
+	    		return $this->error('数据添加错误：');
+	    	} else {
+	    		return $this->success('数据添加成功', url('area'));
+	    	}
+	    
+	}
+
+	//管理员模块教室管理删除教室——刘宇轩
+	public function areadelete()
+	{
+		$id = $this->request->param('id/d');
+		if (is_null($id) || 0 === $id){
+			return $this->error('未获取ID信息');
+		}
+		$area = area::get($id);
+        if (is_null($area)) {
+            return $this->error('不存在id为' . $id . '的教室，删除失败');
+        }
+        $classroom = Classroom::where('area_id',$id)->select();
+        if (count($classroom) != 0){
+        	return $this->error('删除失败:此区域内有教室');
+        }       
+        if (!$area->delete()) {
+            return $this->error('删除失败:');
+        }
+		return $this->success('删除成功',url('area'));
+	}
+
+
+	//管理员模块教室管理更新教室——刘宇轩
+	public function areaupdate()
+	{
+	    $id = $this->request->param('id/d');
+
+    	// 获取传入的教室信息
+    	$area = area::get($id);
+    	if (is_null($area)) {
+    		return $this->error('未找到ID为' . $id . '的记录');
+    	}
+        $request = $this->request;
+    
+	    	$area->name = $request->param('name');
+	    	
+	    	if(!$area->save()) {
+	    		return $this->error('数据更新错误：');
+	    	} else {
+	    		return $this->success('数据更新成功', url('area'));
+	    	}
+	    
+	}
+
+
+
+	//管理员模块教室管理——刘宇轩
+	public function college()
+	{
+		// 获取当前方法名
+        $this->assign('isaction','college');
+        
+		$colleges = college::all();
+
+		// // 获取查询信息
+  //       $name = $this->request->get('name');
+
+		// $colleges = $college->where('collegename', 'like', '%' . $name . '%')->paginate(5, false, [
+		// 	'query' =>[
+		// 		'name' => $name,
+		// 	],
+		// ]);
+        
+        // 向v层传输数据
+		$this->assign('colleges',$colleges);
+		return $this->fetch();
+	}
+
+	//管理员模块添加教师区域——刘宇轩
+	public function collegeadd()
+	{
+		return $this->fetch();
+	}
+
+	//管理员模块教室管理编辑教室——刘宇轩
+	public function collegeedit()
+	{
+		$id = $this->request->param('id/d');
+        $college = college::get($id);
+        $this->assign('college', $college);
+
+        // $colleges = college::all();
+        // $this->assign('colleges', $colleges);
+
+        $htmls = $this->fetch();
+
+        return $htmls;
+	}
+
+	//管理员模块教室管理插入教室——刘宇轩--李美娜
+	public function collegesave()
+	{
+		$request = $this->request;
+    	$college = new college();
+
+    	$college->name = $request->param('name');
+  
+
+	    
+	    	
+	    	if(!$college->save()) {
+	    		return $this->error('数据添加错误：');
+	    	} else {
+	    		return $this->success('数据添加成功', url('college'));
+	    	}
+	    
+	}
+
+	//管理员模块教室管理删除教室——刘宇轩
+	public function collegedelete()
+	{
+		$id = $this->request->param('id/d');
+		if (is_null($id) || 0 === $id){
+			return $this->error('未获取ID信息');
+		}
+		$college = college::get($id);
+        if (is_null($college)) {
+            return $this->error('不存在id为' . $id . '的教室，删除失败');
+        }
+        $klass = Klass::where('college_id',$id)->select();
+        if (count($klass) != 0){
+        	return $this->error('删除失败:此学院内有班级');
+        }       
+        if (!$college->delete()) {
+            return $this->error('删除失败:');
+        }
+        
+		return $this->success('删除成功',url('college'));
+	}
+
+
+	//管理员模块教室管理更新教室——刘宇轩
+	public function collegeupdate()
+	{
+	    $id = $this->request->param('id/d');
+
+    	// 获取传入的教室信息
+    	$college = college::get($id);
+    	if (is_null($college)) {
+    		return $this->error('未找到ID为' . $id . '的记录');
+    	}
+        $request = $this->request;
+    
+	    	$college->name = $request->param('name');
+	    	
+	    	if(!$college->save()) {
+	    		return $this->error('数据更新错误：');
+	    	} else {
+	    		return $this->success('数据更新成功', url('college'));
+	    	}
+	    
+	}
+
 }
