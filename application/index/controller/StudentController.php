@@ -24,7 +24,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-25 22:44:30
+ * @Last Modified time: 2019-09-28 17:11:58
  */
 
 
@@ -37,10 +37,6 @@ class StudentController extends SIndexController
 
         // 获取所有学期
         $terms = Term::all();
-
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
 
         //获取要查询的周次，若没有，就查询本周
         $week = $this->request->param('week');
@@ -65,10 +61,9 @@ class StudentController extends SIndexController
         $Term = Term::get($id);
         $this->assign('Term', $Term);
 
-
-        $termlength = $Term->length;
+        //把本学期所有周次编为一个数组
         $weeks = array();
-        for ($i=0; $i < $termlength; $i++) { 
+        for ($i=0; $i < $Term->length; $i++) { 
             $weeks[$i] = $i+1;
         }
         $this->assign('weeks',$weeks);
@@ -80,6 +75,8 @@ class StudentController extends SIndexController
         foreach ($courses  as $value) {
           array_push($courseIds, $value->id);
         }
+        // dump($courseIds);
+        // return;
 
         // 获取本学生id
         $studentId = session('studentId');
@@ -87,11 +84,13 @@ class StudentController extends SIndexController
         //查询本学期本本学生的所有课程
         $score = new Score();
         $getScore =  $score->where(['course_id'=>$courseIds, 'student_id'=>$studentId])->select();
-        
+        // $getScore =  $score->where('student_id',$studentId)->where('course_id',$courseIds)->select();
         //本学生本星期的课程表
         //前面是小节，后面是星期
         //0没用了！！！！！！！！！
-        
+        // dump($studentId);
+        // dump($getScore);
+        // return;
         $nullcourseinfo = new Courseinfo();
         $coursetable = array('1' => array('0','0','0','0','0','0','0','0') , 
             '2' => array('0','0','0','0','0','0','0','0') , 
@@ -107,8 +106,8 @@ class StudentController extends SIndexController
 
         // 得到本学期本学生所有课程成绩所对应的course_id
         $course = new Course();
-        if(is_null($getScore)) {
-            $courseinfos = [];
+        if(count($getScore) == 0) {
+            // $coursetable = [];
         } else {
             //储存本学期本学生所有课程的course_id
             $scoreIds = [];
@@ -116,14 +115,17 @@ class StudentController extends SIndexController
                 array_push($scoreIds, $score->course_id);
             }
 
-            $courseinfos = Courseinfo::where(['course_id'=>$courseIds, 'week'=>$week])->select();
-
+            $courseinfos = Courseinfo::where(['course_id'=>$scoreIds, 'week'=>$week])->select();
+            // dump($courseinfos);
+            // return;
             foreach ($courseinfos as $key => $acourseinfo) {
                 {
                     $coursetable[$acourseinfo->begin][$acourseinfo->weekday] = $acourseinfo;
                 }
             }
-            // dump($coursetable);
+            // dump($studentId);
+            // dump($getScore);
+            // // dump($coursetable);
             // dump($courseinfos);
             // return;
             // 通过成绩对应course_id得到本学期本学生所有课程
@@ -154,10 +156,6 @@ class StudentController extends SIndexController
         // 获取当前方法名
         $this->assign('isaction',Request::action());
 
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-
 		// 获取所有学期
 		$terms = Term::all();
 		$this->assign('terms', $terms);
@@ -184,19 +182,23 @@ class StudentController extends SIndexController
 
         
         $courseIds = [];
+
         foreach ($termCourses  as $value) {
           array_push($courseIds, $value->id);
         }
-        
+
         // 获取本学生id
         $studentId = session('studentId');
 
         $score = new Score();
         $getScore = $score->where(['course_id'=>$courseIds, 'student_id'=>$studentId])->select();
         
+        // dump($studentId);
+        // dump($getScore);
+        // return;
         // 得到本学期本学生所有课程成绩所对应的course_id
         $course = new Course();
-        if(is_null($getScore)) {
+        if(count($getScore) == 0) {
             $courses = [];
         } else {
             $scoreIds = [];
@@ -210,6 +212,7 @@ class StudentController extends SIndexController
         }
          // 获取请求学期的课程
         $this->assign('courses', $courses);
+
 		return $this->fetch();	
 	}
 
@@ -256,7 +259,7 @@ class StudentController extends SIndexController
         } 
 
         $oncourse = Oncourse::where('student_id',$student->id)->where('courseinfo_id',$courseinfo->id)->find();
-        dump ($oncourse);
+        // dump ($oncourse);
 
         $this->assign('oncourse',$oncourse);
         $this->assign('course',$course);
@@ -264,7 +267,7 @@ class StudentController extends SIndexController
         $this->assign('classroom',$classroom);
 
         $courseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
-        dump($classroom);
+        // dump($classroom);
         return $this->fetch();
     }
 
@@ -273,6 +276,7 @@ class StudentController extends SIndexController
 	{
 		$seat = $this->request->post();
 		$oncourse = Oncourse::where('id',$seat["oncourse_id"])->find();
+
 		if (is_null($oncourse)) 
         {
         	return $this->error('课程信息异常，请重新扫码进入');
@@ -293,6 +297,11 @@ class StudentController extends SIndexController
         {
         	return $this->error('行号输入超出范围，请重新输入');
         } 
+        $oncourseinfo = Oncourse::where('courseinfo_id',$seat["courseinfo_id"])->where('row',$seat["row"])->where('column',$seat["column"])->find();
+        if ($oncourseinfo != Null) {
+            return $this->error('该座位已有人使用，请重新输入');
+        }
+
         $oncourse->column = $seat["column"];
         $oncourse->row = $seat["row"];
         $oncourse->arrival = 1;
@@ -301,7 +310,7 @@ class StudentController extends SIndexController
         	return $this->success('恭喜您已完成签到',url('page'));
         }
 
-		dump($seat);
+		// dump($seat);
 		// return $this->fetch();
 		return $this->error('提交失败，请重新扫码进入');
 	}

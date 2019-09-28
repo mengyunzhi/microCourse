@@ -12,7 +12,7 @@ use app\index\validate\StudentValidate;
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-21 11:38:23
+ * @Last Modified time: 2019-09-28 12:59:20
  */
 class LoginController extends Controller
 {
@@ -54,7 +54,7 @@ class LoginController extends Controller
 			$Student->name = $request->param('name');
 			$Student->num = $request->param('num');
 			$Student->sex = $request->param('sex');
-			$Student->password = sha1($request->param('password'));
+			$Student->password = $request->param('password');
 			$Student->klass_id = $request->param('klass_id');
 
 		$validate = new StudentValidate;
@@ -69,7 +69,7 @@ class LoginController extends Controller
 			// $Student->sex = $request->param('sex');
 			// $Student->password = $request->param('password');
 			// $Student->klass_id = $request->param('klass_id');
-
+			$Student->password = sha1($request->param('password'));
 			// 添加数据
 			if (!$Student->save()) {
 				return $this->error('注册失败：', $Student->getError());
