@@ -2,54 +2,56 @@
 {block name="body"}
     <div class="row">
         <div class="col-md-12">
-            
-            <table>
-                <tr>
-                    <th>
-                        <h4>选择学期:&nbsp&nbsp</h4>
-                    </th>
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                {$isTerm->name}
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                {volist name="terms" id="terms"}
-                                <li><a href="{:url('course?id='. $terms->id)}">{$terms->name}</a></li>
-                                {/volist}
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">......</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-                    <br>
-            <table class="table table-bordered">
-                <tr class="info">
-                    <th>序号</th>
-                    <th>课程名称</th>
-                    <th>课程代码</th>
-                    <th>学期名</th>
-                    <th>任课教师</th>
-                    <th>课程类型</th>
-                    <th>上课时间</th>
-                </tr>
-                {volist key="key" name="courses" id="course" }
-                <tr>
-                    <td>{$key}</td>
-                    <td>{$course->name}</td>
-                    <td>{$course->num}</td>
-                    <td>{$course->Term->name}</td>
-                    <td>{$course->Teacher->name}</td>
-                    <td>{eq name="$course->type" value='0'}选修课{else /}必修课{/eq}</td>
-                    <td><a href="coursetime" type="button" class="btn btn-default navbar-btn">点击查看</a></td>
-                </tr>
-                {/volist}
-            </table>
-            {$courses|raw}
-            
+
+                <table>
+                    <tr>
+                        <th>
+                            <h4>选择学期:&nbsp&nbsp</h4>
+                        </th>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    {$isTerm->name}
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    {volist name="terms" id="terms"}
+                                    <li><a href="{:url('course?id='. $terms->id)}">{$terms->name}</a></li>
+                                    {/volist}
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                        <br>
+                <table class="table table-bordered">
+                    <tr class="info">
+                        <th>序号</th>
+                        <th>课程名称</th>
+                        <th>课程代码</th>
+                        <th>学期名</th>
+                        <th>任课教师</th>
+                        <th>课程类型</th>
+
+                    </tr>
+                    
+                    {volist key="key" name="courses" id="course" }
+                    <tr>
+                        <td>{$key}</td>
+                        <td>{$course->name}</td>
+                        <td>{$course->num}</td>
+                        <td>{$course->Term->name}</td>
+                        <td>{$course->Teacher->name}</td>
+                        <td>{eq name="$course->type" value='0'}选修课{else /}必修课{/eq}</td>
+
+                    </tr>
+                    {/volist}
+
+                </table>
+                <?php if (count($courses) == 0) { ?>
+                <?php }else{ ?>
+                {$courses|raw}
+                <?php } ?>
             <hr /> 
         </div>
     </div>
