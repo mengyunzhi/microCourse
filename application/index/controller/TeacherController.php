@@ -335,148 +335,148 @@ class TeacherController extends TIndexController
     }
 
     // 教师界面教室管理--李美娜
-    public function classroom()
-    {
-        // 获取当前方法名
-        $this->assign('isaction',Request::action());
+    // public function classroom()
+    // {
+    //     // 获取当前方法名
+    //     $this->assign('isaction',Request::action());
 
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
+    //     // 获取当前学期状态
+    //     $ifterm = Term::ifterm();
+    //     $this->assign('ifterm', $ifterm);
 
-        // 实例化classroom
-        $Classroom = new Classroom();
+    //     // 实例化classroom
+    //     $Classroom = new Classroom();
         
-        // 获取查询信息
-        $name = $this->request->get('name');
+    //     // 获取查询信息
+    //     $name = $this->request->get('name');
 
-        $classrooms = $Classroom->where('classroomname', 'like', '%' . $name . '%')->paginate(5, false, [
-            'query' =>[
-                'name' => $name,
-            ],
-        ]);
+    //     $classrooms = $Classroom->where('classroomname', 'like', '%' . $name . '%')->paginate(5, false, [
+    //         'query' =>[
+    //             'name' => $name,
+    //         ],
+    //     ]);
         
-        // 向V层传数据
-        $this->assign('classrooms',$classrooms);
+    //     // 向V层传数据
+    //     $this->assign('classrooms',$classrooms);
 
-        // 取回打包后的数据
-        $htmls = $this->fetch();
+    //     // 取回打包后的数据
+    //     $htmls = $this->fetch();
 
-        // 将数据返回给用户
-        return $htmls;
-    }
+    //     // 将数据返回给用户
+    //     return $htmls;
+    // }
 
 
     // 教师模块教室管理插入教室--李美娜
-    public function classroomadd()
-    {
-        return $this->fetch();
-    }
+    // public function classroomadd()
+    // {
+    //     return $this->fetch();
+    // }
     
     // 教师模块教室管理插入教室--李美娜
-    public function classroomsave()
-    {
-        // 接收传入数据
-        $postData = $this->request->post();
+    // public function classroomsave()
+    // {
+    //     // 接收传入数据
+    //     $postData = $this->request->post();
 
-        // 实例化Student空对象
-        $Classroom = new Classroom();
+    //     // 实例化Student空对象
+    //     $Classroom = new Classroom();
 
-        // 为对象赋值
-        $Classroom->classroomplace = $postData['classroomplace'];
-        $Classroom->classroomname = $postData['classroomname'];
-        $Classroom->row = $postData['row'];
-        $Classroom->column = $postData['column'];
+    //     // 为对象赋值
+    //     $Classroom->area_id = $postData['area_id'];
+    //     $Classroom->classroomname = $postData['classroomname'];
+    //     $Classroom->row = $postData['row'];
+    //     $Classroom->column = $postData['column'];
 
-        // 添加数据
-        if (!$Classroom->save())
-        {
-            return $this->error('数据添加错误：' . $Classroom->getError());
-        }
-        return $this->success('操作成功', url('classroom'));
-    }
+    //     // 添加数据
+    //     if (!$Classroom->save())
+    //     {
+    //         return $this->error('数据添加错误：' . $Classroom->getError());
+    //     }
+    //     return $this->success('操作成功', url('classroom'));
+    // }
 
 
     // 教师模块教室管理删除教室--李美娜
-    public function classroomdelete()
-    {
-        // 获取pathinfo传入的ID值
-        $id = $this->request->param('id/d');
+    // public function classroomdelete()
+    // {
+    //     // 获取pathinfo传入的ID值
+    //     $id = $this->request->param('id/d');
 
-        if (is_null($id) || 0 === $id){
-            return $this->error('未获取ID信息');
-        }
+    //     if (is_null($id) || 0 === $id){
+    //         return $this->error('未获取ID信息');
+    //     }
 
-        // 获取要删除的对象
-        $Classroom = Classroom::get($id);
+    //     // 获取要删除的对象
+    //     $Classroom = Classroom::get($id);
 
-        // 要删除的对象存在
-        if (is_null($Classroom)) {
-            return $this->error('不存在id为' . $id . '的教室，删除失败');
-        }
+    //     // 要删除的对象存在
+    //     if (is_null($Classroom)) {
+    //         return $this->error('不存在id为' . $id . '的教室，删除失败');
+    //     }
 
-        // 删除对象
-        if (!$Classroom->delete()) {
-            return $this->error('删除失败:');
-        }
+    //     // 删除对象
+    //     if (!$Classroom->delete()) {
+    //         return $this->error('删除失败:');
+    //     }
 
-        // 进行跳转
-        return $this->success('删除成功',url('classroom'));
-    }
+    //     // 进行跳转
+    //     return $this->success('删除成功',url('classroom'));
+    // }
 
     // 教师界面教室管理编辑教室--李美娜
-    public function classroomedit()
-    {
-        // 获取pathinfo传入的ID值
-        $id = $this->request->param('id/d');
+    // public function classroomedit()
+    // {
+    //     // 获取pathinfo传入的ID值
+    //     $id = $this->request->param('id/d');
 
-        // 在Student表模型中获取当前记录
-        if (is_null($Classroom = Classroom::get($id))) {
-            return $this->error('系统未找到ID为' . $id . '的记录',url('classroom'));
-        }
+    //     // 在Student表模型中获取当前记录
+    //     if (is_null($Classroom = Classroom::get($id))) {
+    //         return $this->error('系统未找到ID为' . $id . '的记录',url('classroom'));
+    //     }
 
-        // 向V层传数据
-        $this->assign('classroom', $Classroom);
+    //     // 向V层传数据
+    //     $this->assign('classroom', $Classroom);
 
-        // 取回打包后的数据
-        $htmls = $this->fetch();
+    //     // 取回打包后的数据
+    //     $htmls = $this->fetch();
 
-        // 将数据返回给用户
-        return $htmls;
-    }
+    //     // 将数据返回给用户
+    //     return $htmls;
+    // }
 
 
     // 教师界面教室管理更新教室--李美娜
-    public function classroomupdate()
-    {
-        try {
-            // 接收数据，获取要更新的关键字信息
-            $id = $this->request->post('id/d');
-            $message = '更新成功';
-            $Classroom = Classroom::get($id);
+    // public function classroomupdate()
+    // {
+    //     try {
+    //         // 接收数据，获取要更新的关键字信息
+    //         $id = $this->request->post('id/d');
+    //         $message = '更新成功';
+    //         $Classroom = Classroom::get($id);
 
-            if (!is_null($Classroom)) {
-                // 写入要更新的数据
-                $Classroom->classroomplace = $this->request->post('classroomplace');
-                $Classroom->classroomname = $this->request->post('classroomname');
-                $Classroom->row = $this->request->post('row');
-                $Classroom->column = $this->request->post('column');
+    //         if (!is_null($Classroom)) {
+    //             // 写入要更新的数据
+    //             // $Classroom->area_id  = $this->request->post('area_id');
+    //             $Classroom->classroomname = $this->request->post('classroomname');
+    //             $Classroom->row = $this->request->post('row');
+    //             $Classroom->column = $this->request->post('column');
 
-                // 更新
-                if (false === $Classroom->save())
-                {
-                    $message =  '更新失败' . $Classroom->getError();
-                }
-            } else {
-                throw new \Exception("所更新的记录不存在", 1);  
-            }
-        } catch (\Exception $e) {
-            $message = $e->getMessage();
-        }
+    //             // 更新
+    //             if (false === $Classroom->save())
+    //             {
+    //                 $message =  '更新失败' . $Classroom->getError();
+    //             }
+    //         } else {
+    //             throw new \Exception("所更新的记录不存在", 1);  
+    //         }
+    //     } catch (\Exception $e) {
+    //         $message = $e->getMessage();
+    //     }
 
-        // 进行跳转
-        return $this->success($message,url('classroom'));
-    }
+    //     // 进行跳转
+    //     return $this->success($message,url('classroom'));
+    // }
 
     //教师模块上课模式——刘宇轩
     public function online() 
@@ -521,7 +521,7 @@ class TeacherController extends TIndexController
     public function setcourse()
     {
         $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
-        // $classroom[0] = $courseinfo->classroom->classroomplace . $courseinfo->classroom->classroomname;
+        // $classroom[0] = $courseinfo->classroom->area_id . $courseinfo->classroom->classroomname;
         // $classroom[1] = $courseinfo->classroom->row;
         // $classroom[2] = $courseinfo->classroom->column;
         // $url = Term::$domainname . url('student/entercourse?id=' . $courseinfo->getData('id'));
@@ -537,14 +537,21 @@ class TeacherController extends TIndexController
     {
         //取出本节课的课程信息
         $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
+
         //从中间表取出所有学生信息
         $students = Score::where('course_id',$courseinfo->course->id)->select();
+        if(empty($students[0])) {
+            
+            return $this->error('未开启签到',url('online'));
+        }
+        
         // 建一个空数组储存学生信息
         $ids = [];
         //对于每个学生取出ID
         foreach ($students as $key => $astudent) {
             $ids[$key] = $astudent->student_id;
         }
+
         //打乱顺序
         shuffle($ids);
         //如果传入数据为空，并且传入id等于随机数id，则再次随机

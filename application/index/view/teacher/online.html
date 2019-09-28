@@ -16,7 +16,7 @@
                   <tr>
                     <td>{$key}</td>
                     <td>{$courseinfo->begin .'~'.($courseinfo->begin+$courseinfo->length-1)}</td>
-                    <td>{$courseinfo->classroom->classroomplace." ".$courseinfo->classroom->classroomname}</td>
+                    <td>{$courseinfo->classroom->area->name." ".$courseinfo->classroom->classroomname}</td>
                     <td>{$courseinfo->Course->name}</td>
                     <td>{eq name='$courseinfo->Course->type' value='0'} 选修 {else /} 必修 {/eq} </td>
                     
