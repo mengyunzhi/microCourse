@@ -9,7 +9,7 @@
 <!--                   <th>任课教师</th> -->
                   <th>课程类型</th>
                   <th>班级</th>
-                  <th>详细信息</th>
+                  <!-- <th>详细信息</th> -->
                   <th>录入成绩</th>
                 </tr>
                 {volist name="courses" id="course" key="key"}
@@ -22,8 +22,8 @@
                     <td>{eq name='course->getData("type")' value='0'}选修{else /}必修{/eq}</td>
                     <td>{$course->getdata('klass')}</td>
                     
-                    <td><a href="{:url('gradeinfo?id='.$course->getData('id'))}" class="btn btn-primary">&nbsp;详情</a></td>
-                    
+<!--                     <td><a href="{:url('gradeinfo?id='.$course->getData('id'))}" class="btn btn-primary">&nbsp;详情</a></td>
+                     -->
                     <td><a href="{:url('gradeadd?id='.$course->getData('id'))}" class="btn btn-primary">&nbsp;录入</a></td>
                     
                   </tr>

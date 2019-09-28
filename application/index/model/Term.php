@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-08-13 10:09:10
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-23 22:17:32
+ * @Last Modified time: 2019-09-28 17:04:07
  */
 namespace app\index\model;
 use think\Model;
@@ -229,7 +229,7 @@ class Term extends Model
     static public function NoTerm()
     {
         $terms = Term::all();
-        if (empty($terms)){
+        if (count($terms) == 0){
             return 1;
         } else {
             return 0;

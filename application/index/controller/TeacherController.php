@@ -26,7 +26,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-28 11:31:06
+ * @Last Modified time: 2019-09-28 17:59:50
  */
 class TeacherController extends TIndexController
 {
@@ -689,7 +689,7 @@ class TeacherController extends TIndexController
         $id = session('teacherId');
 
         //取出本教师的全部课程
-        $courses = Course::where('teacher_id',$id)->paginate(5);
+        $courses = Course::where('teacher_id',$id)->paginate(10);
 
         $klass = new Klass;
 
@@ -705,8 +705,9 @@ class TeacherController extends TIndexController
                 $str = $str.",".$str1; 
             }
             //把字符串信息合并到课程信息中
-            $acourse->klass = substr($str,1,-1);
+            $acourse->klass = substr($str,1);
         }
+        // dump ($courses);
         //发送课程信息
         $this->assign('courses',$courses);
 
@@ -763,7 +764,8 @@ class TeacherController extends TIndexController
         $course = Course::get($id);
         //获取此课程所有学生的签到和成绩信息
         $scores = Score::where('course_id',$id)->select();
-
+        // dump($scores);
+        // return;
         $this->assign('course',$course);
         $this->assign('scores',$scores);
         return $this->fetch();

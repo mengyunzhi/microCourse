@@ -34,6 +34,7 @@
               {/eq}
               <form class="form-horizontal" action="{:url('seatsave')}" method="post">
                 <input type="hidden" name="oncourse_id" value="{$oncourse->id}" />
+                <input type="hidden" name="courseinfo_id" value="$courseinfo->id" />
                 <input type="hidden" name="classroom_row" value="{$classroom->row}" />
                 <input type="hidden" name="classroom_column" value="{$classroom->column}" />
                 <input type="hidden" name="courseinfo_id" value="{$courseinfo->id}" />
@@ -44,17 +45,17 @@
                 <br><br>
                 <div class="input-group input-group-lg">
                   <span class="input-group-addon" id="sizing-addon1">教室名称</span>
-                  <input class="form-control" type="text" value="{$classroom->getdata('classroomplace') . $classroom->getdata('classroomname')}" readonly>
+                  <input class="form-control" type="text" value="{$classroom->area->name . $classroom->getdata('classroomname')}" readonly>
                 </div>
                 <br><br>
                 <div class="input-group input-group-lg">
                   <span class="input-group-addon" id="sizing-addon1">列号</span>
-                  <input name="column" type="text" class="form-control" {eq name='$oncourse->column' value='0'} placeholder="此教室共有{$classroom->column}列" {else /} value="{$oncourse->row}" {/eq} aria-describedby="sizing-addon1">
+                  <input name="column" type="text" class="form-control" {eq name='$oncourse->column' value='0'} placeholder="此教室共有{$classroom->column}列" {else /} value="{$oncourse->column}" {/eq} aria-describedby="sizing-addon1">
                 </div>
                 <br><br>  
                 <div class="input-group input-group-lg ">
                   <span class="input-group-addon" id="sizing-addon1">行号</span>
-                  <input name="row" type="text" class="form-control" {eq name='$oncourse->row' value='0'} placeholder="此教室共有{$classroom->row}行" {else /} value="{$oncourse->column}" {/eq} aria-describedby="sizing-addon1">
+                  <input name="row" type="text" class="form-control" {eq name='$oncourse->row' value='0'} placeholder="此教室共有{$classroom->row}行" {else /} value="{$oncourse->row}" {/eq} aria-describedby="sizing-addon1">
                 </div>
                 <br><br>
                   <button type="submit" class="btn btn-default">提交</button>
