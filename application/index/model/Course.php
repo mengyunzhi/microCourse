@@ -93,8 +93,8 @@ class Course extends Model
         return $this->hasMany('Courseinfo');
     }
 
-    public function Klass()
+    public function Klasses()
     {
-    	return $this->belongsToMany('Klass',config('database.prefix') . 'klass_course');
+    	return $this->belongsToMany('Klass', 'klass_course');
     }
 }
