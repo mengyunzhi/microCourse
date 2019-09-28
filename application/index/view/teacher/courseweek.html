@@ -37,17 +37,17 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <label for="name" class="col-sm control-label"><h3>选择周次:&nbsp;</h3></label>
-            <button type="button" class="btn btn-default btn-lg">&nbsp;&nbsp;全选/全不选&nbsp;&nbsp;</button>
+            <!-- <button type="button" class="btn btn-default btn-lg">&nbsp;&nbsp;全选/全不选&nbsp;&nbsp;</button> -->
         </div>
-        <br>
+        
         <div class="col-md-2"></div>
         
     </div>
-    <br><br>
+    
     <form action="{:url('courseweeksave')}" method="post">
         <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-8">
+            <div class="col-md-2"></div>
+            <div class="col-md-10">
                 <input type="hidden" name="id" value="{$course->id}" />
                 <input type="hidden" name="weekday" value="{$weekdayorigin}" />
                 <input type="hidden" name="begin" value="{$begin}" />
