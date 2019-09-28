@@ -5,7 +5,7 @@
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
 <<<<<<< HEAD
- * @Last Modified time: 2019-09-26 20:50:58
+ * @Last Modified time: 2019-09-28 19:48:26
 =======
  * @Last Modified time: 2019-09-21 11:26:27
 >>>>>>> e94378ad1760a82bb7e19fa552e6a3cb66616ea1
@@ -15,6 +15,7 @@ use app\index\controller\WxController;
 use app\index\controller\StudentController;
 use app\index\controller\LoginController;
 use app\index\model\Student;
+use app\index\model\Term;
  
 class WxindexController extends WxController {
 	public static $openIdTest = 'openIdTest';
@@ -102,7 +103,10 @@ class WxindexController extends WxController {
 			$Student->save();
 			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/register?id='.$Student->id);
 		}
-
+        if(Term::NoTerm()) {
+            // return $this->fetch('Login/noterm');
+            return $this->error('系统尚未初始化', url('Login/noterm'));
+        }
 		//跳转，根据state跳转到不同界面
     	switch ($state) {
     		//OpenId测试
