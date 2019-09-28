@@ -31,7 +31,7 @@
                 </tr>
                 {volist name="classrooms" id="Classroom" $key="key"}
                 <tr>
-                    <td>{$Classroom->getdata('classroomplace')}</td>
+                    <td>{$Classroom->area->name}</td>
                     <td>{$Classroom->getdata('classroomname')}</td>
                     <td>{$Classroom->getdata('row')}</td>
                     <td>{$Classroom->getdata('column')}</td>

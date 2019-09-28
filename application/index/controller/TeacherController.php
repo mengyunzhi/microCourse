@@ -1,6 +1,8 @@
 <?php
 namespace app\index\controller;
 use app\index\model\Course;
+use app\index\model\Area;
+use app\index\model\College;
 use app\index\model\Term;
 use app\index\model\Time;
 use app\index\model\Academy;
@@ -15,6 +17,7 @@ use think\Controller;
 use app\index\model\Classroom;
 use think\facade\Session;
 use app\index\model\Student;
+use think\Db;
 use think\facade\Request;
 
 /**
@@ -23,23 +26,113 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-24 21:28:19
+ * @Last Modified time: 2019-09-28 11:31:06
  */
 class TeacherController extends TIndexController
 {
 
-	public function page()
-	{
+    public function page()
+    {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
         
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-        $time = Term::timeAll();
-        $this->assign('time', $time);
+        // 获取所有学期
+        $terms = Term::all();
+
+        //获取要查询的周次，若没有，就查询本周
+        $week = $this->request->param('week');
+        if (is_null($week)) {
+            $week = Term::getWeek();
+        }
+
+        // 获取请求查询的学期课程，若没有就找最近的学期
+        $id = $this->request->param('id/d');
+        if (is_null($id)) {
+            $i = 0;
+            foreach ($terms as $aterm) {
+                $i++;
+             }
+             $id = $terms[$i-1]->id;
+             foreach ($terms as $aaterm) {
+                if ($aaterm->state === 1) {
+                    $id = $aaterm->id;                  
+                }
+             }
+        }       
+        $Term = Term::get($id);
+        $this->assign('Term', $Term);
+
+
+        $termlength = $Term->length;
+        $weeks = array();
+        for ($i=0; $i < $termlength; $i++) { 
+            $weeks[$i] = $i+1;
+        }
+        $this->assign('weeks',$weeks);
+
+        //取出本学期的所有课程，编为一个数组
+        $courses = $Term->Course;
+        //储存所有课程的ID
+        $AllcourseIds = [];
+        foreach ($courses  as $value) {
+          array_push($AllcourseIds, $value->id);
+        }
+
+        // 获取本教师id
+        $teacherId = session('teacherId');
+
+        //查询本学期本本教师的所有课程
+        $Course = new Course();
+        $getCourse =  $Course->where(['id'=>$AllcourseIds,'teacher_id'=>$teacherId])->select();
+
+        //本学生本星期的课程表
+        //前面是小节，后面是星期
+        //0没用了！！！！！！！！！
+        
+        $coursetable = array('1' => array('0','0','0','0','0','0','0','0') , 
+            '2' => array('0','0','0','0','0','0','0','0') , 
+            '3' => array('0','0','0','0','0','0','0','0') , 
+            '4' => array('0','0','0','0','0','0','0','0') , 
+            '5' => array('0','0','0','0','0','0','0','0') , 
+            '6' => array('0','0','0','0','0','0','0','0') , 
+            '7' => array('0','0','0','0','0','0','0','0') , 
+            '8' => array('0','0','0','0','0','0','0','0') , 
+            '9' => array('0','0','0','0','0','0','0','0') , 
+            '10' => array('0','0','0','0','0','0','0','0') , 
+            '11' => array('0','0','0','0','0','0','0','0')) ;
+
+        // 得到本学期本教师所有课程成绩所对应的course_id
+        if(is_null($getCourse)) {
+            $courseinfos = [];
+        } else {
+            //储存本学期本教师所有课程的course_id
+            $CourseIds = [];
+            foreach ($getCourse as $course) {
+                array_push($CourseIds, $course->id);
+            }
+
+            $courseinfos = Courseinfo::where(['course_id'=>$CourseIds, 'week'=>$week])->select();
+
+            foreach ($courseinfos as $key => $acourseinfo) {
+                {
+                    $coursetable[$acourseinfo->begin][$acourseinfo->weekday] = $acourseinfo;
+                }
+            }
+            // dump($coursetable);
+            // dump($courseinfos);
+            // return;
+            // 通过成绩对应course_id得到本学期本学生所有课程
+            // $courses = $course->where(['id'=>$scoreIds])->paginate(5);
+        }
+
+        //传入课程表
+        $this->assign('coursetable',$coursetable);
+        //传入要查询的星期
+        $this->assign('week',$week);
+        $this->assign('timetable',Term::$timetable);
+
         return $this->fetch();
-	}	
+    }   
     
 
     // 课程——赵凯强
@@ -76,9 +169,10 @@ class TeacherController extends TIndexController
         $teacherId = session('teacherId');
         $teacher = Teacher::get($teacherId);
         $this->assign('teacher', $teacher);
-        $klass = new Klass;
-        $this->assign('Klasses', $klass->select());
-        $this->assign('Course', new Course);
+        
+        $colleges = College::all();
+        $this->assign('colleges', $colleges);
+
         return $this->fetch();
     }
 
@@ -130,14 +224,19 @@ class TeacherController extends TIndexController
         }
 
         $this->assign('Course', $Course);
-        
+
+        // 学期
         $terms = Term::all();
         $this->assign('terms', $terms);
+
+        // 老师
         $teacherId = session('teacherId');
         $teacher = Teacher::get($teacherId);
         $this->assign('teacher', $teacher);
-        $klass = new Klass;
-        $this->assign('Klasses', $klass->select());
+        
+        // 学院
+        $colleges = College::all();
+        $this->assign('colleges', $colleges);
 
         return $this->fetch();
     }
@@ -215,7 +314,7 @@ class TeacherController extends TIndexController
     public function coursesee()
     {
         // 获取当前方法名
-        $this->assign('isaction',Request::action());
+        $this->assign('isaction','course');
         //获取传入的课程ID
         $id = $this->request->param('id/d');
         //从数据库取出此课程
@@ -242,14 +341,15 @@ class TeacherController extends TIndexController
         $begin = $this->request->param('begin/d');
         $weeks = array();
         $classroom_id = Courseinfo::getCourseClassroom($id,$weekdayorigin,$begin);
-        $classroom = Classroom::select();
+
+        $classrooms = Classroom::select();
         $termLength = Term::TermLength();
         for ($i=0; $i < $termLength; $i++) { 
             $weeks[$i] = $i;
         }
         $course = Course::get($id);
         $courseinfo = new Courseinfo;
-        $this->assign('classroom',$classroom);
+        $this->assign('classrooms',$classrooms);
         $this->assign('classroom_id',$classroom_id);
         $this->assign('courseinfo',$courseinfo);
         $this->assign('weekdayorigin',$weekdayorigin);
@@ -257,6 +357,9 @@ class TeacherController extends TIndexController
         $this->assign('begin',$begin);
         $this->assign('weeks',$weeks);
         $this->assign('course',$course);
+
+        $areas = Area::all();
+        $this->assign('areas', $areas);
         return $this->fetch();
     }
 
@@ -322,148 +425,148 @@ class TeacherController extends TIndexController
     }
 
     // 教师界面教室管理--李美娜
-    public function classroom()
-    {
-        // 获取当前方法名
-        $this->assign('isaction',Request::action());
+    // public function classroom()
+    // {
+    //     // 获取当前方法名
+    //     $this->assign('isaction',Request::action());
 
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
+    //     // 获取当前学期状态
+    //     $ifterm = Term::ifterm();
+    //     $this->assign('ifterm', $ifterm);
 
-        // 实例化classroom
-        $Classroom = new Classroom();
+    //     // 实例化classroom
+    //     $Classroom = new Classroom();
         
-        // 获取查询信息
-        $name = $this->request->get('name');
+    //     // 获取查询信息
+    //     $name = $this->request->get('name');
 
-        $classrooms = $Classroom->where('classroomname', 'like', '%' . $name . '%')->paginate(5, false, [
-            'query' =>[
-                'name' => $name,
-            ],
-        ]);
+    //     $classrooms = $Classroom->where('classroomname', 'like', '%' . $name . '%')->paginate(5, false, [
+    //         'query' =>[
+    //             'name' => $name,
+    //         ],
+    //     ]);
         
-        // 向V层传数据
-        $this->assign('classrooms',$classrooms);
+    //     // 向V层传数据
+    //     $this->assign('classrooms',$classrooms);
 
-        // 取回打包后的数据
-        $htmls = $this->fetch();
+    //     // 取回打包后的数据
+    //     $htmls = $this->fetch();
 
-        // 将数据返回给用户
-        return $htmls;
-    }
+    //     // 将数据返回给用户
+    //     return $htmls;
+    // }
 
 
     // 教师模块教室管理插入教室--李美娜
-    public function classroomadd()
-    {
-        return $this->fetch();
-    }
+    // public function classroomadd()
+    // {
+    //     return $this->fetch();
+    // }
     
     // 教师模块教室管理插入教室--李美娜
-    public function classroomsave()
-    {
-        // 接收传入数据
-        $postData = $this->request->post();
+    // public function classroomsave()
+    // {
+    //     // 接收传入数据
+    //     $postData = $this->request->post();
 
-        // 实例化Student空对象
-        $Classroom = new Classroom();
+    //     // 实例化Student空对象
+    //     $Classroom = new Classroom();
 
-        // 为对象赋值
-        $Classroom->classroomplace = $postData['classroomplace'];
-        $Classroom->classroomname = $postData['classroomname'];
-        $Classroom->row = $postData['row'];
-        $Classroom->column = $postData['column'];
+    //     // 为对象赋值
+    //     $Classroom->area_id = $postData['area_id'];
+    //     $Classroom->classroomname = $postData['classroomname'];
+    //     $Classroom->row = $postData['row'];
+    //     $Classroom->column = $postData['column'];
 
-        // 添加数据
-        if (!$Classroom->save())
-        {
-            return $this->error('数据添加错误：' . $Classroom->getError());
-        }
-        return $this->success('操作成功', url('classroom'));
-    }
+    //     // 添加数据
+    //     if (!$Classroom->save())
+    //     {
+    //         return $this->error('数据添加错误：' . $Classroom->getError());
+    //     }
+    //     return $this->success('操作成功', url('classroom'));
+    // }
 
 
     // 教师模块教室管理删除教室--李美娜
-    public function classroomdelete()
-    {
-        // 获取pathinfo传入的ID值
-        $id = $this->request->param('id/d');
+    // public function classroomdelete()
+    // {
+    //     // 获取pathinfo传入的ID值
+    //     $id = $this->request->param('id/d');
 
-        if (is_null($id) || 0 === $id){
-            return $this->error('未获取ID信息');
-        }
+    //     if (is_null($id) || 0 === $id){
+    //         return $this->error('未获取ID信息');
+    //     }
 
-        // 获取要删除的对象
-        $Classroom = Classroom::get($id);
+    //     // 获取要删除的对象
+    //     $Classroom = Classroom::get($id);
 
-        // 要删除的对象存在
-        if (is_null($Classroom)) {
-            return $this->error('不存在id为' . $id . '的教室，删除失败');
-        }
+    //     // 要删除的对象存在
+    //     if (is_null($Classroom)) {
+    //         return $this->error('不存在id为' . $id . '的教室，删除失败');
+    //     }
 
-        // 删除对象
-        if (!$Classroom->delete()) {
-            return $this->error('删除失败:');
-        }
+    //     // 删除对象
+    //     if (!$Classroom->delete()) {
+    //         return $this->error('删除失败:');
+    //     }
 
-        // 进行跳转
-        return $this->success('删除成功',url('classroom'));
-    }
+    //     // 进行跳转
+    //     return $this->success('删除成功',url('classroom'));
+    // }
 
     // 教师界面教室管理编辑教室--李美娜
-    public function classroomedit()
-    {
-        // 获取pathinfo传入的ID值
-        $id = $this->request->param('id/d');
+    // public function classroomedit()
+    // {
+    //     // 获取pathinfo传入的ID值
+    //     $id = $this->request->param('id/d');
 
-        // 在Student表模型中获取当前记录
-        if (is_null($Classroom = Classroom::get($id))) {
-            return $this->error('系统未找到ID为' . $id . '的记录',url('classroom'));
-        }
+    //     // 在Student表模型中获取当前记录
+    //     if (is_null($Classroom = Classroom::get($id))) {
+    //         return $this->error('系统未找到ID为' . $id . '的记录',url('classroom'));
+    //     }
 
-        // 向V层传数据
-        $this->assign('classroom', $Classroom);
+    //     // 向V层传数据
+    //     $this->assign('classroom', $Classroom);
 
-        // 取回打包后的数据
-        $htmls = $this->fetch();
+    //     // 取回打包后的数据
+    //     $htmls = $this->fetch();
 
-        // 将数据返回给用户
-        return $htmls;
-    }
+    //     // 将数据返回给用户
+    //     return $htmls;
+    // }
 
 
     // 教师界面教室管理更新教室--李美娜
-    public function classroomupdate()
-    {
-        try {
-            // 接收数据，获取要更新的关键字信息
-            $id = $this->request->post('id/d');
-            $message = '更新成功';
-            $Classroom = Classroom::get($id);
+    // public function classroomupdate()
+    // {
+    //     try {
+    //         // 接收数据，获取要更新的关键字信息
+    //         $id = $this->request->post('id/d');
+    //         $message = '更新成功';
+    //         $Classroom = Classroom::get($id);
 
-            if (!is_null($Classroom)) {
-                // 写入要更新的数据
-                $Classroom->classroomplace = $this->request->post('classroomplace');
-                $Classroom->classroomname = $this->request->post('classroomname');
-                $Classroom->row = $this->request->post('row');
-                $Classroom->column = $this->request->post('column');
+    //         if (!is_null($Classroom)) {
+    //             // 写入要更新的数据
+    //             // $Classroom->area_id  = $this->request->post('area_id');
+    //             $Classroom->classroomname = $this->request->post('classroomname');
+    //             $Classroom->row = $this->request->post('row');
+    //             $Classroom->column = $this->request->post('column');
 
-                // 更新
-                if (false === $Classroom->save())
-                {
-                    $message =  '更新失败' . $Classroom->getError();
-                }
-            } else {
-                throw new \Exception("所更新的记录不存在", 1);  
-            }
-        } catch (\Exception $e) {
-            $message = $e->getMessage();
-        }
+    //             // 更新
+    //             if (false === $Classroom->save())
+    //             {
+    //                 $message =  '更新失败' . $Classroom->getError();
+    //             }
+    //         } else {
+    //             throw new \Exception("所更新的记录不存在", 1);  
+    //         }
+    //     } catch (\Exception $e) {
+    //         $message = $e->getMessage();
+    //     }
 
-        // 进行跳转
-        return $this->success($message,url('classroom'));
-    }
+    //     // 进行跳转
+    //     return $this->success($message,url('classroom'));
+    // }
 
     //教师模块上课模式——刘宇轩
     public function online() 
@@ -508,7 +611,7 @@ class TeacherController extends TIndexController
     public function setcourse()
     {
         $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
-        // $classroom[0] = $courseinfo->classroom->classroomplace . $courseinfo->classroom->classroomname;
+        // $classroom[0] = $courseinfo->classroom->area_id . $courseinfo->classroom->classroomname;
         // $classroom[1] = $courseinfo->classroom->row;
         // $classroom[2] = $courseinfo->classroom->column;
         // $url = Term::$domainname . url('student/entercourse?id=' . $courseinfo->getData('id'));
@@ -524,14 +627,21 @@ class TeacherController extends TIndexController
     {
         //取出本节课的课程信息
         $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
+
         //从中间表取出所有学生信息
         $students = Score::where('course_id',$courseinfo->course->id)->select();
+        if(empty($students[0])) {
+            
+            return $this->error('未开启签到',url('online'));
+        }
+        
         // 建一个空数组储存学生信息
         $ids = [];
         //对于每个学生取出ID
         foreach ($students as $key => $astudent) {
             $ids[$key] = $astudent->student_id;
         }
+
         //打乱顺序
         shuffle($ids);
         //如果传入数据为空，并且传入id等于随机数id，则再次随机
@@ -574,34 +684,32 @@ class TeacherController extends TIndexController
     {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
-        
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
 
-    	$course = new course;
-        $courses = $course->paginate(5);//取出全部课程
-        // $page = $courses->render();
+        // 得到本教师id
+        $id = session('teacherId');
+
+        //取出本教师的全部课程
+        $courses = Course::where('teacher_id',$id)->paginate(5);
 
         $klass = new Klass;
-        $klasscourse = new klasscourse;
-        $klasscourses = $klasscourse->select();//取出班级课程中间表的全部信息
+
+        $klasscourses = KlassCourse::select();//取出班级课程中间表的全部信息
         
         //对于每个课程，取出对应的多个班级信息
         foreach ($courses as $acourse) {
-            $klasses = $klasscourse->where('course_id',$acourse->id)->select();
+            $klasses = KlassCourse::where('course_id',$acourse->id)->select();
             $str = "";
             //对于每个班级，用ID取出班级名称，并连接字符串
             foreach ($klasses as $aclass) {
                 $str1 = klass::get($aclass->klass_id)->name;
-                $str = $str." ".$str1; 
+                $str = $str.",".$str1; 
             }
             //把字符串信息合并到课程信息中
-            $acourse->klass = $str;
+            $acourse->klass = substr($str,1,-1);
         }
         //发送课程信息
         $this->assign('courses',$courses);
-        // $this->assign('page', $page);
+
         return $this->fetch();
     }
 
@@ -609,22 +717,19 @@ class TeacherController extends TIndexController
     public function gradeinfo()
     {
         // 获取当前方法名
-        $this->assign('isaction',Request::action());
-        
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-        
+        $this->assign('isaction','grade');
+        //获取课程id
         $id = $this->request->param('id/d');
-        $courses = new course();
-        $course = course::get($id);
-        $infos = $courses->courseinfo()->where('course_id',$id)->order('week')->order('weekday')->paginate(5);
 
-         // $page = $info->render();
+        $courses = new course();
+        //通过课程id获取当前课程
+        $course = Course::get($id);
+        //根据课程取出所有课程信息（每节课）
+        $infos = $courses->Courseinfo()->where('course_id',$id)->order('week')->order('weekday')->paginate(10);
 
         $this->assign('course',$course);
         $this->assign('infos',$infos);
-         // $this->assign('page', $page);
+
         return $this->fetch();
     }
 
@@ -632,12 +737,8 @@ class TeacherController extends TIndexController
     public function gradeoncourse()
     {
         // 获取当前方法名
-        $this->assign('isaction',Request::action());
-        
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-
+        $this->assign('isaction','grade');
+    
         $id = $this->request->param('id/d');
 
         $courseinfo = Courseinfo::get($id);
@@ -656,19 +757,19 @@ class TeacherController extends TIndexController
     public function gradeadd()
     {
         // 获取当前方法名
-        $this->assign('isaction',Request::action());
-
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-
+        $this->assign('isaction','grade');
+        //根据传入课程id获取课程
         $id = $this->request->param('id/d');
         $course = Course::get($id);
-        $score = new Score;
-        $scores = $score->where('course_id',$id)->select();
+        //获取此课程所有学生的签到和成绩信息
+        $scores = Score::where('course_id',$id)->select();
+
         $this->assign('course',$course);
-        $this->assign('score',$scores);
+        $this->assign('scores',$scores);
         return $this->fetch();
+        // dump($course);
+        // dump($scores);
+        // return;
     }
 
     //教师模块成绩更新-刘宇轩
@@ -676,30 +777,34 @@ class TeacherController extends TIndexController
     {
         $scores = $this->request->post();
         $key = $this->request->post('key');
-        dump ($key);
-        dump ($scores);
-        dump ($scores["id"]["0"]);
-        return ;
+        // dump($this->request->post());
+        //dump ($key);
+        //dump ($scores);
+        //dump ($scores["id"]["0"]);
+        // return;
+
         $message = '更新成功';
-        for ($i=0; $i < $key - 1; $i++) { 
-            $score = score::get($scores["id"][$i]);
+        for ($i=0; $i <= $key; $i++) { 
+            $score = score::where('id',$scores["id"][$i])->find();
+
             if (!is_null($score)){
                 $score->score1 = $scores["score1"][$i];
                 $score->score2 = $scores["score2"][$i];
-                $score->scoresum = $scores["scoresum"][$i];
-                if (false === $score->save())
+                $score->scoresum = (int)$scores["scoresum"][$i];
+                                if (false === $score->save())
                 {
-                    $message = '更新失败' . $score->getError();
+                    $message = '更新失败';
+                    return $this->error($message,url('grade'));
                 }
             }else{
-                throw new \Exception("所更新的记录不存在", 1);
+                $message = '所更新的记录不存在';
+                return $this->error($message,url('grade'));
             }
 
-            //dump ($score);
+            
         }
         return $this->success($message,url('grade'));
     }
-
 
 }
 

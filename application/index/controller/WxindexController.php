@@ -16,7 +16,7 @@ use app\index\controller\StudentController;
 use app\index\controller\LoginController;
 use app\index\model\Student;
  
-class WxIndexController extends WxController {
+class WxindexController extends WxController {
 	public static $openIdTest = 'openIdTest';
 	public static $page = 'page';
 	public static $score = 'score';
