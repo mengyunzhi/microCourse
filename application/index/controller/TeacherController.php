@@ -26,23 +26,113 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-27 20:41:18
+ * @Last Modified time: 2019-09-28 11:31:06
  */
 class TeacherController extends TIndexController
 {
 
-	public function page()
-	{
+    public function page()
+    {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
         
-        // 获取当前学期状态
-        $ifterm = Term::ifterm();
-        $this->assign('ifterm', $ifterm);
-        $time = Term::timeAll();
-        $this->assign('time', $time);
+        // 获取所有学期
+        $terms = Term::all();
+
+        //获取要查询的周次，若没有，就查询本周
+        $week = $this->request->param('week');
+        if (is_null($week)) {
+            $week = Term::getWeek();
+        }
+
+        // 获取请求查询的学期课程，若没有就找最近的学期
+        $id = $this->request->param('id/d');
+        if (is_null($id)) {
+            $i = 0;
+            foreach ($terms as $aterm) {
+                $i++;
+             }
+             $id = $terms[$i-1]->id;
+             foreach ($terms as $aaterm) {
+                if ($aaterm->state === 1) {
+                    $id = $aaterm->id;                  
+                }
+             }
+        }       
+        $Term = Term::get($id);
+        $this->assign('Term', $Term);
+
+
+        $termlength = $Term->length;
+        $weeks = array();
+        for ($i=0; $i < $termlength; $i++) { 
+            $weeks[$i] = $i+1;
+        }
+        $this->assign('weeks',$weeks);
+
+        //取出本学期的所有课程，编为一个数组
+        $courses = $Term->Course;
+        //储存所有课程的ID
+        $AllcourseIds = [];
+        foreach ($courses  as $value) {
+          array_push($AllcourseIds, $value->id);
+        }
+
+        // 获取本教师id
+        $teacherId = session('teacherId');
+
+        //查询本学期本本教师的所有课程
+        $Course = new Course();
+        $getCourse =  $Course->where(['id'=>$AllcourseIds,'teacher_id'=>$teacherId])->select();
+
+        //本学生本星期的课程表
+        //前面是小节，后面是星期
+        //0没用了！！！！！！！！！
+        
+        $coursetable = array('1' => array('0','0','0','0','0','0','0','0') , 
+            '2' => array('0','0','0','0','0','0','0','0') , 
+            '3' => array('0','0','0','0','0','0','0','0') , 
+            '4' => array('0','0','0','0','0','0','0','0') , 
+            '5' => array('0','0','0','0','0','0','0','0') , 
+            '6' => array('0','0','0','0','0','0','0','0') , 
+            '7' => array('0','0','0','0','0','0','0','0') , 
+            '8' => array('0','0','0','0','0','0','0','0') , 
+            '9' => array('0','0','0','0','0','0','0','0') , 
+            '10' => array('0','0','0','0','0','0','0','0') , 
+            '11' => array('0','0','0','0','0','0','0','0')) ;
+
+        // 得到本学期本教师所有课程成绩所对应的course_id
+        if(is_null($getCourse)) {
+            $courseinfos = [];
+        } else {
+            //储存本学期本教师所有课程的course_id
+            $CourseIds = [];
+            foreach ($getCourse as $course) {
+                array_push($CourseIds, $course->id);
+            }
+
+            $courseinfos = Courseinfo::where(['course_id'=>$CourseIds, 'week'=>$week])->select();
+
+            foreach ($courseinfos as $key => $acourseinfo) {
+                {
+                    $coursetable[$acourseinfo->begin][$acourseinfo->weekday] = $acourseinfo;
+                }
+            }
+            // dump($coursetable);
+            // dump($courseinfos);
+            // return;
+            // 通过成绩对应course_id得到本学期本学生所有课程
+            // $courses = $course->where(['id'=>$scoreIds])->paginate(5);
+        }
+
+        //传入课程表
+        $this->assign('coursetable',$coursetable);
+        //传入要查询的星期
+        $this->assign('week',$week);
+        $this->assign('timetable',Term::$timetable);
+
         return $this->fetch();
-	}	
+    }   
     
 
     // 课程——赵凯强
@@ -224,7 +314,7 @@ class TeacherController extends TIndexController
     public function coursesee()
     {
         // 获取当前方法名
-        $this->assign('isaction',Request::action());
+        $this->assign('isaction','course');
         //获取传入的课程ID
         $id = $this->request->param('id/d');
         //从数据库取出此课程

@@ -1,178 +1,274 @@
 {extend name="teacher"/}
+{block name="class"}
+
+<link rel="stylesheet" href="/static/layer.css">
+<link rel="stylesheet" href="/static/loginlayer.css">
+<link rel="stylesheet" href="/static/frozen.css">
+<style>
+*{outline: none}
+#header{position:relative;background-color:#B2EB7A;border-bottom:1px solid #e0e0e0;}
+#topbar_title{color:#fff;line-height:50px;text-align:center;font-size:16px;height:50px;margin:0 5px;}
+.ui-select:after {display: none;}
+.ui-form-item{padding-top:3px;margin-left:5px;}
+.ui-form-item > .ui-select{margin:0;}
+.ui-select select{padding-right:0;width:inherit;color:white;font-size:16px;}
+.zc{background-color:#B2EB7A;border:none;}
+.refresh{position:absolute;right:0;bottom:0;height:25px;padding:12px 10px 12px 20px;}
+.pull-down{margin-left:-20px;}
+body{margin: 0;padding: 0}
+table{border-collapse: collapse;border-spacing: 0;}
+.course{width: 100%;table-layout: fixed;}
+.day{border-bottom: 1px solid #B2EB7A;color: #777}
+td{text-align: center;}
+.section td:first-child{text-align: center;border-right: 1px solid #B2EB7A;border-bottom: 1px solid #B2EB7A;color: #777;font-size: 12px;}
+.section td > div{border-radius: 7px;color: #fff;height: 98%;width: 95%;display: none;overflow:hidden;font-size: 12px;margin-left: 2px}
+.section td > div > div{vertical-align:middle;display:table-cell;}
+.course td{height: 62px;}
+.day td{border-right: 1px solid #B2EB7A;height: 34px;font-size: 12px}
+</style>
+{/block}
+
 {block name="body"}
     <div class="row">
         <div class="col-md-12">
             
-
-            <div class="jumbotron">
+<!--             <div class="jumbotron">
                 <h1>微课堂-梦云智出品</h1>
-                <p>...</p>
-                <p><a href="/index/teacher/aboutourteam" class="btn btn-primary btn-lg" role="button">团队概况</a></p>
-            </div>
-            <h3>当前学期:</h3>
-            <div class="dropdown">
-                <h4>选择周次:</h4>
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    第一周
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a href="#">第一周</a></li>
-                    <li><a href="#">第二周</a></li>
-                    <li><a href="#">第三周</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">......</a></li>
-                </ul>
-            </div>
-            <br><br>
-            <table style="word-break:break-all; word-wrap:break-all;" class="table table-bordered">
-                <tr class="info">
-                    <th rowspan="2">节次&nbsp;\&nbsp;星期</th>
-                    <th rowspan="2">星期一</th>
-                    <th rowspan="2">星期二</th>
-                    <th rowspan="2">星期三</th>
-                    <th rowspan="2">星期四</th>
-                    <th rowspan="2">星期五</th>
-                    <th rowspan="2">星期六</th>
-                    <th rowspan="2">星期日</th>
-                    <th colspan="2" class="text-center">时间</th>
-                </tr>
-                <tr class="info">
-                    <th>丁字沽</th>
-                    <th>北辰</th>
-                </tr>
-                <tr>
-                    <td style="vertical-align:middle;" rowspan="2" class="text-center" >第一大节</td>
-                    <td></td>
-                    <td></td>
-                    <td>123</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>第1小节<br>8:20~9:05</td>
-                    <td>第1小节<br>8:30~9:15</td>
-                </tr>
-                <tr>
-                    <td bgcolor="red"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>第2小节<br>9:10~9:55</td>
-                    <td>第2小节<br>9:20~10:05</td>
-                </tr>
-                </tr>
-                <tr>
-                    <td style="vertical-align:middle;" rowspan="2" class="text-center">第二大节</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>第3小节<br>10:25~11:10</td>
-                    <td>第3小节<br>10:25~11:10</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>第4小节<br>11:15~12:00</td>
-                    <td>第4小节<br>11:15~12:00</td>
-                </tr>
-                </tr>
-                <tr>
-                    <td style="vertical-align:middle;" rowspan="2" class="text-center">第三大节</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>第5小节<br>14:00~14:45</td>
-                    <td>第5小节<br>14:00~14:45</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>第6小节<br>14:50~15:35</td>
-                    <td>第6小节<br>14:50~15:35</td>
-                </tr>
-                </tr>
-                <tr>
-                    <td style="vertical-align:middle;" rowspan="2" class="text-center">第四大节</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>第7小节<br>6:05~16:50</td>
-                    <td>第7小节<br>15:55~16:40</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>第8小节<br>16:55~17:40</td>
-                    <td>第8小节<br>16:45~17:30</td>
-                </tr>
-                </tr>
-                <tr>
-                    <td style="vertical-align:middle;" rowspan="3" class="text-center">第五大节</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>第9小节<br>18:40~19:25</td>
-                    <td>第9小节<br>18:40~19:25</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>第10小节<br>19:30~20:15</td>
-                    <td>第10小节<br>19:30~20:15</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>第11小节<br>20:20~21:05</td>
-                    <td>第11小节<br>20:20~21:05</td>
-                </tr>
-            </table>
-            <hr /> {/block}
-        </div>
+                <p><a href="/static/index.html" class="btn btn-primary btn-lg" role="button">团队概况</a></p>
+            </div> -->
+
+    <div id="main">
+        <header id="header">
+            <h1 id="topbar_title">
+                <div class="ui-form-item">
+                    <div class="ui-select">
+<!--                         <select id="zc" class="zc" onchange="getCourse()">
+                            <option value="1">第一周</option>
+                            <option value="2">第二周</option>
+                            <option value="3">第三周</option>
+                            <option value="4">第四周</option>
+                            <option value="5">第五周</option>
+                            <option value="6">第六周</option>
+                            <option value="7">第七周</option>
+                            <option value="8">第八周</option>
+                            <option value="9">第九周</option>
+                            <option value="10">第十周</option>
+                            <option value="11">第十一周</option>
+                            <option value="12">第十二周</option>
+                            <option value="13">第十三周</option>
+                            <option value="14">第十四周</option>
+                            <option value="15">第十五周</option>
+                            <option value="16">第十六周</option>
+                            <option value="17">第十七周</option>
+                            <option value="18">第十八周</option>
+                            <option value="19">第十九周</option>
+                            <option value="20">第二十周</option>
+                            <option value="21">第二十一周</option>
+                            <option value="22">第二十二周</option>
+                            <option value="23">第二十三周</option>
+                            <option value="24">第二十四周</option>
+                        </select> -->
+
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                第{$week}周
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                {volist name="weeks" id="week"}
+                                <li><a href="{:url('page?week='. $week)}">第{$week}周</a></li>
+                                {/volist}
+                            </ul>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </h1>
+        </header>
+        <table class="course">
+            <tbody><tr class="day">
+                <td id="month">9月</td>
+                <td><span id="1-day">23</span><br>周一</td>
+                <td><span id="2-day">24</span><br>周二</td>
+                <td><span id="3-day">25</span><br>周三</td>
+                <td><span id="4-day">26</span><br>周四</td>
+                <td><span id="5-day">27</span><br>周五</td>
+                <td><span id="6-day">28</span><br>周六</td>
+                <td><span id="7-day">29</span><br>周日</td>
+            </tr>
+
+        <?php for ($i = 1;$i<=1;$i++): ?>
+                
+
+            <tr class="section section-{$i}">
+                <td>
+                &nbsp;{$i}&nbsp;<br>
+                {$timetable[$i]}
+                </td>
+                <?php for ($j = 1;$j<=7;$j++): ?>
+
+                {eq name='$coursetable[$i][$j]' value='0'}
+                <td id="section-$j-{$i}" rowspan="1" style="display: table-cell;"><div style="display: table; background-color: rgb(255, 255, 255);"><div></div></div></td>
+                {else /}
+                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
+                {/eq}
+
+                <?php endfor; ?>
+            </tr>
+
+
+        <?php endfor; ?>
+
+
+        <?php for ($i = 2;$i<=2;$i++): ?>
+                
+
+            <tr class="section section-{$i}">
+                <td>
+                &nbsp;{$i}&nbsp;<br>
+                {$timetable[$i]}       
+                </td>
+
+                <?php for ($j = 1;$j<=7;$j++): ?>
+
+                {eq name='$coursetable[$i][$j]' value='0'}
+                <td id="section-$j-{$i}" rowspan="1" style="display: {eq name='$coursetable[1][$j]' value='0'} table-cell {else /} {eq name='$coursetable[1][$j]->length' value='1'} table-cell {else /} none{/eq} {/eq};"><div style="display: table; background-color: rgb(255, 255, 255);"><div></div></div></td>
+                {else /}
+                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
+                {/eq}
+                
+                <?php endfor; ?>
+            </tr>
+
+
+        <?php endfor; ?>
+
+
+        <?php for ($i = 3;$i<=3;$i++): ?>
+                
+
+            <tr class="section section-{$i}">
+                <td>
+                &nbsp;{$i}&nbsp;<br>
+                {$timetable[$i]}
+                </td>
+
+                <?php for ($j = 1;$j<=7;$j++): ?>
+
+                {eq name='$coursetable[$i][$j]' value='0'}
+                <td id="section-$j-{$i}" rowspan="1" style="display: 
+                
+                    {eq name='$coursetable[1][$j]' value='0'} 
+                        {eq name='$coursetable[2][$j]' value='0'} table-cell {else /} 
+                            {eq name='$coursetable[2][$j]->length' value='1'} table-cell {else /} 
+                                none
+                            {/eq}
+                        {/eq} 
+
+                        {else /} 
+                        {eq name='$coursetable[1][$j]->length' value='3'} none {else /} 
+                            {eq name='$coursetable[1][$j]->length' value='4'} none {else /} 
+                                table-cell
+                            {/eq}
+                        {/eq}
+                    {/eq}
+
+                ;"><div style="display: table; background-color: rgb(255, 255, 255);"><div></div></div></td>
+                {else /}
+                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
+                {/eq}
+
+                <?php endfor; ?>
+            </tr>
+
+
+        <?php endfor; ?>
+
+
+        <?php for($i = 4;$i<=11;$i++): ?>
+                
+
+            <tr class="section section-{$i}">
+                <td>
+                &nbsp;{$i}&nbsp;<br>
+                {$timetable[$i]}
+                
+                </td>
+
+                <?php for ($j = 1;$j<=7;$j++): ?>
+
+                {eq name='$coursetable[$i][$j]' value='0'}
+                <td id="section-{$j}-{$i}" rowspan="1" style="display: 
+                
+
+                    <?php if($coursetable[$i-3][$j] == '0'): 
+                        if($coursetable[$i-2][$j] == '0'): 
+                            if($coursetable[$i-1][$j] == '0'): ?> 
+                                table-cell 
+                            <?php else: 
+                                if($coursetable[$i-1][$j]->length == '1'): ?> 
+                                    table-cell 
+                                <?php else: ?> 
+                                    none
+                                <?php endif; ?>
+                            <?php endif; 
+                        else: 
+                            if($coursetable[$i-2][$j]->length == '3'): ?>
+                                none 
+                            <?php else: 
+                                if($coursetable[$i-1][$j] == '0'): ?> 
+                                    table-cell 
+                                <?php else: 
+                                    if($coursetable[$i-1][$j]->length == '1'): ?> 
+                                        table-cell 
+                                    <?php else: ?> 
+                                        none
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            <?php endif; 
+                        endif;
+                    else :
+                        if( $coursetable[$i-3][$j]->length == '4'): ?>
+                            none 
+                        <?php else: 
+                            if($coursetable[$i-2][$j] == '0'): 
+                                if($coursetable[$i-1][$j] == '0'): ?> 
+                                    table-cell
+                                <?php else: ?> 
+                                    none
+                                <?php endif; 
+                            else: 
+                                if($coursetable[$i-2][$j]->length == '3'): ?> 
+                                    none 
+                                <?php else: 
+                                    if($coursetable[$i-1][$j] == '0'): ?> 
+                                        table-cell 
+                                    <?php else: 
+                                        if($coursetable[$i-1][$j]->length == '1'): ?> 
+                                            table-cell 
+                                        <?php else: ?> 
+                                            none
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
+
+                ;"><div style="display: table; background-color: rgb(255, 255, 255);"><div></div></div></td>
+                {else /}
+                <td id="section-{$j}-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
+                {/eq}
+                
+
+                <?php endfor; ?>
+            </tr>
+        <?php endfor; ?>
+
+        </tbody></table>
     </div>
+
+
 {/block}

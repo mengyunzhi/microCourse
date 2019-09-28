@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-08-14 21:26:00
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-08-28 09:03:15
+ * @Last Modified time: 2019-09-28 11:41:17
  */
 namespace app\index\model;
 use think\Model;
@@ -81,15 +81,52 @@ class courseinfo extends Model
 
 	//获取特定课程的课程表(全部周次)——刘宇轩
 	//传入课程ID，返回二维数组
+	// public static function getCourseTable($id)
+	// {
+	// 	$CourseTable[] = array();
+	// 	$i = 0;
+	// 	for ($Begin=1; $Begin <= 9; $Begin++) { 
+	// 		for ($Weekday=1; $Weekday <= 7; $Weekday++) { 
+	// 			$CourseTable[$i][0] = Courseinfo::getCourseWeek($id,$Weekday,$Begin);
+	// 			$CourseTable[$i][1] = Courseinfo::getCourseLength($id,$Weekday,$Begin);
+	// 			$CourseTable[$i][2] = Courseinfo::getCourseClassroom($id,$Weekday,$Begin);
+	// 			$i++;
+	// 		}
+	// 	}
+	// 	return $CourseTable;
+	// }	
+
 	public static function getCourseTable($id)
 	{
 		$CourseTable[] = array();
 		$i = 0;
 		for ($Begin=1; $Begin <= 9; $Begin++) { 
 			for ($Weekday=1; $Weekday <= 7; $Weekday++) { 
-				$CourseTable[$i][0] = Courseinfo::getCourseWeek($id,$Weekday,$Begin);
-				$CourseTable[$i][1] = Courseinfo::getCourseLength($id,$Weekday,$Begin);
-				$CourseTable[$i][2] = Courseinfo::getCourseClassroom($id,$Weekday,$Begin);
+				
+				$weeks = [];
+				$str = "";
+				$Courses = Courseinfo::where('course_id',$id)->where('weekday',$Weekday)->where('Begin',$Begin)->select();
+				foreach ($Courses as $key => $acourse) {
+					$weeks[$key] = $acourse->week;
+				}
+				asort($weeks);
+				foreach ($weeks as $key => $week) {
+					$str = $str . $week . " ";
+				}
+				$CourseTable[$i][0] = $str;
+				//
+				$length = 0;
+				foreach ($Courses as $key => $acourse) {
+					$length = $acourse->length;
+				}
+				$CourseTable[$i][1] = $length;
+				//
+				$classroom_id = 0;
+				foreach ($Courses as $key => $acourse) {
+					$classroom_id = $acourse->classroom_id;
+				}				
+				$CourseTable[$i][2] = $classroom_id;
+					
 				$i++;
 			}
 		}
