@@ -26,7 +26,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-28 11:13:07
+ * @Last Modified time: 2019-09-28 11:31:06
  */
 class TeacherController extends TIndexController
 {
@@ -314,7 +314,7 @@ class TeacherController extends TIndexController
     public function coursesee()
     {
         // 获取当前方法名
-        $this->assign('isaction',Request::action());
+        $this->assign('isaction','course');
         //获取传入的课程ID
         $id = $this->request->param('id/d');
         //从数据库取出此课程
