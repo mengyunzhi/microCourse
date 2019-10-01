@@ -5,7 +5,7 @@
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
 <<<<<<< HEAD
- * @Last Modified time: 2019-09-28 19:48:26
+ * @Last Modified time: 2019-10-01 10:10:27
 =======
  * @Last Modified time: 2019-09-21 11:26:27
 >>>>>>> e94378ad1760a82bb7e19fa552e6a3cb66616ea1
@@ -139,5 +139,6 @@ class WxindexController extends WxController {
     }
 
 }
+//国庆快乐！！
 
 // http://awjdjsz.jincheng4917.cn/index.php/index/Wx/weChatAccredit
