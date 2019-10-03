@@ -30,6 +30,11 @@ use think\facade\Request;
 
 class StudentController extends SIndexController
 {	
+    public function index()
+    {
+        return $this->fetch();
+    }
+    
 	public function page()
 	{
         // 获取当前方法名
