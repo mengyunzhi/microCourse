@@ -11,8 +11,8 @@ use think\Model;
 
 class oncourse extends Model
 {
-	public function Student()
+	public function student()
 	{
-		return $this->belongsTo('Student');
+		return $this->belongsTo('student');
 	}
 }

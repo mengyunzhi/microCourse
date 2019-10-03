@@ -236,6 +236,31 @@ class StudentController extends SIndexController
 	//学生模式——扫码进入课堂——刘宇轩
 	public function entercourse()
     {
+        
+
+        $id = $this->request->param('id/d');
+        
+        
+        // 传入行列信息
+        $courseinfo = Courseinfo::where('id', $id)->find();
+        $this->assign('courseinfo',$courseinfo);
+        
+        // 传入所有学生
+        $students = Oncourse::where('courseinfo_id',  $id)->order(['row', 'column'=>'asc'])->select();
+        $this->assign('students', $students);
+        
+        // 人数比
+        $nownumber = count($students);
+        $this->assign('nownumber', $nownumber);
+        $courseinfo = Courseinfo::get($id);
+        $this->assign('number', $courseinfo->Course->number);
+
+        // 传给v层一个变量，初始化为0
+        $temp = 0;
+        $this->assign('temp',$temp);
+        // dump($nownumber);
+        // return ;
+
         //根据传入参数，获取本节课的课程信息
         $courseinfo = Courseinfo::where('id',$this->request->param('id'))->find();
         //获取本节课的课程信息对应的课程
@@ -259,7 +284,8 @@ class StudentController extends SIndexController
         	$oncourse = new Oncourse;
         	$oncourse->student_id = $student->id;
         	$oncourse->courseinfo_id = $courseinfo->id;
-        	$oncourse->column = $oncourse->row = $oncourse->arrival = $oncourse->respond = 0;
+        	$oncourse->column = $oncourse->row =  100;
+            $oncourse->arrival = $oncourse->respond = 0;
         	$oncourse->save();
         } 
 
@@ -279,7 +305,8 @@ class StudentController extends SIndexController
 	//学生模块——座位信息储存
 	public function seatsave()
 	{
-		$seat = $this->request->post();
+		$seat = $this->request->param();
+       
 		$oncourse = Oncourse::where('id',$seat["oncourse_id"])->find();
 
 		if (is_null($oncourse)) 

@@ -10,5 +10,6 @@ use think\Validate;   // 内置验证类
  		'term_id' => 'require|length:1,25',
  		'teacher_id' => 'require|length:1,25',
  		'type' => 'in:0,1',
+ 		'number' => 'require|number',
  	];
  }
