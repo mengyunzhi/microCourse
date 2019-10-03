@@ -14,10 +14,14 @@ use app\index\widget\MenuWidget;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:43:05
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-28 19:42:30
+ * @Last Modified time: 2019-10-03 19:16:31
  */
 class AdminController extends AIndexController	
 {
+	public function index()
+	{
+		return $this->fetch();
+	}
 
 	public function page()
 	{
@@ -30,8 +34,6 @@ class AdminController extends AIndexController
         $time = new Term();
         $this->assign('time', $time);
 		return $this->fetch();
-
-		
 	}
 
 	public function term()
@@ -625,7 +627,8 @@ class AdminController extends AIndexController
         
         // 向v层传输数据
 		$this->assign('classrooms',$classrooms);
-		return $this->fetch();
+		
+		return $this->fetch();;
 	}
 
 	//管理员模块教室管理添加教室——刘宇轩

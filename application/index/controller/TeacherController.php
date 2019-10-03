@@ -26,7 +26,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-28 18:39:25
+ * @Last Modified time: 2019-10-03 17:34:07
  */
 class TeacherController extends TIndexController
 {
@@ -391,6 +391,52 @@ class TeacherController extends TIndexController
             return $this->error('教室不能为空');
         }
         
+        $begintest = $begin;
+        $lengthtest = $length;
+        if ($begintest < 5) {
+            for ($i=2; $i < 5; $i++) { 
+                if ($begintest -1 != 0) {
+                    if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest-1)->where('length',$i)->find())) {
+                        $begintest--;
+                    }else{
+                        return $this->error('更新课程失败，此课程之前的时段有课');
+                    }
+                }
+            }
+        }else if($begintest > 4 && $begintest < 9){
+            for ($i=2; $i < 5; $i++) { 
+                if ($begintest -1 != 4) {
+                    if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest-1)->where('length',$i)->find())) {
+                        $begintest--;
+                    }else{
+                        return $this->error('更新课程失败，此课程之前的时段有课');
+                    }
+                }
+            }
+        }
+
+
+        $begintest = $begin;
+        $lengthtest = $length;
+        if ($begintest < 5) {
+            while ($begintest < $begin+$length) {
+                if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest)->find())) {
+                    $begintest++;
+                }else{
+                    return $this->error('更新课程失败，此课程之后的时段有课');
+                }
+            }
+
+        }else if($begintest > 4 && $begintest < 9){
+            while ($begintest < $begin+$length) {
+                if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest)->find())) {
+                    $begintest++;
+                }else{
+                    return $this->error('更新课程失败，此课程之后的时段有课');
+                }
+            }
+        }
+
         if (false === Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begin)->delete()) {
             return $this->error('更新课程信息失败，删除错误');
         }
@@ -424,10 +470,8 @@ class TeacherController extends TIndexController
 
     public function coursetime() // 废弃
     {
-        // 获取当前方法名
-        $this->assign('isaction',Request::action());
-
-    	return $this->fetch();
+        $table = Course::getStudentCourse(41,5,10,3);
+        dump($table);
     }
 
     // 教师界面教室管理--李美娜

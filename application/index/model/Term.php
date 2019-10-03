@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-08-13 10:09:10
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-28 17:04:07
+ * @Last Modified time: 2019-10-03 21:28:58
  */
 namespace app\index\model;
 use think\Model;
@@ -208,7 +208,6 @@ class Term extends Model
     
     // 学期函数：判断当前学期状态————赵凯强
     // 不传参
-    
     static public function ifterm()
     {
         $terms = Term::all();
@@ -217,7 +216,6 @@ class Term extends Model
                 return 1;
             }
         }
-
         return 0;
     }
 
