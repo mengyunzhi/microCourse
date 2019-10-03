@@ -110,7 +110,7 @@ td{text-align: center;}
                 {eq name='$coursetable[$i][$j]' value='0'}
                 <td id="section-$j-{$i}" rowspan="1" style="display: table-cell;"><div style="display: table; background-color: rgb(255, 255, 255);"><div></div></div></td>
                 {else /}
-                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
+                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->area->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
                 {/eq}
 
                 <?php endfor; ?>
@@ -134,7 +134,7 @@ td{text-align: center;}
                 {eq name='$coursetable[$i][$j]' value='0'}
                 <td id="section-$j-{$i}" rowspan="1" style="display: {eq name='$coursetable[1][$j]' value='0'} table-cell {else /} {eq name='$coursetable[1][$j]->length' value='1'} table-cell {else /} none{/eq} {/eq};"><div style="display: table; background-color: rgb(255, 255, 255);"><div></div></div></td>
                 {else /}
-                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
+                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->area->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
                 {/eq}
                 
                 <?php endfor; ?>
@@ -175,7 +175,7 @@ td{text-align: center;}
 
                 ;"><div style="display: table; background-color: rgb(255, 255, 255);"><div></div></div></td>
                 {else /}
-                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
+                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->area->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
                 {/eq}
 
                 <?php endfor; ?>

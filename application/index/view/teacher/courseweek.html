@@ -72,7 +72,9 @@
                 <label>{$area->name}:&nbsp;</label>
                 {volist name="$area->Classroom" id="classroom" $key="key"}
                     <label class="radio-inline">
-                      <input type="radio" name="classroom_id" value="{$classroom->id}" {eq name="classroom->getdata('id')" value="$classroom_id"} checked="checked"{/eq}> {$classroom->area->name . $classroom->getdata('classroomname')}
+
+                      <input type="radio" name="classroom_id" value="{$classroom->getdata('id')}" {eq name="classroom->getdata('id')" value="$classroom_id"} checked="checked"{/eq}> {$classroom->area->name . $classroom->getdata('classroomname')}
+
                     </label>
                 {/volist}
                 <br />

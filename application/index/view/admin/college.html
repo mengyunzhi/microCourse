@@ -1,0 +1,37 @@
+{extend name="admin"/}
+{block name="body"}
+    <div class="row">
+        <div class="col-md-12">
+           
+
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <a class="btn btn-primary" href="collegeadd">&nbsp;增加</a>
+                </div>
+            </div>
+            <hr />
+            <table class="table table-bordered">
+                <tr class="info">
+                    <th>序号</th>
+                    <th>学院名称</th>
+                    <th>操作</th>
+            
+                </tr>
+                {volist name="colleges" id="college" key="key"}
+                <tr>
+                    <td>{$key}</td>
+                    <td>{$college->getdata('name')}</td>
+                    
+                    <td>
+                        <a class="btn btn-primary" href="collegeedit?id={$college->getData('id')}">&nbsp;编辑</a>
+                        <a class="btn btn-danger" href="collegedelete?id={$college->getData('id')}">&nbsp;删除</a>
+                    </td>
+                </tr>
+                {/volist}
+            </table>
+            
+            <br><br>
+            <hr /> 
+        </div>
+    </div>
+{/block}

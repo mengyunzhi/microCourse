@@ -1,10 +1,6 @@
 {extend name="teacher"/}
 {block name="body"}
             <hr />
-              <h3>课程名:{$course->getdata('name')}</h3>
-              <h3>课程编码:{$course->getdata('num')}</h3>
-              
-              <hr />
 
               <form class="form-horizontal" action="{:url('gradeupdate')}" method="post">
                 <table class="table table-bordered">

@@ -3,11 +3,6 @@
 {block name="body"}
     <div class="row">
         <div class="col-md-12">
-            
-            <!-- <h3>当前时间：{:date('Y-m-d H:i:s')}
-            </h3> -->
-            <!-- <h3>当前时间：{:date('Y-m-d')}
-            </h3> -->
             <table>
                 <tr>
                     <th>
@@ -24,8 +19,6 @@
                                 {volist name="terms" id="term" key="key"}
                                 <li><a href="{:url('score?id=' . $term->getData('id'))}">{$term->getData('name')}</a></li>
                                 {/volist}
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">......</a></li>
                             </ul>
                         </div>
                     </td>

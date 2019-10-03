@@ -1,0 +1,37 @@
+{extend name="admin"/}
+{block name="body"}
+    <div class="row">
+        <div class="col-md-12">
+           
+
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <a class="btn btn-primary" href="areaadd">&nbsp;增加</a>
+                </div>
+            </div>
+            <hr />
+            <table class="table table-bordered">
+                <tr class="info">
+                    <th>序号</th>
+                    <th>区域名称</th>
+                    <th>操作</th>
+            
+                </tr>
+                {volist name="areas" id="area" key="key"}
+                <tr>
+                    <td>{$key}</td>
+                    <td>{$area->getdata('name')}</td>
+                    
+                    <td>
+                        <a class="btn btn-primary" href="areaedit?id={$area->getData('id')}">&nbsp;编辑</a>
+                        <a class="btn btn-danger" href="areadelete?id={$area->getData('id')}">&nbsp;删除</a>
+                    </td>
+                </tr>
+                {/volist}
+            </table>
+            
+            <br><br>
+            <hr /> 
+        </div>
+    </div>
+{/block}
