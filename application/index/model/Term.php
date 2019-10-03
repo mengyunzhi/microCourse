@@ -24,6 +24,7 @@ class Term extends Model
     public static $largeClass;              //大节
     public static $littleClass;         //小节
     public static $length;
+    public static $termId;  //学期id
 
     public static function timeAll()
     {
@@ -35,6 +36,7 @@ class Term extends Model
         $time->largeClass = Term::largeClass();
         $time->littleClass =Term::littleClass();
         $time->length = Term::TermLength();
+        $time->termId = Term::termId();
 
         return $time;
     }
@@ -219,6 +221,19 @@ class Term extends Model
         }
 
         return 0;
+    }
+
+    // 获取当前学期id --ztq
+    static public function termId()
+    {
+        $terms = Term::all();
+        
+        if (is_null(Term::where('state',1)->value('id'))) {
+            return $this->error('当前无激活学期');
+        } else {
+            $termId = Term::where('state',1)->value('id');
+            return $termId;
+        }
     }
 
 

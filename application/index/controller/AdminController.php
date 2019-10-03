@@ -7,8 +7,10 @@ use app\index\model\Teacher;
 use app\index\model\Klass;
 use app\index\model\College;
 use app\index\model\Area; 
+use app\index\model\Course;
 use think\facade\Request;
 use app\index\widget\MenuWidget;
+
 use EasyWeChat\Factory;  //使用easywechat的封装sdk
 
 /**
@@ -949,7 +951,112 @@ class AdminController extends AIndexController
 		$app = Factory::officialAccount($config); //sdk封装方法初始化
 		$allOpenid = $app->user->list($nextOpenId = null);
 		dump($allOpenid['data']['openid']);
-		dump(count($allOpenid['data']['openid']));
+		$userNum = count($allOpenid['data']['openid']); //获取关注微信号的用户个数
+		$time = Term::timeAll();//获取全部时间参数
+		dump($time);
+		//获取周次 
+		$weekday = Term::Weekday();
+		// 获取星期
+		$week = $time->week;
+		dump('星期'.$week);
+		// 获取学期id
+		$term =	$time->termId;
+		dump('学期'.$term);
+		
+		$allTemplate = $app->template_message->getPrivateTemplates();
+		
+		$date = date('Y-m-d H:i:s');
+		dump('用户数：'.$userNum);
+		for ($i = 0;$i<$userNum ; $i++)
+		{	
+			dump('第'.$i.'次循环');
+			$studentId = Student::where('openid',$allOpenid['data']['openid'][$i])->value('id'); //通过openid获取学生id
+			if (is_null($studentId)) {
+				dump($studentId);
+				dump('openid为 '.$allOpenid['data']['openid'][$i].' 的学生id为空');
+				
+			} else {
+				$courseInfo = Course::getStudentCourse($studentId,$term,$week,$weekday); //返回一个课程数组
+				dump(empty($courseInfo));
+				if (empty($courseInfo)) {
+					$templateId = $allTemplate['template_list'][0]['template_id'];
+					$app->template_message->send([
+			        	'touser' => $allOpenid['data']['openid'][$i],
+				        'template_id' => $templateId,
+
+				        'data' => [
+				            'first' => $date,
+				        ],
+	    			]);
+
+
+
+				} else {
+					$templateId = $allTemplate['template_list'][1]['template_id'];
+					$studentId = Student::where('openid',$allOpenid['data']['openid'][$i])->value('id'); //通过openid获取学生id
+					$courseInfo = Course::getStudentCourse($studentId,$term,$week,$weekday); //返回一个课程数组
+					for ($k = 0;$k<12;$k++)
+					if (isset($courseInfo[$k])) {
+						$room[$k] = $courseInfo[$k]['Classroom'];
+						$courseName[$k] = $courseInfo[$k]['Classroom'] ;
+						$littleClass[$k] = $courseInfo[$k]['littleClass']; 
+
+					} else {
+						$room[$k] = '无';
+						$courseName[$k] = '无课';
+						$littleClass[$k] = '无';
+					}
+					
+					$app->template_message->send([
+			        // 'touser' => $allOpenid['data']['openid'][$i],
+			        'touser' => $allOpenid['data']['openid'][$i],
+			        'template_id' => $templateId,
+				       
+				        'data' => [
+				            'first' => $date,
+				           
+				            'room1' => $room[0],
+				            'room2' => $room[1],
+				            'room3' => $room[2],
+				            'room4' => $room[3],
+				            'room5' => $room[4],
+				            'room6' => $room[5],
+				            'room7' => $room[6],
+				            'room8' => $room[7],
+				            'room9' => $room[8],
+
+				            'course1' => $courseName[0],
+				            'course2' => $courseName[1],
+				            'course3' => $courseName[2],
+				            'course4' => $courseName[3],
+				            'course5' => $courseName[4],
+				            'course6' => $courseName[5],
+				            'course7' => $courseName[6],
+				            'course8' => $courseName[7],
+				            'course9' => $courseName[8],
+
+				            'turn1' => $littleClass[0],
+				            'turn2' => $littleClass[1],
+				            'turn3' => $littleClass[2],
+				            'turn4' => $littleClass[3],
+				            'turn5' => $littleClass[4],
+				            'turn6' => $littleClass[5],
+				            'turn7' => $littleClass[6],
+				            'turn8' => $littleClass[7],
+				            'turn9' => $littleClass[8],
+
+
+			            
+			        	],
+			    	]);
+				}
+				
+				}
+			
+			
+		}
+		
+	return 'success';	
 
 	}
 
