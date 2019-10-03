@@ -1,41 +1,175 @@
 {extend name="teacher"/}
-{block name="body"}
-            <hr />
+{block name="body"} 
+<body onload="obtainWeight(event);"></body> 
+<hr />
+<form class="form-horizontal" action="{:url('gradeupdate')}" method="post">
+ <div class="col-md-5" style="margin-left: 5%;">
+  <label for="" class="option">请选择平时成绩所占权重</label>
+  <select name="usual" id="usual" lay-search style="height: 4%;" onchange="reload();">
+   <option value="0.3">30%</option>
+   <option value="0.1">10%</option>
+   <option value="0.2">20%</option>
+   <option value="0.4">40%</option>
+   <option value="0.5">50%</option>
 
-              <form class="form-horizontal" action="{:url('gradeupdate')}" method="post">
-                <table class="table table-bordered">
-                  <tr class="info">
-                    <th>序号</th>
-                    <th>学生姓名</th>
-                    <th>学号</th>
-                    <th>班级</th>
-                    <th>出勤次数</th>
-                    <th>回答问题次数</th>
-                    <th>平时成绩</th>
-                    <th>期末成绩</th>
-                    <th>总成绩</th>
-                  </tr>
-                  <?php $key = 0; ?>
-                  {volist name="scores" id="score" $key="key"}
-                    <tr>
-                      <td>{$key}</td>
-                      <input type="hidden" name="id[]" value="{$score->id}">
-                      <td>{$score->Student->name}</td>
-                      <td>{$score->Student->num}</td>
-                      <td>{$score->Student->klass->name}</td>
-                      <td>{$score->arrivals}</td>
-                      <td>{$score->responds}</td>
-                      <td><input type="text" name="score1[]" value="{$score->score1}" /></td>
-                      <td><input type="text" name="score2[]" value="{$score->score2}" /></td>
-                      <td><input type="text" name="scoresum[]" value="{$score->scoresum}" /></td>
-                    </tr>
-                  {/volist}<input type="hidden" name="key" value="{$key}">
-              </table>
-              <button type="submit" class="btn btn-default">保存</button>
-            </form>
+ </select>
+</div>
+<div class="col-md-5">
+  <label for="" class="option">考试成绩所占权重</label>
+  <select name="exam" id="exam" lay-search style="height: 4%;">
+  </select>
+</div>
+<table class="table table-bordered">
+  <tr class="info">
+    <th>序号</th>
+    <th>学生姓名</th>
+    <th>学号</th>
+    <th>班级</th>
+    <th>出勤次数</th>
+    <th>回答问题次数</th>
+    <th>平时成绩</th>
+    <th>期末成绩</th>
+    <th>总成绩</th>
+  </tr>
+  <?php $key = 0; ?>
+  {volist name="scores" id="score" $key="key"}
+  <tr>
+    <td>{$key}</td>
+    <input type="hidden" name="id[]" value="{$score->id}">
+    <td>{$score->Student->name}</td>
+    <td>{$score->Student->num}</td>
+    <td>{$score->Student->klass->name}</td>
+    <td>{$score->arrivals}</td>
+    <td>{$score->responds}</td>
 
-              <br><br>
-            <hr />
+    <td class="list usual" contenteditable="true" onblur="autoSave(event);" id="{$score-> id}">{$score->usual_score}</td>
+    <td class="list exam" contenteditable="true" onblur="finalSave(event);" id="{$score-> id}">{$score->exam_score}</td>
+    <td class="list total" id="{$score-> id}"></td>
+  </tr>
+  {/volist}<input type="hidden" name="key" value="{$key}">
+</table>
+<button type="submit" class="btn btn-default">保存</button>
+</form>
+<br><br>
+<hr />
 
-    
+<!-- Bootstrap Core JavaScript -->
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.total').on('change', function() {
+      alter("call");
+    })
+    setTimeout(function() { init(); }, 200); //5秒后将会调用执行remind()函数
+
+
+  })
+
+
+
+  function reload() {
+    obtainWeight();
+    init();
+  }
+
+  function init() {
+    let usual = document.getElementsByClassName('usual');
+    for (var i = 0; i < usual.length; i++) {
+
+      totalAchievements(usual[i].id);
+
+
+    }
+  }
+
+  function autoSave(event) {
+    const id = event.target.id;
+    const usualValue = event.target.textContent;
+    $.post("/index/teacher/usualScore?", { id: id, usualvalue: usualValue }, function(result) {
+      totalAchievements(id);
+    });
+
+  }
+
+  function finalSave(event) {
+    const id = event.target.id;
+    const examValue = event.target.textContent;
+    $.post("/index/teacher/examScore?", { id: id, examvalue: examValue }, function(result) {
+      totalAchievements(id);
+    });
+  }
+
+  function totalSave(id, totalValue) {
+    $.post("/index/teacher/totalScore", { id: id, totalValue: totalValue }, function(result) {
+    });
+  }
+
+  function obtainWeight(event) {
+    let usual = document.getElementsByClassName('usual');
+
+    let weightNode = document.getElementById("usual");
+    let examNode = document.getElementById('exam');
+    let index = weightNode.selectedIndex;
+    let value = weightNode.options[index].value;
+    //利用url跳转将term节点的值传到后台
+    let url = "/index/teacher/getWeight?usualScore=" + value;
+
+
+    ajaxGet(url, function(response) {
+      console.log(response);
+      clear(examNode);
+      createOption(examNode, response);
+      totalAchievements();
+    });
+    //调用creatOption方法
+  }
+
+  function createOption(node, inners, values) {
+    let examScore = document.createElement('option');
+    examScore.name = node;
+    examScore.innerHTML = inners;
+    node.appendChild(examScore);
+  }
+
+  function clear(node) {
+    node.length = 0;
+  }
+
+  function totalAchievements(id) {
+    let index;
+    let usual = document.getElementsByClassName('usual');
+    let exam = document.getElementsByClassName('exam');
+    let total = document.getElementsByClassName('total');
+    let usualWeight = document.getElementById("usual").value;
+
+    for (var i = 0; i < usual.length; i++) {
+      if (usual[i].id === id) {
+        index = i;
+        break;
+      }
+    }
+    usualScore = usual[index];
+    examScore = exam[index];
+    totalScore = total[index];
+    if (usualScore && examScore && totalScore) {
+      let response = usualWeight * usualScore.innerText + (1 - usualWeight) * examScore.innerText;
+      totalScore.innerText = response;
+      totalSave(id, response);
+    }
+  }
+
+  function ajaxGet(url, callback) {
+    $.ajax({
+      url: url,
+      type: "get",
+        //成功后调用success后面的语句
+        success: function(response) {
+          callback(response);
+        },
+        //失败后调用error后面的语句
+        error: function(xhr) {
+          console.log('server error');
+        }
+      });
+  }
+</script>
 {/block}

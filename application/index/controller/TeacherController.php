@@ -777,7 +777,48 @@ class TeacherController extends TIndexController
         // dump($scores);
         // return;
     }
-
+      //获取前台传过来的平时成绩数据并保存到数据表中
+    public function usualScore() {
+        
+       $data = Request::instance()->param();
+       $id = $data['id'];
+       $value = $data['usualvalue'];
+       $Score = Score::get($id);
+       $Score->usual_score = $value;
+       $Score->save();
+       
+    }
+     //获取前台传过来的考试成绩数据并保存到数据表中
+    public function examScore() {
+        
+       $data = Request::instance()->post();
+       dump($data);
+       $id = $data['id'];
+       $value = $data['examvalue'];
+       $Score = Score::get($id);
+       $Score->exam_score = $value;
+       $Score->save();
+       
+    }
+    //获取前台传过来的总成绩数据并保存到数据表中
+     public function totalScore() {
+        
+       $data = Request::instance()->post();
+       dump($data);
+       $id = $data['id'];
+       $value = $data['totalValue'];
+       $Score = Score::get($id);
+       $Score->total_score = $value;
+       $Score->save();
+       
+    }
+    //获取前台传入的平时成绩的权重值，计算出考试成绩的权重值后返回给前台
+    public function getWeight()
+    {
+    $usualScore = Request::instance()->param('usualScore');
+    $examScore = 100-($usualScore*100).'%';    
+    return $examScore;
+    }
     //教师模块成绩更新-刘宇轩
     public function gradeupdate()
     {
