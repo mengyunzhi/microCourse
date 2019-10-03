@@ -600,10 +600,17 @@ class TeacherController extends TIndexController
         $this->assign('isaction',Request::action());
 
         $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
-
-        // dump($courseinfo);
-
         $this->assign('courseinfo',$courseinfo);
+
+        $students = Oncourse::where('courseinfo_id', $this->request->param('id'))->order(['row', 'column'=>'asc'])->select();
+        $this->assign('students', $students);
+        // dump($students[0]->student->name);
+        // return ;
+        $nownumber = count($students);
+        $this->assign('nownumber', $nownumber);
+        
+        $temp = 0;
+        $this->assign('temp',$temp);
         return $this->fetch();
     }
 
@@ -705,7 +712,7 @@ class TeacherController extends TIndexController
                 $str = $str.",".$str1; 
             }
             //把字符串信息合并到课程信息中
-            $acourse->klass = substr($str,1,-1);
+            $acourse->klass = substr($str,1,-3);
         }
         //发送课程信息
         $this->assign('courses',$courses);
