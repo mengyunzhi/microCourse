@@ -9,6 +9,7 @@ use app\index\model\College;
 use app\index\model\Area; 
 use think\facade\Request;
 use app\index\widget\MenuWidget;
+use EasyWeChat\Factory;  //使用easywechat的封装sdk
 
 /**
  * @Author: LYX6666666
@@ -938,6 +939,18 @@ class AdminController extends AIndexController
 	    		return $this->success('数据更新成功', url('college'));
 	    	}
 	    
+	}
+
+	//微信上课提醒  -ztq
+	public function remind()
+	{
+		$config = session('config'); //从session中获取储存的config
+
+		$app = Factory::officialAccount($config); //sdk封装方法初始化
+		$allOpenid = $app->user->list($nextOpenId = null);
+		dump($allOpenid['data']['openid']);
+		dump(count($allOpenid['data']['openid']));
+
 	}
 
 }

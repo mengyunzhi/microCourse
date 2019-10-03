@@ -18,6 +18,18 @@ class AIndexController extends Controller
 		// 调用父类构造函数
 		parent::__construct();
 
+		// 使用构造函数将微信相关配置config储存到session中
+		$config = [
+    	'app_id' => 'wx4b4890b3f8c0ada5',
+   	 	'secret' => '7634c6e2889e0d366e4ff2e58bc520fa',
+
+    	// 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+    	'response_type' => 'array',
+
+		];
+		session('config',$config);
+
+
 		// 验证用户是否登录
 		if (!Admin::isLogin()) {
 				return $this->error('管理员未登录', url('Login/index'));
