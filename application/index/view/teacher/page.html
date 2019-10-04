@@ -6,25 +6,26 @@
 <link rel="stylesheet" href="/static/frozen.css">
 <style>
 *{outline: none}
-#header{position:relative;background-color:#B2EB7A;border-bottom:1px solid #e0e0e0;}
+#header{position:relative;background-color:#79797978;border-bottom:1px solid #e0e0e0;}
 #topbar_title{color:#fff;line-height:50px;text-align:center;font-size:16px;height:50px;margin:0 5px;}
 .ui-select:after {display: none;}
 .ui-form-item{padding-top:3px;margin-left:5px;}
 .ui-form-item > .ui-select{margin:0;}
 .ui-select select{padding-right:0;width:inherit;color:white;font-size:16px;}
-.zc{background-color:#B2EB7A;border:none;}
+.zc{background-color:#79797978;border:none;}
 .refresh{position:absolute;right:0;bottom:0;height:25px;padding:12px 10px 12px 20px;}
 .pull-down{margin-left:-20px;}
 body{margin: 0;padding: 0}
 table{border-collapse: collapse;border-spacing: 0;}
 .course{width: 100%;table-layout: fixed;}
-.day{border-bottom: 1px solid #B2EB7A;color: #777}
+.day{border-bottom: 1px solid #79797978;color:white}
 td{text-align: center;}
-.section td:first-child{text-align: center;border-right: 1px solid #B2EB7A;border-bottom: 1px solid #B2EB7A;color: #777;font-size: 12px;}
+.section td:first-child{text-align: center;border-right: 1px solid #79797978;border-bottom: 1px solid #79797978;color:white;font-size: 12px;}
 .section td > div{border-radius: 7px;color: #fff;height: 98%;width: 95%;display: none;overflow:hidden;font-size: 12px;margin-left: 2px}
 .section td > div > div{vertical-align:middle;display:table-cell;}
 .course td{height: 62px;}
-.day td{border-right: 1px solid #B2EB7A;height: 34px;font-size: 12px}
+.day td{border-right: 1px solid #79797978;height: 34px;font-size: 12px}
+.white{color: white}
 </style>
 {/block}
 
@@ -88,14 +89,14 @@ td{text-align: center;}
         </header>
         <table class="course">
             <tbody><tr class="day">
-                <td id="month">9月</td>
-                <td><span id="1-day">23</span><br>周一</td>
-                <td><span id="2-day">24</span><br>周二</td>
-                <td><span id="3-day">25</span><br>周三</td>
-                <td><span id="4-day">26</span><br>周四</td>
-                <td><span id="5-day">27</span><br>周五</td>
-                <td><span id="6-day">28</span><br>周六</td>
-                <td><span id="7-day">29</span><br>周日</td>
+                <td id="month"  class="white">9月</td>
+                <td class="white"><span id="1-day">23</span><br>周一</td>
+                <td class="white"><span id="2-day">24</span><br>周二</td>
+                <td class="white"><span id="3-day">25</span><br>周三</td>
+                <td class="white"><span id="4-day">26</span><br>周四</td>
+                <td class="white"><span id="5-day">27</span><br>周五</td>
+                <td class="white"><span id="6-day">28</span><br>周六</td>
+                <td class="white"><span id="7-day">29</span><br>周日</td>
             </tr>
 
         <?php for ($i = 1;$i<=1;$i++): ?>
@@ -109,9 +110,9 @@ td{text-align: center;}
                 <?php for ($j = 1;$j<=7;$j++): ?>
 
                 {eq name='$coursetable[$i][$j]' value='0'}
-                <td id="section-$j-{$i}" rowspan="1" style="display: table-cell;"><div style="display: table; background-color: rgb(255, 255, 255);"><div></div></div></td>
+                <td id="section-$j-{$i}" rowspan="1" style="display: table-cell;"><div style="display: table; background-color: rgb(255, 255, 255,0.1);"><div></div></div></td>
                 {else /}
-                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
+                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171,0.5);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
                 {/eq}
 
                 <?php endfor; ?>
@@ -133,9 +134,9 @@ td{text-align: center;}
                 <?php for ($j = 1;$j<=7;$j++): ?>
 
                 {eq name='$coursetable[$i][$j]' value='0'}
-                <td id="section-$j-{$i}" rowspan="1" style="display: {eq name='$coursetable[1][$j]' value='0'} table-cell {else /} {eq name='$coursetable[1][$j]->length' value='1'} table-cell {else /} none{/eq} {/eq};"><div style="display: table; background-color: rgb(255, 255, 255);"><div></div></div></td>
+                <td id="section-$j-{$i}" rowspan="1" style="display: {eq name='$coursetable[1][$j]' value='0'} table-cell {else /} {eq name='$coursetable[1][$j]->length' value='1'} table-cell {else /} none{/eq} {/eq};"><div style="display: table; background-color: rgb(255, 255, 255,0.1);"><div></div></div></td>
                 {else /}
-                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
+                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171,0.5);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
                 {/eq}
                 
                 <?php endfor; ?>
@@ -174,9 +175,9 @@ td{text-align: center;}
                         {/eq}
                     {/eq}
 
-                ;"><div style="display: table; background-color: rgb(255, 255, 255);"><div></div></div></td>
+                ;"><div style="display: table; background-color: rgb(255, 255, 255,0.1);"><div></div></div></td>
                 {else /}
-                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
+                <td id="section-$j-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171,0.5);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
                 {/eq}
 
                 <?php endfor; ?>
@@ -257,9 +258,9 @@ td{text-align: center;}
                     <?php endif; ?>
 
 
-                ;"><div style="display: table; background-color: rgb(255, 255, 255);"><div></div></div></td>
+                ;"><div style="display: table; background-color: rgb(255, 255, 255,0.1);"><div></div></div></td>
                 {else /}
-                <td id="section-{$j}-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
+                <td id="section-{$j}-{$i}" rowspan="{$coursetable[$i][$j]->length}" style="display: table-cell;"><div style="display: {eq name='$coursetable[$i][$j]' value='0'} none {else /} table {/eq}; background-color: rgb(82, 212, 171,0.5);"><div>{$coursetable[$i][$j]->course->name} {$coursetable[$i][$j]->classroom->classroomname}</div></div></td>
                 {/eq}
                 
 
