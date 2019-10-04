@@ -20,7 +20,7 @@
                     <td>{$course->getdata('num')}</td>
 <!--                     <td>{$course->teacher->name}</td> -->
                     <td>{eq name='course->getData("type")' value='0'}选修{else /}必修{/eq}</td>
-                    <td>{$course->getdata('klass')}</td>
+                    <td>{eq name='course->getData("type")' value='0' } {else /}{$course->getdata('klass')}{/eq}</td>
                     
 <!--                     <td><a href="{:url('gradeinfo?id='.$course->getData('id'))}" class="btn btn-primary">&nbsp;详情</a></td>
                      -->
