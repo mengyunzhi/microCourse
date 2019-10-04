@@ -1,33 +1,37 @@
 {extend name="student"/}
 {block name="body"}
+<style type="text/css">
+    .white{
+        color: white;
+    }
+</style>
     <div class="row">
         <div class="col-md-12">
             
             </table>
-            <table class="table table-bordered">
-                <tr class="info">
-                    <th>标签</th>
-                    <th>信息</th>
+            <table class="table table-bordered"> 
+                <tr>
+                    <th class="white">标签</th>
+                    <th class="white">信息</th>
                 </tr>
                 <tr>
-                    <td>学生姓名</td>
-                    <td>{$student->getData('name')}</td>
+                    <td class="white">学生姓名</td>
+                    <td class="white">{$student->getData('name')}</td>
                 </tr>
                 <tr>
-                    <td>学号</td>
-                    <td>{$student->getData('num')}</td>
+                    <td class="white">学号</td>
+                    <td class="white">{$student->getData('num')}</td>
                 </tr>
                 <tr>
-                    <td>性别</td>
-                    <td>{eq name='$student->sex' value='0'}男{else /}女{/eq}</td>
+                    <td class="white">性别</td>
+                    <td class="white">{eq name='$student->sex' value='0'}男{else /}女{/eq}</td>
                 </tr>
                 <tr>
-                    <td>班级</td>
-                    <td>{$student->klass->name}</td>
+                    <td class="white">班级</td>
+                    <td class="white">{$student->klass->name}</td>
                 </tr>
             </table>
             <a href="{:url('infoedit?id=' . $student->getData('id'))}" type="button" class="btn btn-default navbar-btn">修改密码</a>
-            <hr /> 
         </div>
     </div>
 {/block}
