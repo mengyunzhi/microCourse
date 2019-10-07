@@ -23,14 +23,10 @@
                     <td class="white">{$course->getdata('name')}</td>
                     <td class="white">{$course->Term->name}</td>
                     <td class="white">{$course->getdata('num')}</td>
-<!--                     <td>{$course->teacher->name}</td> -->
                     
-                    <td>{eq name='course->getData("type")' value='0'}选修{else /}必修{/eq}</td>
-                    <td>{eq name='course->getData("type")' value='0' } {else /}{$course->getdata('klass')}{/eq}</td>
+                    <td class="white">{eq name='course->getData("type")' value='0'}<span class="white">选修</span>{else /}<span class="white">必修</span>{/eq}</td>
+                    <td class="white">{eq name='course->getData("type")' value='0' } {else /}{$course->getdata('klass')}{/eq}</td>
 
-                    
-<!--                     <td><a href="{:url('gradeinfo?id='.$course->getData('id'))}" class="btn btn-primary">&nbsp;详情</a></td>
-                     -->
                     <td class="white"><a href="{:url('gradeadd?id='.$course->getData('id'))}" class="btn btn-primary">&nbsp;录入</a></td>
                     
                   </tr>
