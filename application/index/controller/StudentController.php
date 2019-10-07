@@ -306,8 +306,12 @@ class StudentController extends SIndexController
 	public function seatsave()
 	{
 		$seat = $this->request->param();
+
        
 		$oncourse = Oncourse::where('id',$seat["oncourse_id"])->find();
+
+        // dump($oncourse);
+        // return ;
 
 		if (is_null($oncourse)) 
         {
@@ -336,7 +340,23 @@ class StudentController extends SIndexController
 
         $oncourse->column = $seat["column"];
         $oncourse->row = $seat["row"];
+
+        $original = $oncourse->arrival;
+        
         $oncourse->arrival = 1;
+        // dump($original);
+        // dump($oncourse->arrival);
+        // return ;
+        if ($original == 0 && $oncourse->arrival == 1 ) {
+            $score = Score::where('student_id', $oncourse->student_id)->where('course_id',$oncourse->courseinfo->course_id)->find();
+            $score->arrivals++;
+            if (!$oncourse->save()) {
+            // return $this->success('恭喜您已完成签到',url('entercourse?id='.$seat['courseinfo_id']));
+        
+                return $this->success('签到失败',url('entercourse?id='.$seat['courseinfo_id']));
+            }
+        }
+        
         if ($oncourse->save()) {
         	// return $this->success('恭喜您已完成签到',url('entercourse?id='.$seat['courseinfo_id']));
         	return $this->success('恭喜您已完成签到',url('page'));
