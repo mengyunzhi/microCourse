@@ -1,37 +1,42 @@
 {extend name="teacher"/}
 {block name="body"}
+<style type="text/css">
+  .white{
+    color: white;
+  }
+</style>
     <div class="container">
       <hr />
         <div class="row">
           <div class="col-md-8">
             
                 <h3></h3>
-                <a href="setCourse?id={$courseinfo['id']}" class="btn btn-success">&nbsp;签到</a>
-                <a href="onlinesignin?id={$courseinfo['id']}" class="btn btn-primary">&nbsp;随机提问</a>
+                <a href="setCourse?id={$courseinfo['id']}" class="btn btn-success" style="background-color: rgb(74,155,47,0.7);">&nbsp;签到</a>
+                <a href="onlinesignin?id={$courseinfo['id']}" class="btn btn-primary" style="background-color: rgb(39,84,185,0.7);">&nbsp;随机提问</a>
 
             </div>
-            <div class="col-md-4"><h2>签到人数：{$nownumber}/100</h2>  </div>
+            <div class="col-md-4"><h2 class="white">签到人数：{$nownumber}/100</h2>  </div>
         </div>
         <div class="row">
           <div class="col-md-5"></div>
           <div class="col-md-2">
-            <h2>讲台</h2>
+            <h2 class="white">讲台</h2>
           </div>
           <div class="col-md-5"></div>
         </div>
-        <table class="table table-striped">
-          <tr class="info">
-            <th>#</th>
+        <table class="table">
+          <tr>
+            <th  class="white">#</th>
                 {for  start="1" end="$courseinfo->classroom->column+1"}
-                   <th>第{$i}列</th>
+                   <th  class="white">第{$i}列</th>
                 {/for}
                   
             </tr>
             {for  start="1" end="$courseinfo->classroom->row+1" name="k"}
-            <tr>
-                <th>第{$k}行  </th>
+            <tr class="white">
+                <th class="white">第{$k}行  </th>
                 {for  start="1" end="$courseinfo->classroom->column+1" name="j"}
-                <td>
+                <td class="white">
                   
                 {if ( $temp<$nownumber && $students[$temp]->row == $k) && ( $students[$temp]->column == $j) } {$students[$temp++]->student->name}  
 	            {else /} 
@@ -44,7 +49,7 @@
             {/for}
 
         </table>
-        <h3>还有{$nownumber-$temp}名同学未选择座位</h3>    
+        <h3 class="white">还有{$nownumber-$temp}名同学未选择座位</h3>    
         
     </div>
          
