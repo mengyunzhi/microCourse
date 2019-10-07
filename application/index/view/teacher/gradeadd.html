@@ -1,57 +1,62 @@
 {extend name="teacher"/}
 {block name="body"} 
+<style type="text/css">
+  .white{
+    color: white;
+  }
+</style>
 <body onload="obtainWeight(event);"></body> 
 <hr />
 <form class="form-horizontal" action="{:url('gradeupdate')}" method="post">
- <div class="col-md-5" style="margin-left: 5%;">
-  <label for="" class="option">请选择平时成绩所占权重</label>
-  <select name="usual" id="usual" lay-search style="height: 4%;" onchange="reload();">
-   <option value="0.3">30%</option>
-   <option value="0.1">10%</option>
-   <option value="0.2">20%</option>
-   <option value="0.4">40%</option>
-   <option value="0.5">50%</option>
+ <div class="col-md-5">
+  <label for="" class="option" style="color: white">请选择平时成绩所占权重</label>
+  <select name="usual" id="usual" lay-search style="height: 4%;"  onchange="reload();">
+   <option  class="white" value="0.3">30%</option>
+   <option  class="white" value="0.1">10%</option>
+   <option  class="white" value="0.2">20%</option>
+   <option  class="white" value="0.4">40%</option>
+   <option  class="white"value="0.5">50%</option>
 
  </select>
 </div>
 <div class="col-md-5">
-  <label for="" class="option">考试成绩所占权重</label>
+  <label for="" class="option" style="color: white">考试成绩所占权重</label>
   <select name="exam" id="exam" lay-search style="height: 4%;">
   </select>
 </div>
 <table class="table table-bordered">
-  <tr class="info">
-    <th>序号</th>
-    <th>学生姓名</th>
-    <th>学号</th>
-    <th>班级</th>
-    <th>出勤次数</th>
-    <th>回答问题次数</th>
-    <th>平时成绩</th>
-    <th>期末成绩</th>
-    <th>总成绩</th>
+  <tr>
+    <th  class="white">序号</th>
+    <th class="white">学生姓名</th>
+    <th class="white">学号</th>
+    <th class="white">班级</th>
+    <th class="white">出勤次数</th>
+    <th class="white">回答问题次数</th>
+    <th class="white">平时成绩</th>
+    <th class="white">期末成绩</th>
+    <th class="white">总成绩</th>
   </tr>
   <?php $key = 0; ?>
   {volist name="scores" id="score" $key="key"}
   <tr>
-    <td>{$key}</td>
+    <td class="white">{$key}</td>
     <input type="hidden" name="id[]" value="{$score->id}">
-    <td>{$score->Student->name}</td>
-    <td>{$score->Student->num}</td>
-    <td>{$score->Student->klass->name}</td>
-    <td>{$score->arrivals}</td>
-    <td>{$score->responds}</td>
+    <td class="white">{$score->Student->name}</td>
+    <td class="white">{$score->Student->num}</td>
+    <td class="white">{$score->Student->klass->name}</td>
+    <td class="white">{$score->arrivals}</td>
+    <td class="white">{$score->responds}</td>
 
-    <td class="list usual" contenteditable="true" onblur="autoSave(event);" id="{$score-> id}">{$score->usual_score}</td>
-    <td class="list exam" contenteditable="true" onblur="finalSave(event);" id="{$score-> id}">{$score->exam_score}</td>
-    <td class="list total" id="{$score-> id}"></td>
+    <td style="color: white"  class="list usual" contenteditable="true" onblur="autoSave(event);" id="{$score-> id}">{$score->usual_score}</td>
+    <td style="color: white"  class="list exam" contenteditable="true" onblur="finalSave(event);" id="{$score-> id}">{$score->exam_score}</td>
+    <td style="color: white"  class="list total" id="{$score-> id}"></td>
   </tr>
   {/volist}<input type="hidden" name="key" value="{$key}">
 </table>
-<button type="submit" class="btn btn-default">保存</button>
+<!-- <button type="submit" class="btn btn-default">保存</button>
+ -->
 </form>
 <br><br>
-<hr />
 
 <!-- Bootstrap Core JavaScript -->
 <script type="text/javascript">

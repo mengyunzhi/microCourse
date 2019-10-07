@@ -62,9 +62,9 @@
 
             <br />
               {eq name='$time->term' value='0'}   
-              <div class="alert {eq name='$time->term' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="$time->term" value="1"}已开始{else /}已结束{/eq}</div>
+              <div  style="background-color:rgb(143,70,70,0.7); color: white" class="alert {eq name='$time->term' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="$time->term" value="1"}已开始{else /}已结束{/eq}</div>
               {else}
-              <div class="alert alert-success" role="alert">{$time->date}&nbsp&nbsp第{$time->week}教学周&nbsp&nbsp{$time->weekday}&nbsp&nbsp第{$time->largeClass}大节</div>
+              <div  style="background-color:rgb(85,131,97,0.7); color: white" class="alert alert-success" role="alert">{$time->date}&nbsp&nbsp第{$time->week}教学周&nbsp&nbsp{$time->weekday}&nbsp&nbsp第{$time->largeClass}大节</div>
               <h3></h3>
               {/eq}
               
