@@ -350,7 +350,7 @@ class StudentController extends SIndexController
         if ($original == 0 && $oncourse->arrival == 1 ) {
             $score = Score::where('student_id', $oncourse->student_id)->where('course_id',$oncourse->courseinfo->course_id)->find();
             $score->arrivals++;
-            if (!$oncourse->save()) {
+            if (!$score->save()) {
             // return $this->success('恭喜您已完成签到',url('entercourse?id='.$seat['courseinfo_id']));
         
                 return $this->success('签到失败',url('entercourse?id='.$seat['courseinfo_id']));

@@ -6,7 +6,7 @@ use think\Validate;   // 内置验证类
  {
  	protected $rule = [
  		'name' => 'require|length:2,25',
- 		'num' => 'alphaNum|length：3,30|unique:teacher',
+ 		'num' => 'alphaNum|length:3,30|unique:teacher',
  		'sex' => 'in:0,1',
  		'password' => 'alphaDash|require|length:3,30',
  	];

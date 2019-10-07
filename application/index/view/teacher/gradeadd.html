@@ -168,13 +168,12 @@
       type: "get",
         //成功后调用success后面的语句
         success: function(response) {
-          callback(GetRound(response,1));
+          callback(response);
         },
         //失败后调用error后面的语句
         error: function(xhr) {
           console.log('server error');
         }
       });
-  }
-</script>
+  }</script>
 {/block}
