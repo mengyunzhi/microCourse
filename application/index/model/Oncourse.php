@@ -15,4 +15,9 @@ class oncourse extends Model
 	{
 		return $this->belongsTo('student');
 	}
+
+	public function courseinfo()
+	{
+		return $this->belongsTo('courseinfo');
+	}
 }

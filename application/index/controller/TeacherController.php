@@ -762,16 +762,20 @@ class TeacherController extends TIndexController
 
         if ($assess == 1){
             $oncourse = Oncourse::where('courseinfo_id', $courseinfoid)->where('student_id', $studentid)->find();
-            
             $oncourse->respond++;
-            if ($oncourse->save()) {
-               return $this->success('评价成功',url('onlinesignin?id='.$courseinfoid));  
+            
+            $courseinfo = Courseinfo::get($courseinfoid);
+            $score = Score::where('course_id', $courseinfo->course_id)->where('student_id', $studentid)->find();
+            $score->responds++;
+
+            if ($oncourse->save() && $score->save()) {
+                return $this->success('评价成功',url('onlinesignin?id='.$courseinfoid));  
+            } else {
+                return $this->error('评价失败',url('onlinesignin?id='.$courseinfoid));
             }
         }
 
-        return $this->error('评价失败',url('onlinesignin?id='.$courseinfoid));
-       
-
+    return $this->success('评价成功',url('onlinesignin?id='.$courseinfoid));   
     }
 
     public function entercourse()
