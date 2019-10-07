@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-08-13 10:09:10
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-28 17:04:07
+ * @Last Modified time: 2019-10-03 21:28:58
  */
 namespace app\index\model;
 use think\Model;
@@ -24,6 +24,7 @@ class Term extends Model
     public static $largeClass;              //大节
     public static $littleClass;         //小节
     public static $length;
+    public static $termId;  //学期id
 
     public static function timeAll()
     {
@@ -35,6 +36,7 @@ class Term extends Model
         $time->largeClass = Term::largeClass();
         $time->littleClass =Term::littleClass();
         $time->length = Term::TermLength();
+        $time->termId = Term::termId();
 
         return $time;
     }
@@ -208,7 +210,6 @@ class Term extends Model
     
     // 学期函数：判断当前学期状态————赵凯强
     // 不传参
-    
     static public function ifterm()
     {
         $terms = Term::all();
@@ -217,8 +218,20 @@ class Term extends Model
                 return 1;
             }
         }
-
         return 0;
+    }
+
+    // 获取当前学期id --ztq
+    static public function termId()
+    {
+        $terms = Term::all();
+        
+        if (is_null(Term::where('state',1)->value('id'))) {
+            return $this->error('当前无激活学期');
+        } else {
+            $termId = Term::where('state',1)->value('id');
+            return $termId;
+        }
     }
 
 

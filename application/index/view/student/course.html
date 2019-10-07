@@ -1,12 +1,17 @@
 {extend name="student"/}
 {block name="body"}
+<style type="text/css">
+    .white{
+        color: white;
+    }
+</style>
     <div class="row">
         <div class="col-md-12">
 
                 <table>
                     <tr>
                         <th>
-                            <h4>选择学期:&nbsp&nbsp</h4>
+                            <h4 class="white">选择学期:&nbsp;&nbsp;</h4>
                         </th>
                         <td>
                             <div class="dropdown">
@@ -25,13 +30,13 @@
                 </table>
                         <br>
                 <table class="table table-bordered">
-                    <tr class="info">
-                        <th>序号</th>
-                        <th>课程名称</th>
-                        <th>课程代码</th>
-                        <th>学期名</th>
-                        <th>任课教师</th>
-                        <th>课程类型</th>
+                    <tr>
+                        <th class="white">序号</th>
+                        <th class="white">课程名称</th>
+                        <th class="white">课程代码</th>
+                        <th class="white">学期名</th>
+                        <th class="white">任课教师</th>
+                        <th class="white">课程类型</th>
 
                     </tr>
                     
@@ -52,7 +57,6 @@
                 <?php }else{ ?>
                 {$courses|raw}
                 <?php } ?>
-            <hr /> 
         </div>
     </div>
 {/block}

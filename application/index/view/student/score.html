@@ -1,14 +1,17 @@
 
 {extend name="student"/}
 {block name="body"}
+<style type="text/css">
+    .white{
+        color: white;
+    }
+</style>
     <div class="row">
         <div class="col-md-12">
-            
-
             <table>
                 <tr>
                     <th>
-                        <h4>选择学期:&nbsp&nbsp</h4>
+                        <h4 class="white">选择学期:&nbsp&nbsp</h4>
                     </th>
                     <td>
                         <div class="dropdown">
@@ -26,14 +29,13 @@
                     </td>
                 </tr>
             </table>
-            <br><br>
+            <br>
             <table class="table table-bordered">
-                <tr class="info">
-                    <th>科目</th>
-                    <th>任课教师</th>
-                    <th>平时成绩</th>
-                    <th>期末考试</th>
-                    <th>总成绩</th>
+                    <th class="white">科目</th>
+                    <th class="white">任课教师</th>
+                    <th class="white">平时成绩</th>
+                    <th class="white">期末考试</th>
+                    <th class="white">总成绩</th>
                 </tr>
                 {volist name="scores" id="score" key="key"}
                 <tr>

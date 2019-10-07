@@ -16,7 +16,7 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
     <br><br>
-    <div class="container">
+    <div class="row">
       <div class="col-md-12">
               
               <div class="page-header">
@@ -32,13 +32,8 @@
               <div class="alert alert-success" role="alert">{$time->date}&nbsp&nbsp第{$time->week}教学周&nbsp&nbsp{$time->weekday}&nbsp&nbsp第{$time->largeClass}大节</div>
               <h3></h3>
               {/eq}
-              <form class="form-horizontal" action="{:url('seatsave')}" method="post">
-                <input type="hidden" name="oncourse_id" value="{$oncourse->id}" />
-                <input type="hidden" name="courseinfo_id" value="$courseinfo->id" />
-                <input type="hidden" name="classroom_row" value="{$classroom->row}" />
-                <input type="hidden" name="classroom_column" value="{$classroom->column}" />
-                <input type="hidden" name="courseinfo_id" value="{$courseinfo->id}" />
-                <div class="input-group input-group-lg">
+
+                <!-- <div class="input-group input-group-lg">
                   <span class="input-group-addon" id="sizing-addon1">课程名称</span>
                   <input class="form-control" type="text" value="{$course->name}" readonly>
                 </div>
@@ -56,13 +51,59 @@
                 <div class="input-group input-group-lg ">
                   <span class="input-group-addon" id="sizing-addon1">行号</span>
                   <input name="row" type="text" class="form-control" {eq name='$oncourse->row' value='0'} placeholder="此教室共有{$classroom->row}行" {else /} value="{$oncourse->row}" {/eq} aria-describedby="sizing-addon1">
+                </div> -->
+                <div class="container">
+                  <div class="col-md-6">
+                    <h3>课程名称：{$course->name}</h3>
+                  </div>
+                  <div class="col-md-6">
+                    <h3>教室名称：{$classroom->area->name . $classroom->getdata('classroomname')}</h3>
+                  </div>
                 </div>
+
+                <div class="row">
+                  <div class="col-md-5"></div>
+                  <div class="col-md-2">
+                    <h2>讲台</h2>
+                  </div>
+                  <div class="col-md-3"> </div>
+                  <div class="col-md-2">
+                    <a href="{:url('/index/student/page')}" class="btn btn-info" >返回主页面</a>
+                  </div>
+                </div>
+                <table class="table table-striped">
+                  <tr class="info">
+                    <th>###</th>
+                        {for  start="1" end="$courseinfo->classroom->column+1"}
+                           <th>{$i}列</th>
+                        {/for}
+                          
+                    </tr>
+                    {for  start="1" end="$courseinfo->classroom->row+1" name="k"}
+                    <tr>
+                        <th>{$k}行  </th>
+                        {for  start="1" end="$courseinfo->classroom->column+1" name="j"}
+                        <td>
+                            
+                        {if ( $temp<$nownumber && $students[$temp]->row == $k && $students[$temp]->column == $j) } {$students[$temp++]->student->name} 
+                        {else /} <!-- <input type="hidden" name="classroom_row" value="{$k}" />
+                                <input type="hidden" name="classroom_column" value="{$j}" />
+                                <button type="submit" ">选座</button> -->
+                                <a href="{:url('seatsave?oncourse_id='. $oncourse->id. '&courseinfo_id='.$courseinfo->id.'&classroom_row='.$classroom->row.'&classroom_column='.$classroom->column.'&row='.$k.'&column='.$j)}" class="btn btn-info" >选座</a>
+                        {/if}
+                        </td>
+                           
+                        {/for}
+                        
+                    </tr>
+                    {/for}    
+                </table>
                 <br><br>
-                  <button type="submit" class="btn btn-default">提交</button>
+                  
                 </div>
-              </form>
+
               <br><br>  
-              <div class="alert alert-danger" role="alert">本座位用于点名、评分等环节，可能影响您的成绩，请认真填写</div>
+              <!-- <div class="alert alert-danger" role="alert">本座位用于点名、评分等环节，可能影响您的成绩，请认真填写</div> -->
         </div>
     </div>
 </body>

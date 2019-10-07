@@ -1,0 +1,127 @@
+  <!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>微课堂教师端</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/static/css/landing-page.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+        <div class="container topnav">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">微课堂</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand topnav" href="#">微课堂</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#about"><i class="glyphicon glyphicon-question-sign"></i>&nbsp;帮助</a>
+                    </li>
+                    <li>
+                        <a href="#services"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;说明</a>
+                    </li>
+                    <li>
+                    <!--两个注销--TeacherLogout--StudentLogout-->
+                        <a href="{:url('Login/teacherLogout')}"><i class="glyphicon glyphicon-off"></i>&nbsp;注销</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+    <!-- Header -->
+    <a name="about"></a>
+    <div class="intro-header">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="intro-message">
+                        <h1>Micro-Classroom</h1>
+                        <h3>欢迎使用微课堂</h3>
+                        <hr class="intro-divider">
+                        <ul class="list-inline intro-social-buttons">
+                            <li>
+                                <a href="{:url('Teacher/getQR')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-qrcode"></i>&nbsp;<span class="network-name">开放签到</span></a>
+                            </li>
+                             <li>
+                                <a href="{:url('Teacher/getSignIn')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-stats"></i>&nbsp;<span class="network-name">查看签到情况</span></a>
+                            </li>
+                            <li>
+                                <a href="{:url('Teacher/randomQuestions')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-screenshot"></i>&nbsp;<span class="network-name">随机提问</span></a>
+                            </li>
+                            <li>
+                                <a href="{:url('Teacher/studentSelect')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-user"></i>&nbsp;<span class="network-name">查看学生信息</span></a>
+                            </li>
+                            <li>
+                                <a href="{:url('Admin/term')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-plus"></i>&nbsp;<span class="network-name">学期控制</span></a>
+                            </li>
+                            <li>
+                                <a href="{:url('Teacher/message')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-comment"></i>&nbsp;<span class="network-name">查看留言</span></a>
+                            </li>
+                        </ul>
+                        <ul class="list-inline intro-social-buttons">
+                            <li>
+                                <a href="{:url('Teacher/getQR')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-qrcode"></i>&nbsp;<span class="network-name">开放签到</span></a>
+                            </li>
+                             <li>
+                                <a href="{:url('Teacher/getSignIn')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-stats"></i>&nbsp;<span class="network-name">查看签到情况</span></a>
+                            </li>
+                            <li>
+                                <a href="{:url('Teacher/randomQuestions')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-screenshot"></i>&nbsp;<span class="network-name">随机提问</span></a>
+                            </li>
+                            <li>
+                                <a href="{:url('Teacher/studentSelect')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-user"></i>&nbsp;<span class="network-name">查看学生信息</span></a>
+                            </li>
+                            <li>
+                                <a href="{:url('Teacher/selectCourse')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-plus"></i>&nbsp;<span class="network-name">成绩录入</span></a>
+                            </li>
+                            <li>
+                                <a href="{:url('Teacher/message')}" class="btn btn-default btn-lg"><i class="glyphicon glyphicon-comment"></i>&nbsp;<span class="network-name">查看留言</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- jQuery -->
+    <script src="/static/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/static/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

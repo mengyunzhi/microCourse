@@ -61,9 +61,42 @@
             <div class="col-md-4">
                 <h3>选择时长（小节）:&nbsp;</h3>
                 <select type="text" name="length">
+                
+                <?php  ?>
+                  <?php switch ($begin) { ?>
+                    <?php case '1': ?>
                   <option>2</option>
                   <option>3</option>
                   <option>4</option>
+                        <?php break;
+                    case '5': ?>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                        <?php break;
+                    case '2': ?>
+                  <option>2</option>
+                  <option>3</option>
+                        <?php break;
+                    case '6': ?>
+                  <option>2</option>
+                  <option>3</option>
+                        <?php break;
+                    case '3': ?>
+                  <option>2</option>
+                        <?php break;
+                    case '7': ?>
+                  <option>2</option>
+                        <?php break;
+                    case '9': ?>
+                  <option>2</option>
+                  <option>3</option>
+                        <?php break;
+                    default: ?>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                        <?php break;} ?>
                 </select>
             </div>
             <div class="col-md-4">
@@ -72,7 +105,9 @@
                 <label>{$area->name}:&nbsp;</label>
                 {volist name="$area->Classroom" id="classroom" $key="key"}
                     <label class="radio-inline">
+
                       <input type="radio" name="classroom_id" value="{$classroom->getdata('id')}" {eq name="classroom->getdata('id')" value="$classroom_id"} checked="checked"{/eq}> {$classroom->area->name . $classroom->getdata('classroomname')}
+
                     </label>
                 {/volist}
                 <br />

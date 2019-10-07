@@ -8,9 +8,9 @@ class StudentValidate extends Validate
 
     'id' => 'require|length:1,25',
 		'name' => 'require|length:2,25',
-		'num' => 'require|unique:student',
+		'num' => 'alphaNum|length:3,30|unique:student',
 		'sex' => 'in:0,1',
-    'password' => 'require|length:3,20',
+        'password' => 'alphaDash|require|length:3,20',
 		'klass_id' => 'require|number',
     ];
 

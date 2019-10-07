@@ -24,7 +24,7 @@
                     <td>{$info->getdata('week')}</td>
                     <td> <?php echo Term::getWeekday($info->getdata('weekday')-1); ?> </td>
                     <td>{$info->getdata('begin')."~".($info->getdata('begin') + $info->getdata('length') -1)}小节</td>
-                    <td>{$info->classroom->classroomplace . $info->classroom->classroomname}</td>
+                    <td>{$info->classroom->area->name . $info->classroom->classroomname}</td>
                     <td><a href="{:url('gradeoncourse?id='.$info->getData('id'))}" class="btn btn-primary">&nbsp;详情</a></td>
                   </tr>
                 {/volist}

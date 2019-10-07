@@ -26,10 +26,14 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-28 18:39:25
+ * @Last Modified time: 2019-10-03 17:34:07
  */
 class TeacherController extends TIndexController
 {
+    public function index()
+    {
+        return $this->fetch();
+    }
 
     public function page()
     {
@@ -188,6 +192,7 @@ class TeacherController extends TIndexController
         $Course->term_id = $this->request->param('term_id/d');
         $Course->teacher_id = $this->request->param('teacher_id/d');
         $Course->type = $this->request->param('type/d');
+        $Course->number = $this->request->param('number/d');
 
         // 验证
         if (!$Course->save()) {
@@ -256,6 +261,7 @@ class TeacherController extends TIndexController
         $Course->term_id = $this->request->param('term_id/d');
         $Course->teacher_id = $this->request->param('teacher_id/d');
         $Course->type = $this->request->param('type/d');
+        $Course->number = $this->request->param('number/d');
         
         if (!$Course->save()) {
             return $this->error('课程信息更新发生错误：' . $Course->getError());
@@ -387,6 +393,52 @@ class TeacherController extends TIndexController
             return $this->error('教室不能为空');
         }
         
+        $begintest = $begin;
+        $lengthtest = $length;
+        if ($begintest < 5) {
+            for ($i=2; $i < 5; $i++) { 
+                if ($begintest -1 != 0) {
+                    if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest-1)->where('length',$i)->find())) {
+                        $begintest--;
+                    }else{
+                        return $this->error('更新课程失败，此课程之前的时段有课');
+                    }
+                }
+            }
+        }else if($begintest > 4 && $begintest < 9){
+            for ($i=2; $i < 5; $i++) { 
+                if ($begintest -1 != 4) {
+                    if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest-1)->where('length',$i)->find())) {
+                        $begintest--;
+                    }else{
+                        return $this->error('更新课程失败，此课程之前的时段有课');
+                    }
+                }
+            }
+        }
+
+
+        $begintest = $begin;
+        $lengthtest = $length;
+        if ($begintest < 5) {
+            while ($begintest < $begin+$length) {
+                if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest)->find())) {
+                    $begintest++;
+                }else{
+                    return $this->error('更新课程失败，此课程之后的时段有课');
+                }
+            }
+
+        }else if($begintest > 4 && $begintest < 9){
+            while ($begintest < $begin+$length) {
+                if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest)->find())) {
+                    $begintest++;
+                }else{
+                    return $this->error('更新课程失败，此课程之后的时段有课');
+                }
+            }
+        }
+
         if (false === Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begin)->delete()) {
             return $this->error('更新课程信息失败，删除错误');
         }
@@ -420,10 +472,8 @@ class TeacherController extends TIndexController
 
     public function coursetime() // 废弃
     {
-        // 获取当前方法名
-        $this->assign('isaction',Request::action());
-
-    	return $this->fetch();
+        $table = Course::getStudentCourse(41,5,10,3);
+        dump($table);
     }
 
     // 教师界面教室管理--李美娜
@@ -578,18 +628,39 @@ class TeacherController extends TIndexController
 
 
         $teacher = Teacher::where('id',Session::get('teacherId'))->find(); //获取教师信息
-        
-        $allcourseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
-        
-        $courseinfo = [];     //依次判断每节课是否为本教师的课程
+        //获取当天的所有课程
+        $allcourseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select(); 
+
+        $klass = [];
+        $courseinfo = [];    
+
+        //依次判断每节课是否为本教师的课程
         foreach ($allcourseinfo as $key => $acourse) {
             if ($acourse->course->teacher_id == Session::get('teacherId')) {
                 $courseinfo[$key] = $acourse;
-            }
+                $klasses = KlassCourse::where('course_id',$acourse->course->id)->select();
+                $str = "";
+                //对于每个班级，用ID取出班级名称，并连接字符串
+                foreach ($klasses as $aclass) {
+                    $str1 = klass::get($aclass->klass_id)->name;
+                    $str = $str.",".$str1; 
+                }
+                //把字符串信息合并到课程信息中
+                $klass[$key] = substr($str,1);
+                }
         }
+        // dump($courseinfo);
+        // dump($klass);
+        // return;
+
         // echo Term::weekday();
         // echo Term::getWeek();
         $this->assign('courseinfo',$courseinfo);
+        $this->assign('klass',$klass);
+
+    //     var_dump(Db::table('yunzhi_classroom') ->field('id')
+    // ->group('id')
+    // ->select());
         // dump($allcourseinfo);
         // return;
     	return $this->fetch();
@@ -601,11 +672,25 @@ class TeacherController extends TIndexController
         // 获取当前方法名
         $this->assign('isaction',Request::action());
 
-        $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
+        $id = $this->request->param('id/d');
 
-        // dump($courseinfo);
-
+        $courseinfo = Courseinfo::where('id', $id)->find();
         $this->assign('courseinfo',$courseinfo);
+
+        $students = Oncourse::where('courseinfo_id',  $id)->order(['row', 'column'=>'asc'])->select();
+        $this->assign('students', $students);
+        // dump($students);
+        // return ;
+
+        // 人数比
+        $nownumber = count($students);
+        $this->assign('nownumber', $nownumber);
+        $courseinfo = Courseinfo::get($id);
+        $this->assign('number', $courseinfo->Course->number);
+        
+        // 传给v层一个变量，初始化为0
+        $temp = 0;
+        $this->assign('temp',$temp);
         return $this->fetch();
     }
 
@@ -629,10 +714,12 @@ class TeacherController extends TIndexController
     {
         //取出本节课的课程信息
         $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
-
+        
         //从中间表取出所有学生信息
-        $students = Score::where('course_id',$courseinfo->course->id)->select();
-        if(empty($students[0])) {
+        $students = Oncourse::where('courseinfo_id', $this->request->param('id'))->select();
+        // dump($students);
+        // return ;
+        if (count($students) == 0) {
             
             return $this->error('未开启签到',url('online'));
         }
@@ -664,6 +751,31 @@ class TeacherController extends TIndexController
         $this->assign('student',$thestudent);
 
         return $this->fetch();
+    }
+    
+    // 教师对学生回答结果进行评价——赵凯强
+    public function onlineassess()
+    {
+        $assess = $this->request->param('respond');
+        $studentid = $this->request->param('studentid');
+        $courseinfoid = $this->request->param('courseinfoid');
+
+        if ($assess == 1){
+            $oncourse = Oncourse::where('courseinfo_id', $courseinfoid)->where('student_id', $studentid)->find();
+            $oncourse->respond++;
+            
+            $courseinfo = Courseinfo::get($courseinfoid);
+            $score = Score::where('course_id', $courseinfo->course_id)->where('student_id', $studentid)->find();
+            $score->responds++;
+
+            if ($oncourse->save() && $score->save()) {
+                return $this->success('评价成功',url('onlinesignin?id='.$courseinfoid));  
+            } else {
+                return $this->error('评价失败',url('onlinesignin?id='.$courseinfoid));
+            }
+        }
+
+    return $this->success('评价成功',url('onlinesignin?id='.$courseinfoid));   
     }
 
     public function entercourse()
@@ -708,6 +820,7 @@ class TeacherController extends TIndexController
             }
             //把字符串信息合并到课程信息中
             $acourse->klass = substr($str,1);
+
         }
         // dump ($courses);
         //发送课程信息
@@ -773,7 +886,48 @@ class TeacherController extends TIndexController
         // dump($scores);
         // return;
     }
-
+      //获取前台传过来的平时成绩数据并保存到数据表中
+    public function usualScore() {
+        
+       $data = Request::instance()->param();
+       $id = $data['id'];
+       $value = $data['usualvalue'];
+       $Score = Score::get($id);
+       $Score->usual_score = $value;
+       $Score->save();
+       
+    }
+     //获取前台传过来的考试成绩数据并保存到数据表中
+    public function examScore() {
+        
+       $data = Request::instance()->post();
+       dump($data);
+       $id = $data['id'];
+       $value = $data['examvalue'];
+       $Score = Score::get($id);
+       $Score->exam_score = $value;
+       $Score->save();
+       
+    }
+    //获取前台传过来的总成绩数据并保存到数据表中
+     public function totalScore() {
+        
+       $data = Request::instance()->post();
+       dump($data);
+       $id = $data['id'];
+       $value = $data['totalValue'];
+       $Score = Score::get($id);
+       $Score->total_score = $value;
+       $Score->save();
+       
+    }
+    //获取前台传入的平时成绩的权重值，计算出考试成绩的权重值后返回给前台
+    public function getWeight()
+    {
+    $usualScore = Request::instance()->param('usualScore');
+    $examScore = 100-($usualScore*100).'%';    
+    return $examScore;
+    }
     //教师模块成绩更新-刘宇轩
     public function gradeupdate()
     {

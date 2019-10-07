@@ -17,10 +17,14 @@
   <div class="jumbotron">
   <h3>请下面的同学回答问题：</h3>
   <h1>{$student->name}&nbsp;&nbsp;{$student->num}</h1>
-  
+  <p>
+    <h3>对本学生回答进行评价：</h3>
+    <a class="btn btn-primary btn-lg" href="{:url('onlineassess?studentid='. $student->id. '&courseinfoid='.$courseinfo->id . '&respond=1')}" role="button">满意</a>
+    <a class="btn btn-primary btn-lg" href="{:url('onlineassess?studentid='. $student->id. '&courseinfoid='.$courseinfo->id . '&respond=0')}" role="button">不满意</a>
+  </p>
   <p>
     <a class="btn btn-primary btn-lg" href="/index/teacher/onlinehome?id={$courseinfo->id}" role="button">返回</a>
-    <a class="btn btn-primary btn-lg" href="/index/teacher/onlinesignin/id/{$courseinfo->id}/student/{$student->id}" role="button">刷新</a>
+    <a class="btn btn-primary btn-lg" href="/index/teacher/onlinesignin/id/{$courseinfo->id}" role="button">刷新</a>
   </p>
   
   </div>

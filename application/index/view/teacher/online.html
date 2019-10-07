@@ -1,27 +1,31 @@
 {extend name="teacher"/}
 {block name="body"}
-
-            <h3>您的今日课程:</h3>
+<style type="text/css">
+  .white{
+    color: white;
+  }
+</style>
+            <h3 class="white">您的今日课程:</h3>
             <table class="table table-bordered">
-                <tr class="info">
-                  <th>序号</th>
-                  <th>节次</th>
-                  <th>教室</th>
-                  <th>课程名称</th>
-                  <th>课程类型</th>
-                  <th>班级</th>
-                  <th>进入课堂</th>
+                <tr>
+                  <th class="white">序号</th>
+                  <th class="white">节次</th>
+                  <th class="white">教室</th>
+                  <th class="white">课程名称</th>
+                  <th class="white">课程类型</th>
+                  <th class="white">班级</th>
+                  <th class="white">进入课堂</th>
                 </tr>
                 {volist name="courseinfo" id="courseinfo" key="key"}
                   <tr>
-                    <td>{$key}</td>
-                    <td>{$courseinfo->begin .'~'.($courseinfo->begin+$courseinfo->length-1)}</td>
-                    <td>{$courseinfo->classroom->area->name." ".$courseinfo->classroom->classroomname}</td>
-                    <td>{$courseinfo->Course->name}</td>
-                    <td>{eq name='$courseinfo->Course->type' value='0'} 选修 {else /} 必修 {/eq} </td>
+                    <td class="white">{$key}</td>
+                    <td class="white">{$courseinfo->begin .'~'.($courseinfo->begin+$courseinfo->length-1)}</td>
+                    <td class="white">{$courseinfo->classroom->area->name." ".$courseinfo->classroom->classroomname}</td>
+                    <td class="white">{$courseinfo->Course->name}</td>
+                    <td class="white">{eq name='$courseinfo->Course->type' value='0'} 选修 {else /} 必修 {/eq} </td>
                     
-                    <td>{eq name='courseinfo->Course->type' value='0' } 123{else /} 456 {/eq}</td>
-                    <td><a href="onlinehome?id={$courseinfo->id}" class="btn btn-primary">&nbsp;详情</a></td>
+                    <td class="white">{eq name='courseinfo->Course->type' value='0' } {else /}  {$klass[$key-1]} {/eq}</td>
+                    <td class="white"><a href="onlinehome?id={$courseinfo->id}" class="btn btn-primary">&nbsp;详情</a></td>
                   </tr>
                 {/volist}
             </table>
