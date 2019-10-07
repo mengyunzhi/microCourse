@@ -227,7 +227,7 @@ class Term extends Model
         $terms = Term::all();
         
         if (is_null(Term::where('state',1)->value('id'))) {
-            return $this->error('当前无激活学期');
+            return '当前无激活学期';
         } else {
             $termId = Term::where('state',1)->value('id');
             return $termId;

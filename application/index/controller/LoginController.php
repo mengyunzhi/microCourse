@@ -69,7 +69,7 @@ class LoginController extends Controller
 			// $Student->sex = $request->param('sex');
 			// $Student->password = $request->param('password');
 			// $Student->klass_id = $request->param('klass_id');
-			$Student->password = sha1($request->param('password'));
+			//$Student->password = sha1($request->param('password'));
 			// 添加数据
 			$Student->password = sha1($Student->password);
 			if (!$Student->save()) {
