@@ -30,10 +30,10 @@ use think\facade\Request;
  */
 class TeacherController extends TIndexController
 {
-    public function index()
-    {
-        return $this->fetch();
-    }
+//    public function index()
+//    {
+//        return $this->fetch();
+//    }
 
     public function page()
     {
