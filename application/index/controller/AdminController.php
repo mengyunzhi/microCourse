@@ -21,10 +21,10 @@ use EasyWeChat\Factory;  //使用easywechat的封装sdk
  */
 class AdminController extends AIndexController	
 {
-	public function index()
-	{
-		return $this->fetch();
-	}
+//	public function index()
+//	{
+//		return $this->fetch();
+//	}
 
 	public function page()
 	{
