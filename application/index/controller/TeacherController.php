@@ -26,7 +26,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-03 17:34:07
+ * @Last Modified time: 2019-10-09 11:03:20
  */
 class TeacherController extends TIndexController
 {
@@ -944,9 +944,9 @@ class TeacherController extends TIndexController
             $score = score::where('id',$scores["id"][$i])->find();
 
             if (!is_null($score)){
-                $score->score1 = $scores["score1"][$i];
-                $score->score2 = $scores["score2"][$i];
-                $score->scoresum = (int)$scores["scoresum"][$i];
+                $score->usual_score = $scores["usual_score"][$i];
+                $score->exam_score = $scores["exam_score"][$i];
+                $score->total_score = (int)$scores["total_score"][$i];
                                 if (false === $score->save())
                 {
                     $message = '更新失败';

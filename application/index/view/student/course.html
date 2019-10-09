@@ -42,12 +42,12 @@
                     
                     {volist key="key" name="courses" id="course" }
                     <tr>
-                        <td>{$key}</td>
-                        <td>{$course->name}</td>
-                        <td>{$course->num}</td>
-                        <td>{$course->Term->name}</td>
-                        <td>{$course->Teacher->name}</td>
-                        <td>{eq name="$course->type" value='0'}选修课{else /}必修课{/eq}</td>
+                        <td class="white">{$key}</td>
+                        <td class="white">{$course->name}</td>
+                        <td class="white">{$course->num}</td>
+                        <td class="white">{$course->Term->name}</td>
+                        <td class="white">{$course->Teacher->name}</td>
+                        <td class="white">{eq name="$course->type" value='0'}选修课{else /}必修课{/eq}</td>
 
                     </tr>
                     {/volist}
