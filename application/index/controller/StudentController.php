@@ -24,7 +24,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-28 17:11:58
+ * @Last Modified time: 2019-10-09 11:07:39
  */
 
 
@@ -273,7 +273,7 @@ class StudentController extends SIndexController
         	$score = new Score;
         	$score->student_id = $student->id;
         	$score->course_id = $course->id;
-        	$score->score1 = $score->score2 = $score->scoresum = $score->arrivals = $score->responds = 0; 
+        	$score->usual_score = $score->exam_score = $score->total_score = $score->arrivals = $score->responds = 0; 
         	$score->save();
         }
 
