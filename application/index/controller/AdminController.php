@@ -2,6 +2,7 @@
 namespace app\index\controller;
 use app\index\model\Term;
 use app\index\model\Classroom;
+use app\index\model\Classroom_time;
 use app\index\model\Student; 
 use app\index\model\Teacher;
 use app\index\model\Klass;
@@ -640,6 +641,7 @@ class AdminController extends AIndexController
 		$areas = Area::all();
         $this->assign('areas', $areas);
 
+
 		return $this->fetch();
 	}
 
@@ -668,15 +670,28 @@ class AdminController extends AIndexController
     	$Classroom->area_id = $request->param('area_id');
     	$Classroom->row = $request->param('row');
     	$Classroom->column = $request->param('column');
-
+        
 	    $validate = new \app\index\validate\ClassroomValidate;
 	    if (!$validate->check($Classroom)) {
 	    	return $this->error('数据添加错误：' . $Classroom->getError());
 	    } else {
+        
 	    	
 	    	if(!$Classroom->save()) {
 	    		return $this->error('数据添加错误：' . $Classroom->getError());
 	    	} else {
+	    		// dump($Classroom->id);
+       //          return ;
+	    		// 添加classroom_time数据
+	    	    for($i=1;$i<=11;$i++) {
+	        	    $classroom_time = new Classroom_time;
+	        	    $classroom_time->littleclass = $i;
+	        	    $classroom_time->status = 0;
+	        	    $classroom_time->classroom_id = $Classroom->id; 
+	        	    if (!$classroom_time->save()) {
+	        	    	return $this->error('数据添加错误');
+	        	    }
+	        	}
 	    		return $this->success('数据添加成功', url('Classroom'));
 	    	}
 	    }
