@@ -16,6 +16,46 @@ use app\index\validate\StudentValidate;
  */
 class LoginController extends Controller
 {
+	//选择个人角色，是学生还是教师
+	public function judgeRole($id)
+	{
+ 		$this->assign('id',$id);
+ 		return $this->fetch();
+	}
+	//跳转到教师登录界面，并验证是否为教师
+    public function verificationTeacher($id)
+    {
+      $this->assign('id',$id);
+      return $this->fetch(); 
+    }
+    //对前台传过来的信息进行处理(通过则登录成功，删除学生表里的数据，将openId存进去，不通过则回到选择界面)
+    public function machining()
+    {
+    $request = $this->request;
+    $id = $request->param('id');
+    $num = $request->param('num');
+    $password = $request->param('password');
+    $people = Teacher::where('num',$num)->where('password',$password)->find();
+    $student = Student::get($id);
+    if(!is_null($people) && !is_null($student))
+    {
+    	$people->openid = $student->openid;
+    	if( $people->save() && $student->delete())
+         {
+    	   Teacher::login($num,$password);
+    	   return $this->success('认证成功', url('Teacher/page'));
+         }
+    }
+    if(!is_null($people) && is_null($student))
+    {
+    	   Teacher::login($num,$password);
+    	   return $this->success('认证成功', url('Teacher/page'));
+    }
+    else
+    {
+        return $this->error('认证失败，请重新选择', url('Login/judgeRole?id='. $id.'&openid='.$student->openid));
+    }
+    }
 	// 学生注册页面跳转————赵凯强——（已增加微信）
 	public function register($id)
 	{

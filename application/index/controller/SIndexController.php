@@ -34,7 +34,7 @@ class SIndexController extends Controller
 
 		$id = Session::get('studentId');
 		if (Student::where('id',$id)->find()->name === Null){
-			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/register?id='.$id);
+			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/judgeRole?id='.$id);
 		}
 	}
 
