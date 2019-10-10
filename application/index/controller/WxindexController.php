@@ -101,7 +101,7 @@ class WxindexController extends WxController {
 			$Student = new Student();
 			$Student->openid = $openid;
 			$Student->save();
-			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/register?id='.$Student->id);
+			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/judgeRole?id='.$Student->id);
 		}
         if(Term::NoTerm()) {
             // return $this->fetch('Login/noterm');

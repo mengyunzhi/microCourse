@@ -31,7 +31,10 @@
                     <td class="white">{$student->klass->name}</td>
                 </tr>
             </table>
-            <a href="{:url('infoedit?id=' . $student->getData('id'))}" type="button" class="btn btn-default navbar-btn">修改密码</a>
+            <div style="text-align: right;">
+        <a href="{:url('infoedit?id=' . $student->getData('id'))}" type="button" class="btn btn-default navbar-btn" >修改密码</a>
+        <a href="{:url('Login/verificationTeacher?id=' . $student->getData('id'))}" type="button" class="btn btn-default navbar-btn" >教师认证</a>
+        </div>
         </div>
     </div>
 {/block}
