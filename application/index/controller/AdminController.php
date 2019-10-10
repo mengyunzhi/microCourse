@@ -17,7 +17,7 @@ use EasyWeChat\Factory;  //使用easywechat的封装sdk
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:43:05
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-03 19:16:31
+ * @Last Modified time: 2019-10-09 21:10:44
  */
 class AdminController extends AIndexController	
 {
@@ -632,6 +632,30 @@ class AdminController extends AIndexController
 		$this->assign('classrooms',$classrooms);
 		
 		return $this->fetch();;
+	}
+
+	public function classroomcode()
+	{
+		// 传入教室ID
+		$id = $this->request->param('id/d');
+		//获取教室
+		$classroom = classroom::get($id);
+		//把教室数据处理成四位
+		if ($classroom->id < 100) {
+			if ($classroom->id < 10) {
+				$classroom->id = '000'.$id;
+			}else{
+				$classroom->id = '00'.$id;
+			}
+		}else{
+			$classroom->id = '0'.$id;
+		}
+		$this->assign('classroom',$classroom);
+
+		//获取跳转地址
+		$url = 'http://'.$_SERVER['HTTP_HOST'].'/index/Wxindex/online?id='.$classroom->id;
+		$this->assign('url',$url);
+		return $this->fetch();
 	}
 
 	//管理员模块教室管理添加教室——刘宇轩
