@@ -1078,4 +1078,23 @@ class AdminController extends AIndexController
 
 	}
 
+	// classroom_time每天定点删除数据
+	public function classroom_timeDelete()
+	{
+		$classroom_times = Classroom_time::all();
+		// dump($classroom_times);
+		// return ;
+		foreach ($classroom_times as $classroom_time) {
+			$classroom_time->status = 0;
+			$classroom_time->courseinfo_id = null;
+			if (!$classroom_time->save())
+				return '初始化失败';
+
+		}
+		return '初始化成功';
+		
+	}
+
 }
+
+
