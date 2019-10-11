@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<!--刘宇轩-->
+<!--2019.07.19 14:55-->
+
+<head>
+    <meta charset="UTF-8">
+    <title>{block name="title"}微课堂{/block}</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/static/css/landing-page.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+
+<body class="container" style="background-image: url(/static/img/intro-bg.jpg)">
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+    <br>
+            <?php use app\index\model\Term; ?>
+            <?php $time = Term::timeAll(); ?>
+
+            <br />
+              {eq name='$time->term' value='0'}   
+              <div  style="background-color:rgb(143,70,70,0.7); color: white" class="alert {eq name='$time->term' value='1'}alert-success{else /}alert-warning{/eq}" role="alert">激活学期{eq name="$time->term" value="1"}已开始{else /}已结束{/eq}</div>
+              {else}
+              <div class="alert alert-success"  style="background-color:rgb(85,131,97,0.7); color: white" role="alert">{$time->date}&nbsp&nbsp第{$time->week}教学周&nbsp&nbsp{$time->weekday}&nbsp&nbsp第{$time->largeClass}大节</div>
+              <h3></h3>
+              {/eq}
+
+
+    <style type="text/css">
+  .white{
+    color: white;
+  }
+</style>
+    <div class="container">
+      <hr />
+        <div class="row">
+          <div class="col-md-8">
+            
+                <h3></h3>
+                <a href="setCourse?id={$Classroom_time['id']}" class="btn btn-success" style="background-color: rgb(74,155,47,0.7);">&nbsp;签到</a>
+                <a href="onlinesignin?id={$Classroom_time['id']}" class="btn btn-primary" style="background-color: rgb(39,84,185,0.7);">&nbsp;随机提问</a>
+
+            </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-5"></div>
+          <div class="col-md-2">
+            <h2 class="white">讲台</h2>
+          </div>
+          <div class="col-md-5"></div>
+        </div>
+        <table class="table">
+          <tr>
+            <th  class="white">#</th>
+                {for  start="1" end="$Classroom_time->classroom->column+1"}
+                   <th  class="white">第{$i}列</th>
+                {/for}
+                  
+            </tr>
+            {for  start="1" end="$Classroom_time->classroom->row+1" name="k"}
+            <tr class="white">
+                <th class="white">第{$k}行  </th>
+                {for  start="1" end="$Classroom_time->classroom->column+1" name="j"}
+                <td class="white">
+                  
+                {if ( $temp<$nownumber && $students[$temp]->row == $k) && ( $students[$temp]->column == $j) } {$students[$temp++]->student->name}  
+              {else /} 
+              {/if}
+                </td>
+                   
+                {/for}
+                
+            </tr>
+            {/for}
+
+        </table>
+
+        
+    </div>
+</body>
+
+</html>
