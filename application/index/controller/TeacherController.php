@@ -26,7 +26,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-09 11:03:20
+ * @Last Modified time: 2019-10-10 22:07:58
  */
 class TeacherController extends TIndexController
 {
@@ -421,8 +421,8 @@ class TeacherController extends TIndexController
         $begintest = $begin;
         $lengthtest = $length;
         if ($begintest < 5) {
-            while ($begintest < $begin+$length) {
-                if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest)->find())) {
+            while ($begintest < $begin+$length-1) {
+                if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest+1)->find())) {
                     $begintest++;
                 }else{
                     return $this->error('更新课程失败，此课程之后的时段有课');
@@ -430,8 +430,8 @@ class TeacherController extends TIndexController
             }
 
         }else if($begintest > 4 && $begintest < 9){
-            while ($begintest < $begin+$length) {
-                if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest)->find())) {
+            while ($begintest < $begin+$length-1) {
+                if (is_null(Courseinfo::where('course_id',$id)->where('weekday',$weekday)->where('Begin',$begintest+1)->find())) {
                     $begintest++;
                 }else{
                     return $this->error('更新课程失败，此课程之后的时段有课');
@@ -886,7 +886,7 @@ class TeacherController extends TIndexController
         // dump($scores);
         // return;
     }
-      //获取前台传过来的平时成绩数据并保存到数据表中
+    //获取前台传过来的平时成绩数据并保存到数据表中
     public function usualScore() {
         
        $data = Request::instance()->param();

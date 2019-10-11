@@ -6,13 +6,17 @@ use app\index\model\Klass;
 use app\index\model\Teacher;
 use app\index\model\Admin;
 use app\index\model\College;
+use app\index\model\Term;
+use app\index\model\Classroom;
+use app\index\model\Classroom_time;
+use app\index\model\Seattable;
 use app\index\validate\StudentValidate;
 
 /**
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-09-28 12:59:20
+ * @Last Modified time: 2019-10-10 20:38:55
  */
 class LoginController extends Controller
 {
@@ -182,5 +186,38 @@ class LoginController extends Controller
 	{
 		return $this->fetch();
 	}
-}
 
+	public function OnlineSee()
+	{
+	    // 获取当前方法名
+        //$this->assign('isaction',Request::action());
+
+        //获取教室ID
+        $id = $this->request->param('id');
+        //根据ID获取教室
+        $classroom = Classroom::where('id', $id)->find();
+        $this->assign('classroom',$classroom);
+
+        //获取当前小节，根据小节找到classroom_time
+        $littleClass = Term::littleClass();
+        $Classroom_time = Classroom_time::where('classroom_id',$classroom->id)->where('littleClass',$littleClass)->find();
+        $this->assign('Classroom_time', $Classroom_time);
+
+        //找到当前教室当前小节的所有学生
+        $students = Seattable::where('Classroom_time_id',  $Classroom_time->id)->order(['row', 'column'=>'asc'])->select();
+        $this->assign('students', $students);
+        // dump($students);
+        // return ;
+
+        // 人数比
+        $nownumber = count($students);
+        $this->assign('nownumber', $nownumber);
+        // $courseinfo = Courseinfo::get($id);
+        // $this->assign('number', $courseinfo->Course->number);
+        
+        // 传给v层一个变量，初始化为0
+        $temp = 0;
+        $this->assign('temp',$temp);
+        return $this->fetch();
+	}
+}
