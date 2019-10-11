@@ -46,11 +46,6 @@ class LoginController extends Controller
     	   return $this->success('认证成功', url('Teacher/page'));
          }
     }
-    if(!is_null($people) && is_null($student))
-    {
-    	   Teacher::login($num,$password);
-    	   return $this->success('认证成功', url('Teacher/page'));
-    }
     else
     {
         return $this->error('认证失败，请重新选择', url('Login/judgeRole?id='. $id.'&openid='.$student->openid));
