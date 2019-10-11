@@ -15,6 +15,8 @@ use app\index\model\Oncourse;
 use app\index\model\Common;
 use think\facade\Session;
 use app\index\model\Classroom;
+use app\index\model\Classroom_time;
+use app\index\model\Seattable;
 use \app\index\validate\StudentValidate;
 use think\facade\Request;
 
@@ -233,73 +235,121 @@ class StudentController extends SIndexController
 		return $this->fetch();
 	}
 
-	//学生模式——扫码进入课堂——刘宇轩
-	public function entercourse()
+	// //学生模式——扫码进入课堂——刘宇轩
+	// public function entercourse()
+ //    {
+        
+
+ //        $id = $this->request->param('id/d');
+        
+        
+ //        // 传入行列信息
+ //        $courseinfo = Courseinfo::where('id', $id)->find();
+ //        $this->assign('courseinfo',$courseinfo);
+        
+ //        // 传入所有学生
+ //        $students = Oncourse::where('courseinfo_id',  $id)->order(['row', 'column'=>'asc'])->select();
+ //        $this->assign('students', $students);
+        
+ //        // 人数比
+ //        $nownumber = count($students);
+ //        $this->assign('nownumber', $nownumber);
+ //        $courseinfo = Courseinfo::get($id);
+ //        $this->assign('number', $courseinfo->Course->number);
+
+ //        // 传给v层一个变量，初始化为0
+ //        $temp = 0;
+ //        $this->assign('temp',$temp);
+ //        // dump($nownumber);
+ //        // return ;
+
+ //        //根据传入参数，获取本节课的课程信息
+ //        $courseinfo = Courseinfo::where('id',$this->request->param('id'))->find();
+ //        //获取本节课的课程信息对应的课程
+ //        $course = $courseinfo->Course;
+ //        $student = Student::where('id',Session::get('studentId'))->find();
+ //        $classroom = $courseinfo->Classroom;
+
+ //        if(is_null(Score::where('course_id',$course->id)->where('student_id',$student->id)->find()))
+ //        {
+ //        	$score = new Score;
+ //        	$score->student_id = $student->id;
+ //        	$score->course_id = $course->id;
+ //        	$score->usual_score = $score->exam_score = $score->total_score = $score->arrivals = $score->responds = 0; 
+ //        	$score->save();
+ //        }
+
+ //        $oncourse = Oncourse::where('student_id',$student->id)->where('courseinfo_id',$courseinfo->id)->find();
+
+ //        if (is_null($oncourse)) 
+ //        {
+ //        	$oncourse = new Oncourse;
+ //        	$oncourse->student_id = $student->id;
+ //        	$oncourse->courseinfo_id = $courseinfo->id;
+ //        	$oncourse->column = $oncourse->row =  100;
+ //            $oncourse->arrival = $oncourse->respond = 0;
+ //        	$oncourse->save();
+ //        } 
+
+ //        $oncourse = Oncourse::where('student_id',$student->id)->where('courseinfo_id',$courseinfo->id)->find();
+ //        // dump ($oncourse);
+
+ //        $this->assign('oncourse',$oncourse);
+ //        $this->assign('course',$course);
+ //        $this->assign('courseinfo',$courseinfo);
+ //        $this->assign('classroom',$classroom);
+
+ //        $courseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
+ //        // dump($classroom);
+ //        return $this->fetch();
+ //    }
+    
+    // 学生扫码选座位
+    public function entercourse()
     {
+        $id = $this->request->param('id');
         
+        $classroom_id = substr($id,0,4)*1;
+        $row = substr($id,4,2)*1;
+        $column = substr($id,6,2)*1;
+        $time = Term::littleClass();
+        $student_id = session('studentId');
+        // $classroom_times = Classroom::all();
+        $classroom_time = Classroom_time::where('classroom_id',$classroom_id)->where('littleclass',$time)->find();
+        $seattable = Seattable::where('row',$row)->where('column',$column)->where('classroom_time_id',$classroom_time->id)->find();
+        if ($seattable) {
+            if ($seattable->student_id == $student_id) {
+                return $this->error('您已成功扫码选择此座位，请不要重复扫码', url('/index/student/page'));
+            } else {
+                if ($seattable->student_id) {
+                    // 给原学生发提示信息
+                    
 
-        $id = $this->request->param('id/d');
+                }
+                $seattable->student_id = $student_id;
+            }
+        } else {
+            $seattable = new Seattable;
         
-        
-        // 传入行列信息
-        $courseinfo = Courseinfo::where('id', $id)->find();
-        $this->assign('courseinfo',$courseinfo);
-        
-        // 传入所有学生
-        $students = Oncourse::where('courseinfo_id',  $id)->order(['row', 'column'=>'asc'])->select();
-        $this->assign('students', $students);
-        
-        // 人数比
-        $nownumber = count($students);
-        $this->assign('nownumber', $nownumber);
-        $courseinfo = Courseinfo::get($id);
-        $this->assign('number', $courseinfo->Course->number);
-
-        // 传给v层一个变量，初始化为0
-        $temp = 0;
-        $this->assign('temp',$temp);
-        // dump($nownumber);
-        // return ;
-
-        //根据传入参数，获取本节课的课程信息
-        $courseinfo = Courseinfo::where('id',$this->request->param('id'))->find();
-        //获取本节课的课程信息对应的课程
-        $course = $courseinfo->Course;
-        $student = Student::where('id',Session::get('studentId'))->find();
-        $classroom = $courseinfo->Classroom;
-
-        if(is_null(Score::where('course_id',$course->id)->where('student_id',$student->id)->find()))
-        {
-        	$score = new Score;
-        	$score->student_id = $student->id;
-        	$score->course_id = $course->id;
-        	$score->usual_score = $score->exam_score = $score->total_score = $score->arrivals = $score->responds = 0; 
-        	$score->save();
+            $seattable->classroom_time_id = $classroom_time->id;
+            $seattable->row = $row;
+            $seattable->column = $column;
+            $seattable->student_id = $student_id;
+            $seattable->role = 0;
         }
 
-        $oncourse = Oncourse::where('student_id',$student->id)->where('courseinfo_id',$courseinfo->id)->find();
-
-        if (is_null($oncourse)) 
-        {
-        	$oncourse = new Oncourse;
-        	$oncourse->student_id = $student->id;
-        	$oncourse->courseinfo_id = $courseinfo->id;
-        	$oncourse->column = $oncourse->row =  100;
-            $oncourse->arrival = $oncourse->respond = 0;
-        	$oncourse->save();
-        } 
-
-        $oncourse = Oncourse::where('student_id',$student->id)->where('courseinfo_id',$courseinfo->id)->find();
-        // dump ($oncourse);
-
-        $this->assign('oncourse',$oncourse);
-        $this->assign('course',$course);
-        $this->assign('courseinfo',$courseinfo);
-        $this->assign('classroom',$classroom);
-
-        $courseinfo = Courseinfo::where('weekday',Term::weekday())->where('week',Term::getWeek())->order('begin')->select();         //获取当天的所有课程
-        // dump($classroom);
-        return $this->fetch();
+        if (!$seattable->save()) {
+            return $this->error('信息保存异常，请重新扫码');
+        }
+        return $this->success('选座成功', url('/index/student/page'));
+        
+        // dump($classroom_time); 
+        // dump($id);
+        // dump($row);
+        // dump($column);
+        // dump($classroom_id);
+        // dump($time);
+        // dump($student_id);
     }
 
 	//学生模块——座位信息储存
