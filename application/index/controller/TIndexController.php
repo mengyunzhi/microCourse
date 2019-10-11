@@ -3,6 +3,7 @@ namespace app\index\controller;
 use app\index\model\Index;
 use think\Controller;
 use app\index\model\Teacher;
+use think\facade\Session;
 use app\index\model\Term;
 /**
  * @Author: LYX6666666
@@ -27,8 +28,11 @@ class TIndexController extends Controller
 			return $this->error('老师未登录', url('Login/index'));
 		}
 
+         $id = Session::get('teacherId');
+		if (Teacher::where('id',$id)->find()->name === Null){
+			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/judgeRole?id='.$id);
+		}
 	}
-
 	public function index()
 	{
 
