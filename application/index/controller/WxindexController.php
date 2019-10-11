@@ -15,6 +15,7 @@ use app\index\controller\WxController;
 use app\index\controller\StudentController;
 use app\index\controller\LoginController;
 use app\index\model\Student;
+use app\index\model\Teacher;
 use app\index\model\Term;
  
 class WxindexController extends WxController {
@@ -48,11 +49,16 @@ class WxindexController extends WxController {
     public function online(){//上课签到
         $this->_weChatAccredit($this::$online,$this->request->param('id'));
     }
+    
+    public function test1(){ //教师登录
+        $this->_weChatAccredit($this::$test1);
+    }
+
 
     public function Wx(){
         $this->request->param('echostr');
     }
-
+     
     /**
      * 微信按钮跳转授权
      */
@@ -93,7 +99,13 @@ class WxindexController extends WxController {
     //用于跳转到各个方法，传入OpenId和跳转的方法
     public function gogogo($state,$openid)
     {
-    	// 登陆，直接调用M层方法，进行登录
+        if (Teacher::Wxlogin($openid)){
+            //如果成功，不进行跳转，只存Session
+        } 
+    	
+        else{
+
+            // 登陆，直接调用M层方法，进行登录
 		if (Student::Wxlogin($openid)){
 			//如果成功，不进行跳转，只存Session
 		} else {
@@ -103,6 +115,7 @@ class WxindexController extends WxController {
 			$Student->save();
 			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/judgeRole?id='.$Student->id);
 		}
+    }
         if(Term::NoTerm()) {
             // return $this->fetch('Login/noterm');
             return $this->error('系统尚未初始化', url('Login/noterm'));
@@ -129,7 +142,10 @@ class WxindexController extends WxController {
     		case 'info':
     			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/info');
     			break;
-                
+            //教师登录  
+            case 'test1':
+                $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Teacher/page');
+                break;
     		//扫码签到，state作为课程信息ID来使用
     		default:
                 $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/entercourse?id='.$state);

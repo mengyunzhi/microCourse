@@ -215,4 +215,14 @@ class LoginController extends Controller
         $this->assign('temp',$temp);
         return $this->fetch();
 	}
+	//使用js调用该方法，控制弹窗
+	public function judgeFocus()
+	{
+	 return 1;	
+	}
+	//使用js调用该方法，进行绑定
+	public function binding()
+	{
+	 return 2;	
+	}
 }

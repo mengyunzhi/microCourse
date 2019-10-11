@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="container" style="background-image: url(/static/img/intro-bg.jpg)">
+<body class="container" style="background-image: url(/static/img/intro-bg.jpg)" onload ="judge()">
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
@@ -88,9 +88,55 @@
             {/for}
 
         </table>
-
+ 
         
     </div>
+    <script type="text/javascript">
+      function judge(){
+        var url = "/index/login/judgeFocus";
+        ajaxGet(url, function(response)
+        {
+          console.log(response);
+          if(response != -1)
+          {
+           popup();
+          }
+        });
+      }
+
+
+      function ajaxGet(url, callback)
+      {
+        $.ajax({
+          url: url,
+          type: "get",
+          //成功后调用success后面的语句
+        success: function(response) {
+          callback(response);
+        },
+        //失败后调用error后面的语句
+        error: function(xhr) {
+          console.log('server error');
+        }
+        })
+      }
+    /*弹窗*/
+    function popup(){
+    var x;
+    var r=confirm("是否绑定本节课程信息!");
+    if (r==true)
+    {
+      var url = "/index/login/binding";
+        ajaxGet(url, function(response)
+        {
+          console.log(response);
+        });
+     }   
+    else{
+
+        }
+      }
+    </script>
 </body>
 
 </html>
