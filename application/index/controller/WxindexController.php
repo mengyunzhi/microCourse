@@ -4,11 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
-<<<<<<< HEAD
- * @Last Modified time: 2019-09-28 19:48:26
-=======
- * @Last Modified time: 2019-09-21 11:26:27
->>>>>>> e94378ad1760a82bb7e19fa552e6a3cb66616ea1
+ * @Last Modified time: 2019-10-12 09:51:49
  */
 namespace app\index\controller;
 use app\index\controller\WxController;
@@ -83,11 +79,11 @@ class WxindexController extends WxController {
         $access_token = $we_chat->getAccessToken($code); //根据code获取token
         //var_dump($access_token);
         //根据access_token和openid获取到用户信息
-        $we_chat_user_info = $we_chat->getWeChatUserInfo($access_token['access_token'],$access_token['openid']);
-        // var_dump($we_chat_user_info);
-        $this->gogogo($state,$we_chat_user_info["openid"]);
-        // var_dump($we_chat_user_info );
-        // var_dump($state);
+        //$we_chat_user_info = $we_chat->getWeChatUserInfo($access_token['access_token'],$access_token['openid']);
+        //var_dump($we_chat_user_info);
+        // 
+        $this->gogogo($state,$access_token["openid"]);
+        //$this->gogogo($state,$we_chat_user_info["openid"]);
     }
 
     //用于跳转到各个方法，传入OpenId和跳转的方法
@@ -103,6 +99,7 @@ class WxindexController extends WxController {
 			$Student->save();
 			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/judgeRole?id='.$Student->id);
 		}
+
         if(Term::NoTerm()) {
             // return $this->fetch('Login/noterm');
             return $this->error('系统尚未初始化', url('Login/noterm'));
