@@ -9,6 +9,7 @@ use app\index\model\Klass;
 use app\index\model\College;
 use app\index\model\Area; 
 use app\index\model\Course;
+use app\index\model\Seattable;
 use think\facade\Request;
 use app\index\widget\MenuWidget;
 
@@ -664,7 +665,7 @@ class AdminController extends AIndexController
 	{
 		$areas = Area::all();
         $this->assign('areas', $areas);
-
+        
 
 		return $this->fetch();
 	}
@@ -704,8 +705,7 @@ class AdminController extends AIndexController
 	    	if(!$Classroom->save()) {
 	    		return $this->error('数据添加错误：' . $Classroom->getError());
 	    	} else {
-	    		// dump($Classroom->id);
-       //          return ;
+	    		
 	    		// 添加classroom_time数据
 	    	    for($i=1;$i<=11;$i++) {
 	        	    $classroom_time = new Classroom_time;
@@ -715,6 +715,7 @@ class AdminController extends AIndexController
 	        	    if (!$classroom_time->save()) {
 	        	    	return $this->error('数据添加错误');
 	        	    }
+	        	    
 	        	}
 	    		return $this->success('数据添加成功', url('Classroom'));
 	    	}
@@ -1105,6 +1106,7 @@ class AdminController extends AIndexController
 	// classroom_time每天定点删除数据
 	public function classroom_timeDelete()
 	{
+		// 初始化classroom_time相关数据
 		$classroom_times = Classroom_time::all();
 		// dump($classroom_times);
 		// return ;
@@ -1113,10 +1115,20 @@ class AdminController extends AIndexController
 			$classroom_time->courseinfo_id = null;
 			if (!$classroom_time->save())
 				return '初始化失败';
-
 		}
+
+		// 初始化seattable相关数据
+        $seattables = Seattable::all();
+
+        foreach ($seattables as $seattable) {
+        	$seattable->student_id = null;
+        	$seattable->classroom_time_id = null;
+        	if (!$seattable->save()) {
+        		return '初始化失败';
+        	}
+        }
+    
 		return '初始化成功';
-		
 	}
 
 }
