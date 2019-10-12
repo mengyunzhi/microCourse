@@ -10,4 +10,9 @@ class Classroom_time extends Model
     {
         return $this->belongsTo('classroom');
     }  
+
+    public function courseinfo()
+    {
+        return $this->belongsTo('courseinfo');
+    }  
 }
