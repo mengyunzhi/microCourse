@@ -9,6 +9,7 @@ use app\index\model\Klass;
 use app\index\model\College;
 use app\index\model\Area; 
 use app\index\model\Course;
+use app\index\model\Seattable;
 use think\facade\Request;
 use app\index\widget\MenuWidget;
 
@@ -664,7 +665,7 @@ class AdminController extends AIndexController
 	{
 		$areas = Area::all();
         $this->assign('areas', $areas);
-
+        
 
 		return $this->fetch();
 	}
@@ -704,8 +705,7 @@ class AdminController extends AIndexController
 	    	if(!$Classroom->save()) {
 	    		return $this->error('数据添加错误：' . $Classroom->getError());
 	    	} else {
-	    		// dump($Classroom->id);
-       //          return ;
+	    		
 	    		// 添加classroom_time数据
 	    	    for($i=1;$i<=11;$i++) {
 	        	    $classroom_time = new Classroom_time;
@@ -715,6 +715,7 @@ class AdminController extends AIndexController
 	        	    if (!$classroom_time->save()) {
 	        	    	return $this->error('数据添加错误');
 	        	    }
+	        	    
 	        	}
 	    		return $this->success('数据添加成功', url('Classroom'));
 	    	}
@@ -1003,23 +1004,25 @@ class AdminController extends AIndexController
 		dump('星期'.$week);
 		// 获取学期id
 		$term =	$time->termId;
-		dump('学期'.$term);
-		
+		dump('学期id'.$term);
+		//获取所有消息模板
 		$allTemplate = $app->template_message->getPrivateTemplates();
 		
-		$date = date('Y-m-d H:i:s');
+		$date = date('Y-m-d H:i:s'); //获取当前时间
 		dump('用户数：'.$userNum);
-		for ($i = 0;$i<$userNum ; $i++)
+		for ($i = 0; $i<$userNum ; $i++) //利用for循环给每个关注用户发送上课提醒
 		{	
 			dump('第'.$i.'次循环');
-			$studentId = Student::where('openid',$allOpenid['data']['openid'][$i])->value('id'); //通过openid获取学生id
+			$studentId = Student::where('openid',$allOpenid['data']['openid'][$i])->value('id');//通过openid获取学生id
+			//如果用户仅关注了公众号但未注册，即在student表中未找到学生id，则不发送上课提醒
 			if (is_null($studentId)) {
-				dump($studentId);
+				dump('学生id为：'.$studentId);
 				dump('openid为 '.$allOpenid['data']['openid'][$i].' 的学生id为空');
 				
+			//若通过openid在student表中找到了学生id
 			} else {
 				$courseInfo = Course::getStudentCourse($studentId,$term,$week,$weekday); //返回一个课程数组
-				dump(empty($courseInfo));
+				// 如果学生当日无课，则调用模板0，发送今日无课
 				if (empty($courseInfo)) {
 					$templateId = $allTemplate['template_list'][0]['template_id'];
 					$app->template_message->send([
@@ -1032,23 +1035,28 @@ class AdminController extends AIndexController
 	    			]);
 
 
-
+				// 如果学生当日有课，则调用消息模板1
 				} else {
 					$templateId = $allTemplate['template_list'][1]['template_id'];
 					$studentId = Student::where('openid',$allOpenid['data']['openid'][$i])->value('id'); //通过openid获取学生id
-					$courseInfo = Course::getStudentCourse($studentId,$term,$week,$weekday); //返回一个课程数组
-					for ($k = 0;$k<12;$k++)
-					if (isset($courseInfo[$k])) {
-						$room[$k] = $courseInfo[$k]['Classroom'];
-						$courseName[$k] = $courseInfo[$k]['Classroom'] ;
-						$littleClass[$k] = $courseInfo[$k]['littleClass']; 
+					$courseInfo = Course::getStudentCourse($studentId,$term,$week,$weekday);
+					 //通过4项参数返回一个学生当日课程数组
+					dump('学生id为'.$studentId);
+					dump($courseInfo);
+					for ($k = 0;$k<12;$k++) {
+						if (isset($courseInfo[$k])) {
+							$room[$k] = $courseInfo[$k]['Classroom'];
+							$courseName[$k] = $courseInfo[$k]['name'];
+							
+							$littleClass[$k] = $courseInfo[$k]['littleClass']; 
+							
 
-					} else {
-						$room[$k] = '无';
-						$courseName[$k] = '无课';
-						$littleClass[$k] = '无';
+						} else {
+							$room[$k] = '无';
+							$courseName[$k] = '无课';
+							$littleClass[$k] = '无';
+							}
 					}
-					
 					$app->template_message->send([
 			        // 'touser' => $allOpenid['data']['openid'][$i],
 			        'touser' => $allOpenid['data']['openid'][$i],
@@ -1065,7 +1073,7 @@ class AdminController extends AIndexController
 				            'room6' => $room[5],
 				            'room7' => $room[6],
 				            'room8' => $room[7],
-				            'room9' => $room[8],
+				            'room9' => $room[9],
 
 				            'course1' => $courseName[0],
 				            'course2' => $courseName[1],
@@ -1075,7 +1083,7 @@ class AdminController extends AIndexController
 				            'course6' => $courseName[5],
 				            'course7' => $courseName[6],
 				            'course8' => $courseName[7],
-				            'course9' => $courseName[8],
+				            'course9' => $courseName[9],
 
 				            'turn1' => $littleClass[0],
 				            'turn2' => $littleClass[1],
@@ -1085,7 +1093,7 @@ class AdminController extends AIndexController
 				            'turn6' => $littleClass[5],
 				            'turn7' => $littleClass[6],
 				            'turn8' => $littleClass[7],
-				            'turn9' => $littleClass[8],
+				            'turn9' => $littleClass[9],
 
 
 			            
@@ -1105,6 +1113,7 @@ class AdminController extends AIndexController
 	// classroom_time每天定点删除数据
 	public function classroom_timeDelete()
 	{
+		// 初始化classroom_time相关数据
 		$classroom_times = Classroom_time::all();
 		// dump($classroom_times);
 		// return ;
@@ -1113,10 +1122,20 @@ class AdminController extends AIndexController
 			$classroom_time->courseinfo_id = null;
 			if (!$classroom_time->save())
 				return '初始化失败';
-
 		}
+
+		// 初始化seattable相关数据
+        $seattables = Seattable::all();
+
+        foreach ($seattables as $seattable) {
+        	$seattable->student_id = null;
+        	$seattable->classroom_time_id = null;
+        	if (!$seattable->save()) {
+        		return '初始化失败';
+        	}
+        }
+    
 		return '初始化成功';
-		
 	}
 
 }
