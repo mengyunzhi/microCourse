@@ -26,7 +26,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-10 22:07:58
+ * @Last Modified time: 2019-10-15 21:33:48
  */
 class TeacherController extends TIndexController
 {
@@ -962,5 +962,90 @@ class TeacherController extends TIndexController
         return $this->success($message,url('grade'));
     }
 
+    //教师扫码查看签到情况
+    public function OnlineSee()
+    {
+        // 获取当前方法名
+        //$this->assign('isaction',Request::action());
+
+        //获取周次
+        $week = Term::getWeek();
+        //星期
+        $weekday = Term::weekday();
+        //获取激活学期
+        $Term = Term::where('state',1)->find();
+        if($Term == null){
+            return $this->error('当前学期已结束或未激活');
+        }
+
+        //取出本学期的所有课程，编为一个数组
+        $courses = $Term->Course;
+        //储存所有课程的ID
+        $AllcourseIds = [];
+        foreach ($courses  as $value) {
+          array_push($AllcourseIds, $value->id);
+        }
+
+        // 获取本教师id
+        $teacherId = session('teacherId');
+
+        //查询本学期本本教师的所有课程
+        $Course = new Course();
+        $getCourse =  $Course->where(['id'=>$AllcourseIds,'teacher_id'=>$teacherId])->select();
+
+        //得到本学期本教师所有课程成绩所对应的course_id
+        if(is_null($getCourse)) {
+            $coursetable = [];
+        } else {
+            //储存本学期本教师所有课程的course_id
+            $CourseIds = [];
+            foreach ($getCourse as $course) {
+                array_push($CourseIds, $course->id);
+            }
+
+            $courseinfos = Courseinfo::where(['course_id'=>$CourseIds, 'week'=>$week, 'weekday'=>$weekday])->select();
+
+            foreach ($courseinfos as $key => $acourseinfo) {
+                {
+                    $coursetable[$acourseinfo->begin] = $acourseinfo;
+                }
+            }
+        }
+        $this->assign('coursetable',$coursetable);
+        if ($coursetable == Null) {
+            $ifcourse = 1;
+        }else{
+            $ifcourse = 0;
+        }
+        $this->assign('ifcourse',$ifcourse);
+
+        //获取教室ID
+        $id = $this->request->param('id');
+        //根据ID获取教室
+        $classroom = Classroom::where('id', $id)->find();
+        $this->assign('classroom',$classroom);
+
+        //获取当前小节，根据小节找到classroom_time
+        $littleClass = Term::littleClass();
+        $Classroom_time = Classroom_time::where('classroom_id',$classroom->id)->where('littleClass',$littleClass)->find();
+        $this->assign('Classroom_time', $Classroom_time);
+
+        //找到当前教室当前小节的所有学生
+        $students = Seattable::where('Classroom_time_id',  $Classroom_time->id)->order(['row', 'column'=>'asc'])->select();
+        $this->assign('students', $students);
+        // dump($students);
+        // return ;
+
+        // 人数比
+        $nownumber = count($students);
+        $this->assign('nownumber', $nownumber);
+        // $courseinfo = Courseinfo::get($id);
+        // $this->assign('number', $courseinfo->Course->number);
+        
+        // 传给v层一个变量，初始化为0
+        $temp = 0;
+        $this->assign('temp',$temp);
+        return $this->fetch();
+    }
 }
 
