@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-12 09:53:40
+ * @Last Modified time: 2019-10-15 20:08:53
  */
 namespace app\index\controller;
 use app\index\controller\WxController;
@@ -21,6 +21,7 @@ class WxindexController extends WxController {
 	public static $course = 'course';
 	public static $info = 'info';
     public static $online = 'online';
+    public static $test1 = 'test1';
 
     public function openIdTest() {  //OpsnId测试
     	$this->weChatAccredit($this::$openIdTest);
@@ -144,7 +145,13 @@ class WxindexController extends WxController {
                 break;
     		//扫码签到，state作为课程信息ID来使用
     		default:
-                $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/entercourse?id='.$state);
+                $row = substr($state,4,2)*1;
+                $column = substr($state,6,2)*1;
+                if ($row == 0 || $column == 0) {
+                    $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Teacher/OnlineSee?id='.$state);
+                }else{
+                    $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/entercourse?id='.$state);
+                }
     			break;
     	}
     	
