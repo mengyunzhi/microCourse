@@ -4,11 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
-<<<<<<< HEAD
- * @Last Modified time: 2019-09-28 19:48:26
-=======
- * @Last Modified time: 2019-09-21 11:26:27
->>>>>>> e94378ad1760a82bb7e19fa552e6a3cb66616ea1
+ * @Last Modified time: 2019-10-15 20:08:53
  */
 namespace app\index\controller;
 use app\index\controller\WxController;
@@ -25,6 +21,7 @@ class WxindexController extends WxController {
 	public static $course = 'course';
 	public static $info = 'info';
     public static $online = 'online';
+    public static $test1 = 'test1';
 
     public function openIdTest() {  //OpsnId测试
     	$this->weChatAccredit($this::$openIdTest);
@@ -89,11 +86,11 @@ class WxindexController extends WxController {
         $access_token = $we_chat->getAccessToken($code); //根据code获取token
         //var_dump($access_token);
         //根据access_token和openid获取到用户信息
-        $we_chat_user_info = $we_chat->getWeChatUserInfo($access_token['access_token'],$access_token['openid']);
-        // var_dump($we_chat_user_info);
-        $this->gogogo($state,$we_chat_user_info["openid"]);
-        // var_dump($we_chat_user_info );
-        // var_dump($state);
+        //$we_chat_user_info = $we_chat->getWeChatUserInfo($access_token['access_token'],$access_token['openid']);
+        //var_dump($we_chat_user_info);
+        // 
+        $this->gogogo($state,$access_token["openid"]);
+        //$this->gogogo($state,$we_chat_user_info["openid"]);
     }
 
     //用于跳转到各个方法，传入OpenId和跳转的方法
@@ -104,18 +101,18 @@ class WxindexController extends WxController {
         } 
     	
         else{
-
             // 登陆，直接调用M层方法，进行登录
-		if (Student::Wxlogin($openid)){
-			//如果成功，不进行跳转，只存Session
-		} else {
-			//如果失败，马上存OpenID,取出ID，跳转到注册界面
-			$Student = new Student();
-			$Student->openid = $openid;
-			$Student->save();
-			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/judgeRole?id='.$Student->id);
-		}
-    }
+    		if (Student::Wxlogin($openid)){
+    		//如果成功，不进行跳转，只存Session
+    		} else {
+    		//如果失败，马上存OpenID,取出ID，跳转到注册界面
+    			$Student = new Student();
+    			$Student->openid = $openid;
+    			$Student->save();
+    			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/judgeRole?id='.$Student->id);
+    		}
+        }
+
         if(Term::NoTerm()) {
             // return $this->fetch('Login/noterm');
             return $this->error('系统尚未初始化', url('Login/noterm'));
@@ -148,7 +145,13 @@ class WxindexController extends WxController {
                 break;
     		//扫码签到，state作为课程信息ID来使用
     		default:
-                $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/entercourse?id='.$state);
+                $row = substr($state,4,2)*1;
+                $column = substr($state,6,2)*1;
+                if ($row == 0 || $column == 0) {
+                    $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Teacher/OnlineSee?id='.$state);
+                }else{
+                    $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/entercourse?id='.$state);
+                }
     			break;
     	}
     	

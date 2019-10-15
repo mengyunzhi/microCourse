@@ -20,6 +20,16 @@
     <br><br>
 <div class="col-md-12">
     <table class="table table-bordered">
+      <tr>
+        <td>
+            <div id="qrcode00"></div>
+              <a href="<?php echo $url.'0000' ?>">这是这个座位的连接</a>
+              <?php echo $url.'0000' ?>
+        </td>
+            <script type="text/javascript">
+              new QRCode(document.getElementById('qrcode00'), "<?php echo $url.'0000' ?>")
+            </script>
+      </tr>
       <?php for($i=1;$i<=$classroom->column;$i++): ?>  <!--  //i是列 -->
         <tr class="info">
           <?php for($j=1;$j<=$classroom->row;$j++): ?>   <!--  //j是行 -->

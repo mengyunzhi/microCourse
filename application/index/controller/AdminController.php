@@ -12,14 +12,13 @@ use app\index\model\Course;
 use app\index\model\Seattable;
 use think\facade\Request;
 use app\index\widget\MenuWidget;
-
 use EasyWeChat\Factory;  //使用easywechat的封装sdk
 
 /**
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:43:05
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-09 21:10:44
+ * @Last Modified time: 2019-10-12 14:06:17
  */
 class AdminController extends AIndexController	
 {
