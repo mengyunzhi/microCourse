@@ -15,8 +15,10 @@ use app\index\model\Courseinfo;
 use app\index\model\Score;
 use think\Controller;
 use app\index\model\Classroom;
+use app\index\model\Classroom_time;
 use think\facade\Session;
 use app\index\model\Student;
+use app\index\model\Seattable;
 use think\Db;
 use think\facade\Request;
 
@@ -26,7 +28,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-15 21:33:48
+ * @Last Modified time: 2019-10-16 11:51:47
  */
 class TeacherController extends TIndexController
 {
@@ -968,6 +970,8 @@ class TeacherController extends TIndexController
         // 获取当前方法名
         //$this->assign('isaction',Request::action());
 
+        //获取小节
+        $littleClass =Term::littleClass();
         //获取周次
         $week = Term::getWeek();
         //星期
@@ -992,32 +996,38 @@ class TeacherController extends TIndexController
         //查询本学期本本教师的所有课程
         $Course = new Course();
         $getCourse =  $Course->where(['id'=>$AllcourseIds,'teacher_id'=>$teacherId])->select();
-
         //得到本学期本教师所有课程成绩所对应的course_id
         if(is_null($getCourse)) {
-            $coursetable = [];
+            $courseinfo = null;
         } else {
             //储存本学期本教师所有课程的course_id
             $CourseIds = [];
             foreach ($getCourse as $course) {
                 array_push($CourseIds, $course->id);
             }
+            $begins=[$littleClass,$littleClass-1];
+            $courseinfo = Courseinfo::where(['course_id'=>$CourseIds, 'week'=>$week, 'weekday'=>$weekday, 'begin'=>$begins])->find();
 
-            $courseinfos = Courseinfo::where(['course_id'=>$CourseIds, 'week'=>$week, 'weekday'=>$weekday])->select();
-
-            foreach ($courseinfos as $key => $acourseinfo) {
-                {
-                    $coursetable[$acourseinfo->begin] = $acourseinfo;
-                }
-            }
+            // foreach ($courseinfos as $key => $acourseinfo) {
+            //     {
+            //         $coursetable[$acourseinfo->begin] = $acourseinfo;
+            //     }
+            // }
         }
-        $this->assign('coursetable',$coursetable);
-        if ($coursetable == Null) {
-            $ifcourse = 1;
-        }else{
+        //发送课程信息
+        $this->assign('courseinfo',$courseinfo);
+        // $this->assign('coursetable',$coursetable);
+        if ($courseinfo == null) {
             $ifcourse = 0;
+        }else{
+            $ifcourse = 1;
         }
+        // dump($ifcourse);
+        // dump($coursetable);
+        // return;
+        //发送是否有课
         $this->assign('ifcourse',$ifcourse);
+
 
         //获取教室ID
         $id = $this->request->param('id');
@@ -1046,6 +1056,32 @@ class TeacherController extends TIndexController
         $temp = 0;
         $this->assign('temp',$temp);
         return $this->fetch();
+    }
+
+    //使用js调用该方法，进行绑定
+    public function binding()
+    {
+        $Classroom_time = Classroom_time::where('id',$this->request->param('Classroom_time'))->find();
+        $num = 0;//计数
+        $courseinfo = courseinfo::where('id',$this->request->param('courseinfo'))->find();
+        $course = $courseinfo->course;
+        $Classroomtimeids = [];
+        for ($i=$courseinfo->begin; $i < $courseinfo->begin + $courseinfo->length; $i++) { 
+            $_Classroom_time = Classroom_time::where('id',$Classroom_time->id + $num)->find();
+            $_Classroom_time->status = 1;
+            $_Classroom_time->courseinfo_id = $courseinfo->id;
+            array_push($Classroomtimeids, $_Classroom_time->id);
+            $_Classroom_time->save();
+            $num++;
+        }
+
+        $Seattables = Seattable::where(['classroom_time_id'=>$Classroomtimeids])->select();
+        foreach ($Seattables as $key => $Seat) {
+            $_score = Score::where('student_id',$Seat->student_id)->where('course_id',$course->id)->find();
+            $_score->arrivals++;
+            $_score->save();
+        }
+        return 1;
     }
 }
 
