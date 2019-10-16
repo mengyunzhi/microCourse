@@ -51,7 +51,12 @@
             
                 <h3></h3>
 <!--                 <a href="setCourse?id={$Classroom_time['id']}" class="btn btn-success" style="background-color: rgb(74,155,47,0.7);">&nbsp;签到</a> -->
-                <a href="onlinesignin?id={$Classroom_time['id']}" class="btn btn-primary" style="background-color: rgb(39,84,185,0.7);">&nbsp;随机提问</a>
+            {eq name='$ifcourse' value='1'}
+            <a href="onlinesignin?id={$courseinfo['id']}" class="btn btn-primary" style="background-color: rgb(39,84,185,0.7);">&nbsp;随机提问</a>
+            {else /}
+            <a href="onlinesignin1?id={$Classroom_time['id']}" class="btn btn-primary" style="background-color: rgb(39,84,185,0.7);">&nbsp;随机提问</a>
+            {/eq}
+                
 
             </div>
 

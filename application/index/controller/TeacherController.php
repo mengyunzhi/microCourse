@@ -28,7 +28,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-16 11:51:47
+ * @Last Modified time: 2019-10-16 21:28:13
  */
 class TeacherController extends TIndexController
 {
@@ -711,19 +711,63 @@ class TeacherController extends TIndexController
         return $this->fetch();
     }
 
-    //教师模块随机提问界面——刘宇轩
-    public function onlinesignin()
+    //教师模块随机提问界面_与教室关联——刘宇轩
+    public function onlinesignin1()
     {
         //取出本节课的课程信息
-        $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
+        $Classroom_time = Classroom_time::where('id',$this->request->param('id/d'))->find();
         
         //从中间表取出所有学生信息
-        $students = Oncourse::where('courseinfo_id', $this->request->param('id'))->select();
+        $students = Seattable::where('Classroom_time_id', $Classroom_time->id)->select();
         // dump($students);
         // return ;
         if (count($students) == 0) {
             
-            return $this->error('未开启签到',url('online'));
+            return $this->error('当前没有学生签到');
+        }
+        
+        // 建一个空数组储存学生信息
+        $ids = [];
+        //对于每个学生取出ID
+        foreach ($students as $key => $astudent) {
+            $ids[$key] = $astudent->student_id;
+        }
+
+        //打乱顺序
+        shuffle($ids);
+        //如果传入数据为空，并且传入id等于随机数id，则再次随机
+        if ($this->request->param('student') != null && count($ids) != 1 && count($ids) != 0) {
+            if ($ids[0] == $this->request->param('student')){
+                $id = $ids[1];
+            }else{
+                $id = $ids[0];
+            }}
+        else{
+            $id = $ids[0];
+        }
+        //取第一个值，揪出这个倒霉孩子
+        $thestudent = Student::where('id',$id)->find();
+        // dump($id);
+        //向V层传值
+        $this->assign('student',$thestudent);
+        $this->assign('Classroom_time',$Classroom_time);
+        return $this->fetch();
+    }
+
+    //教师模块随机提问界面_与课程关联——刘宇轩
+    public function onlinesignin()
+    {
+        //取出本节课的课程信息
+        $Classroom_time = Classroom_time::where('courseinfo_id',$this->request->param('id/d'))->find();
+        $courseinfo = Courseinfo::where('id',$this->request->param('id/d'))->find();
+        
+        //从中间表取出所有学生信息
+        $students = Seattable::where('Classroom_time_id', $Classroom_time->id)->select();
+        // dump($students);
+        // return ;
+        if (count($students) == 0) {
+            
+            return $this->error('未开启签到');
         }
         
         // 建一个空数组储存学生信息
@@ -751,7 +795,7 @@ class TeacherController extends TIndexController
         //向V层传值
         $this->assign('courseinfo',$courseinfo);
         $this->assign('student',$thestudent);
-
+        $this->assign('Classroom_time',$Classroom_time);
         return $this->fetch();
     }
     
@@ -763,21 +807,19 @@ class TeacherController extends TIndexController
         $courseinfoid = $this->request->param('courseinfoid');
 
         if ($assess == 1){
-            $oncourse = Oncourse::where('courseinfo_id', $courseinfoid)->where('student_id', $studentid)->find();
-            $oncourse->respond++;
-            
+
             $courseinfo = Courseinfo::get($courseinfoid);
             $score = Score::where('course_id', $courseinfo->course_id)->where('student_id', $studentid)->find();
             $score->responds++;
 
-            if ($oncourse->save() && $score->save()) {
-                return $this->success('评价成功',url('onlinesignin?id='.$courseinfoid));  
+            if ( $score->save()) {
+                return $this->success('评价成功');  
             } else {
-                return $this->error('评价失败',url('onlinesignin?id='.$courseinfoid));
+                return $this->error('评价失败');
             }
         }
 
-    return $this->success('评价成功',url('onlinesignin?id='.$courseinfoid));   
+        return $this->success('评价成功');   
     }
 
     public function entercourse()
@@ -1006,6 +1048,9 @@ class TeacherController extends TIndexController
                 array_push($CourseIds, $course->id);
             }
             $begins=[$littleClass,$littleClass-1];
+            if ($littleClass == 11) {
+                $begins=[$littleClass,$littleClass-1,$littleClass-2];
+            }
             $courseinfo = Courseinfo::where(['course_id'=>$CourseIds, 'week'=>$week, 'weekday'=>$weekday, 'begin'=>$begins])->find();
 
             // foreach ($courseinfos as $key => $acourseinfo) {
@@ -1014,8 +1059,7 @@ class TeacherController extends TIndexController
             //     }
             // }
         }
-        //发送课程信息
-        $this->assign('courseinfo',$courseinfo);
+        
         // $this->assign('coursetable',$coursetable);
         if ($courseinfo == null) {
             $ifcourse = 0;
@@ -1028,6 +1072,12 @@ class TeacherController extends TIndexController
         //发送是否有课
         $this->assign('ifcourse',$ifcourse);
 
+        //发送课程信息
+        if ($courseinfo == null) {
+            $courseinfo = new courseinfo;
+            $courseinfo->id = 0;
+        }
+        $this->assign('courseinfo',$courseinfo);
 
         //获取教室ID
         $id = $this->request->param('id');
@@ -1074,7 +1124,6 @@ class TeacherController extends TIndexController
             $_Classroom_time->save();
             $num++;
         }
-
         $Seattables = Seattable::where(['classroom_time_id'=>$Classroomtimeids])->select();
         foreach ($Seattables as $key => $Seat) {
             $_score = Score::where('student_id',$Seat->student_id)->where('course_id',$course->id)->find();

@@ -16,7 +16,7 @@ use app\index\validate\StudentValidate;
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-10 20:38:55
+ * @Last Modified time: 2019-10-16 20:43:10
  */
 class LoginController extends Controller
 {
@@ -215,6 +215,50 @@ class LoginController extends Controller
         $this->assign('temp',$temp);
         return $this->fetch();
 	}
+
+	//教师模块随机提问界面_与教室关联——刘宇轩
+    public function onlinesignin1()
+    {
+        //取出本节课的课程信息
+        $Classroom_time = Classroom_time::where('id',$this->request->param('id/d'))->find();
+        
+        //从中间表取出所有学生信息
+        $students = Seattable::where('Classroom_time_id', $Classroom_time->id)->select();
+        // dump($students);
+        // return ;
+        if (count($students) == 0) {
+            
+            return $this->error('当前没有学生签到');
+        }
+        
+        // 建一个空数组储存学生信息
+        $ids = [];
+        //对于每个学生取出ID
+        foreach ($students as $key => $astudent) {
+            $ids[$key] = $astudent->student_id;
+        }
+
+        //打乱顺序
+        shuffle($ids);
+        //如果传入数据为空，并且传入id等于随机数id，则再次随机
+        if ($this->request->param('student') != null && count($ids) != 1 && count($ids) != 0) {
+            if ($ids[0] == $this->request->param('student')){
+                $id = $ids[1];
+            }else{
+                $id = $ids[0];
+            }}
+        else{
+            $id = $ids[0];
+        }
+        //取第一个值，揪出这个倒霉孩子
+        $thestudent = Student::where('id',$id)->find();
+        // dump($id);
+        //向V层传值
+        $this->assign('student',$thestudent);
+
+        return $this->fetch();
+    }
+
 	//使用js调用该方法，控制弹窗
 	public function judgeFocus()
 	{
