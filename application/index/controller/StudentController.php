@@ -338,9 +338,13 @@ class StudentController extends SIndexController
 
                 // 初始化本学生本教室其他座位信息
                 $primarySeattable = Seattable::where('student_id',$student_id)->where('classroom_time_id',$classroom_time->id)->find();
+
                 if ($primarySeattable) {
                     $primarySeattable->student_id = null;
-                    $$primarySeattable->signin = 0;
+                    if (!$primarySeattable->save()) {
+                         return $this->error('信息保存异常，请重新扫码');
+                    }
+                    
                 } else if($classroom_time->status){
                     // 若之前未选过其他座位，签到次数+1
 
@@ -364,52 +368,68 @@ class StudentController extends SIndexController
                          return $this->error('信息保存异常，请重新扫码');
                     }
                 }
+
+                if (!$seattable->save()) {
+                    return $this->error('信息保存异常，请重新扫码');
+                }
             }
         } else {
+            // 初始化本学生本教室其他座位信息
+            $primarySeattable = Seattable::where('student_id',$student_id)->where('classroom_time_id',$classroom_time->id)->find();
+            
+            if ($primarySeattable) {
+                $primarySeattable->student_id = null;
+                if (!$primarySeattable->save()) {
+                    return $this->error('信息保存异常，请重新扫码');
+                }
+            } else if($classroom_time->status) {
+                
+                
+                $primarySeattable = Seattable::where('student_id',$student_id)->where('classroom_time_id',$classroom_time->id)->find();
+                if (!$primarySeattable) {
+                    // 签到次数+1
+                    
+                    $score = Score::where('student_id',$student_id)->where('course_id',$classroom_time->courseinfo->course_id)->find();
+
+                    if ($score) {
+                        // 如果本学生有本课程的一条数据，签到次数+1
+                        $score->arrivals++;
+                    } else {
+                        // 如果没有，新建之
+                        $score = new Score;
+                        $score->student_id = $student_id;
+                        $score->course_id = $classroom_time->courseinfo->course_id;
+                        $score->usual_score = 0;
+                        $score->exam_score = 0;
+                        $score->total_score = 0;
+                        $score->arrivals = 0;
+                        $score->respond = 0;
+                        $score->arrivals++;
+                    }
+                    if (!$score->save()) {
+                         return $this->error('信息保存异常，请重新扫码');
+                    }
+                } else {
+                    $primarySeattable->student_id = null;
+                    $primarySeattable->signin = 0;
+                }
+
+                
+            }
             $seattable = new Seattable;
-        
+            
             $seattable->classroom_time_id = $classroom_time->id;
             $seattable->row = $row;
             $seattable->column = $column;
             $seattable->student_id = $student_id;
             $seattable->role = 0;
-            
-            $primarySeattable = Seattable::where('student_id',$student_id)->where('classroom_time_id',$classroom_time->id)->find();
-            if (!$primarySeattable) {
-                // 签到次数+1
-                
-                $score = Score::where('student_id',$student_id)->where('course_id',$classroom_time->courseinfo->course_id)->find();
-
-                if ($score) {
-                    // 如果本学生有本课程的一条数据，签到次数+1
-                    $score->arrivals++;
-                } else {
-                    // 如果没有，新建之
-                    $score = new Score;
-                    $score->student_id = $student_id;
-                    $score->course_id = $classroom_time->courseinfo->course_id;
-                    $score->usual_score = 0;
-                    $score->exam_score = 0;
-                    $score->total_score = 0;
-                    $score->arrivals = 0;
-                    $score->respond = 0;
-                    $score->arrivals++;
-                }
-                if (!$score->save()) {
-                     return $this->error('信息保存异常，请重新扫码');
-                }
-            } else {
-                $primarySeattable->student_id = null;
-                $primarySeattable->signin = 0;
+            if (!$seattable->save()) {
+                    return $this->error('信息保存异常，请重新扫码');
             }
-            
-            
         }
 
-        if (!$seattable->save()) {
-            return $this->error('信息保存异常，请重新扫码');
-        }
-
+        
+        
 
         return $this->success('选座成功', url('/index/student/page'));
         
