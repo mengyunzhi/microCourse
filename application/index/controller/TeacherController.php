@@ -28,7 +28,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-16 21:28:13
+ * @Last Modified time: 2019-10-17 20:14:04
  */
 class TeacherController extends TIndexController
 {
@@ -930,7 +930,7 @@ class TeacherController extends TIndexController
         // dump($scores);
         // return;
     }
-    //获取前台传过来的平时成绩数据并保存到数据表中
+    //获取前台传过来的平时成绩数据并保存到数据表中——张文达
     public function usualScore() {
         
        $data = Request::instance()->param();
@@ -941,7 +941,7 @@ class TeacherController extends TIndexController
        $Score->save();
        
     }
-     //获取前台传过来的考试成绩数据并保存到数据表中
+     //获取前台传过来的考试成绩数据并保存到数据表中——张文达
     public function examScore() {
         
        $data = Request::instance()->post();
@@ -953,7 +953,7 @@ class TeacherController extends TIndexController
        $Score->save();
        
     }
-    //获取前台传过来的总成绩数据并保存到数据表中
+    //获取前台传过来的总成绩数据并保存到数据表中——张文达
      public function totalScore() {
         
        $data = Request::instance()->post();
@@ -1006,7 +1006,7 @@ class TeacherController extends TIndexController
         return $this->success($message,url('grade'));
     }
 
-    //教师扫码查看签到情况
+    //教师扫码查看签到情况——刘宇轩
     public function OnlineSee()
     {
         // 获取当前方法名
@@ -1108,7 +1108,7 @@ class TeacherController extends TIndexController
         return $this->fetch();
     }
 
-    //使用js调用该方法，进行绑定
+    //使用js调用该方法，进行绑定——张文达、刘宇轩
     public function binding()
     {
         $Classroom_time = Classroom_time::where('id',$this->request->param('Classroom_time'))->find();

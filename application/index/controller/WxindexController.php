@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-15 20:08:53
+ * @Last Modified time: 2019-10-17 20:31:11
  */
 namespace app\index\controller;
 use app\index\controller\WxController;
@@ -15,13 +15,17 @@ use app\index\model\Teacher;
 use app\index\model\Term;
  
 class WxindexController extends WxController {
+
+    //方法名：长度不能是8位！
 	public static $openIdTest = 'openIdTest';
 	public static $page = 'page';
 	public static $score = 'score';
 	public static $course = 'course';
 	public static $info = 'info';
     public static $online = 'online';
-    public static $test1 = 'test1';
+    public static $tpage = 'tpage';//Teacher page
+    public static $tcourse = 'tcourse';//Teacher course
+    public static $tgrade = 'tgrade';//Teacher grade
 
     public function openIdTest() {  //OpsnId测试
     	$this->weChatAccredit($this::$openIdTest);
@@ -47,10 +51,17 @@ class WxindexController extends WxController {
         $this->_weChatAccredit($this::$online,$this->request->param('id'));
     }
     
-    public function test1(){ //教师登录
-        $this->_weChatAccredit($this::$test1);
+    public function tpage(){ //教师登录
+        $this->weChatAccredit($this::$tpage);
     }
 
+    public function tcourse(){ //教师登录
+        $this->weChatAccredit($this::$tcourse);
+    }
+
+    public function tgrade(){ //教师登录
+        $this->weChatAccredit($this::$tgrade);
+    }
 
     public function Wx(){
         $this->request->param('echostr');
@@ -97,15 +108,38 @@ class WxindexController extends WxController {
     public function gogogo($state,$openid)
     {
         if (Teacher::Wxlogin($openid)){
-            //如果成功，不进行跳转，只存Session
+            //尝试登陆教师，如果成功，不进行跳转，只存Session
         } 
     	
         else{
             // 登陆，直接调用M层方法，进行登录
     		if (Student::Wxlogin($openid)){
-    		//如果成功，不进行跳转，只存Session
+    		//尝试登陆学生，如果成功，不进行跳转，只存Session
+                if (Student::where('id',session('teacherId'))->name == Null) {
+                    //当学生ID数据时，不知道此用户时学生还是教师
+                    //判断是否是要跳转到教师查看签到的界面
+                    if (strlen($state) == 8) {
+                        $row = substr($state,4,2)*1;
+                        $column = substr($state,6,2)*1;
+                        //如果长度为8，并且行号列号都是0，跳转到Login的OnlineSee方法（不需要注册）
+                        if ($row == 0 || $column == 0) {
+                            $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.$state);
+                        }
+                    }
+                }
     		} else {
-    		//如果失败，马上存OpenID,取出ID，跳转到注册界面
+    		//如果失败，说明该用户是新用户
+            
+                //判断是否是要跳转到教师查看签到的界面
+                if (strlen($state) == 8) {
+                    $row = substr($state,4,2)*1;
+                    $column = substr($state,6,2)*1;
+                    //如果长度为8，并且行号列号都是0，跳转到Login的OnlineSee方法（不需要注册）
+                    if ($row == 0 || $column == 0) {
+                        $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.$state);
+                    }
+                }
+                //如果不是，则是学生或教师，马上存学生的OpenID,取出ID，跳转到注册界面
     			$Student = new Student();
     			$Student->openid = $openid;
     			$Student->save();
@@ -117,6 +151,7 @@ class WxindexController extends WxController {
             // return $this->fetch('Login/noterm');
             return $this->error('系统尚未初始化', url('Login/noterm'));
         }
+
 		//跳转，根据state跳转到不同界面
     	switch ($state) {
     		//OpenId测试
@@ -139,12 +174,22 @@ class WxindexController extends WxController {
     		case 'info':
     			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/info');
     			break;
-            //教师登录  
-            case 'test1':
+            //教师主页  
+            case 'tpage':
                 $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Teacher/page');
                 break;
+            //课程管理  
+            case 'tcourse':
+                $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Teacher/course');
+                break;
+            //成绩录入  
+            case 'tgrade':
+                $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Teacher/grade');
+                break;
+
     		//扫码签到，state作为课程信息ID来使用
     		default:
+                //如果行号列号都是0，就跳转到Teacher下的查看签到，如果不是就跳转到学生签到
                 $row = substr($state,4,2)*1;
                 $column = substr($state,6,2)*1;
                 if ($row == 0 || $column == 0) {
