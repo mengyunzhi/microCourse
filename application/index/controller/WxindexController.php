@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-18 16:19:43
+ * @Last Modified time: 2019-10-18 17:20:35
  */
 namespace app\index\controller;
 use app\index\controller\WxController;
@@ -107,6 +107,8 @@ class WxindexController extends WxController {
     //用于跳转到各个方法，传入OpenId和跳转的方法
     public function gogogo($state,$openid)
     {
+        Teacher::logout();
+        Student::logout();
         if (Teacher::Wxlogin($openid)){
             //尝试登陆教师，如果成功，不进行跳转，只存Session
         } 
@@ -151,6 +153,14 @@ class WxindexController extends WxController {
             // return $this->fetch('Login/noterm');
             return $this->error('系统尚未初始化', url('Login/noterm'));
         }
+
+        //dump(Student::Wxlogin($openid));
+        //dump(Teacher::Wxlogin($openid));
+        //dump(Student::isLogin());
+        //dump(Teacher::isLogin());
+        //dump(session('teacherId'));
+        //dump(session('studentId'));
+        //die();
 
 		//跳转，根据state跳转到不同界面
     	switch ($state) {
