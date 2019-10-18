@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-17 20:31:11
+ * @Last Modified time: 2019-10-18 16:19:43
  */
 namespace app\index\controller;
 use app\index\controller\WxController;
@@ -115,8 +115,8 @@ class WxindexController extends WxController {
             // 登陆，直接调用M层方法，进行登录
     		if (Student::Wxlogin($openid)){
     		//尝试登陆学生，如果成功，不进行跳转，只存Session
-                if (Student::where('id',session('teacherId'))->name == Null) {
-                    //当学生ID数据时，不知道此用户时学生还是教师
+                if (Student::where('openid',$openid)->find()->name == Null) {
+                    //当学生ID数据为空时，不知道此用户时学生还是教师
                     //判断是否是要跳转到教师查看签到的界面
                     if (strlen($state) == 8) {
                         $row = substr($state,4,2)*1;
