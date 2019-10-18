@@ -50,8 +50,7 @@
           <div class="col-md-8">
             
                 <h3></h3>
-                <a href="setCourse?id={$Classroom_time['id']}" class="btn btn-success" style="background-color: rgb(74,155,47,0.7);">&nbsp;签到</a>
-                <a href="onlinesignin?id={$Classroom_time['id']}" class="btn btn-primary" style="background-color: rgb(39,84,185,0.7);">&nbsp;随机提问</a>
+
 
             </div>
 
@@ -91,52 +90,7 @@
  
         
     </div>
-    <script type="text/javascript">
-      function judge(){
-        var url = "/index/login/judgeFocus";
-        ajaxGet(url, function(response)
-        {
-          console.log(response);
-          if(response != -1)
-          {
-           popup();
-          }
-        });
-      }
 
-
-      function ajaxGet(url, callback)
-      {
-        $.ajax({
-          url: url,
-          type: "get",
-          //成功后调用success后面的语句
-        success: function(response) {
-          callback(response);
-        },
-        //失败后调用error后面的语句
-        error: function(xhr) {
-          console.log('server error');
-        }
-        })
-      }
-    /*弹窗*/
-    function popup(){
-    var x;
-    var r=confirm("是否绑定本节课程信息!");
-    if (r==true)
-    {
-      var url = "/index/login/binding";
-        ajaxGet(url, function(response)
-        {
-          console.log(response);
-        });
-     }   
-    else{
-
-        }
-      }
-    </script>
 </body>
 
 </html>

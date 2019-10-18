@@ -26,7 +26,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-09 11:07:39
+ * @Last Modified time: 2019-10-18 20:25:44
  */
 
 
@@ -314,7 +314,7 @@ class StudentController extends SIndexController
         $row = substr($id,4,2)*1;
         $column = substr($id,6,2)*1;
         $time = Term::littleClass();
-        if ($time<=0 || $time>=11) {
+        if ($time<=0 || $time>11) {
             return $this->error('上课时间已结束', url('/index/student/page'));
         }
         $student_id = session('studentId');
@@ -340,8 +340,8 @@ class StudentController extends SIndexController
                 $primarySeattable = Seattable::where('student_id',$student_id)->where('classroom_time_id',$classroom_time->id)->find();
 
                 if ($primarySeattable) {
-                    $primarySeattable->student_id = null;
-                    if (!$primarySeattable->save()) {
+                    
+                    if (!$primarySeattable->delete()) {
                          return $this->error('信息保存异常，请重新扫码');
                     }
                     
@@ -378,8 +378,8 @@ class StudentController extends SIndexController
             $primarySeattable = Seattable::where('student_id',$student_id)->where('classroom_time_id',$classroom_time->id)->find();
             
             if ($primarySeattable) {
-                $primarySeattable->student_id = null;
-                if (!$primarySeattable->save()) {
+                
+                if ($primarySeattable->delete()) {
                     return $this->error('信息保存异常，请重新扫码');
                 }
             } else if($classroom_time->status) {
