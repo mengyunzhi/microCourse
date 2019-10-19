@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-18 17:20:35
+ * @Last Modified time: 2019-10-18 21:32:29
  */
 namespace app\index\controller;
 use app\index\controller\WxController;
@@ -125,7 +125,16 @@ class WxindexController extends WxController {
                         $column = substr($state,6,2)*1;
                         //如果长度为8，并且行号列号都是0，跳转到Login的OnlineSee方法（不需要注册）
                         if ($row == 0 || $column == 0) {
-                            $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.$state);
+                            $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.substr($state,0,4));
+                        }
+                    }
+                }else{
+                    if (strlen($state) == 8) {
+                        $row = substr($state,4,2)*1;
+                        $column = substr($state,6,2)*1;
+                        //如果长度为8，并且行号列号都是0，跳转到Login的OnlineSee方法（不需要注册）
+                        if ($row == 0 || $column == 0) {
+                            $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.substr($state,0,4));
                         }
                     }
                 }
@@ -138,7 +147,7 @@ class WxindexController extends WxController {
                     $column = substr($state,6,2)*1;
                     //如果长度为8，并且行号列号都是0，跳转到Login的OnlineSee方法（不需要注册）
                     if ($row == 0 || $column == 0) {
-                        $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.$state);
+                        $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.substr($state,0,4));
                     }
                 }
                 //如果不是，则是学生或教师，马上存学生的OpenID,取出ID，跳转到注册界面
@@ -203,7 +212,7 @@ class WxindexController extends WxController {
                 $row = substr($state,4,2)*1;
                 $column = substr($state,6,2)*1;
                 if ($row == 0 || $column == 0) {
-                    $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Teacher/OnlineSee?id='.$state);
+                    $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Teacher/OnlineSee?id='.substr($state,0,4));
                 }else{
                     $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/entercourse?id='.$state);
                 }
