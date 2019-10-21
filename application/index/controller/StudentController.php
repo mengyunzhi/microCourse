@@ -450,7 +450,7 @@ class StudentController extends SIndexController
         $seattable = Seattable::where('student_id',$student_id)->where('classroom_time_id',$classroom_time->id)->find();
 
         // 如果这个学生原来签过到
-        if（$seattable) {
+        if($seattable) {
             $primaryStudent = Seattable::where('row',$row)->where('column',$column)->where('classroom_time_id',$classroom_time->id)->find();
 
             // 如果这个座位原来有学生
@@ -512,7 +512,7 @@ class StudentController extends SIndexController
             }
 
         } else {  // 如果这个学生原来没选过座位
-            
+             
             // 创建一条新数据
             $seattable = new Seattable;
             
