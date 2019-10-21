@@ -1137,6 +1137,12 @@ class AdminController extends AIndexController
 		return '初始化成功';
 	}
 
+	// 自动执行测试
+	public function test()
+	{
+		echo "这是一个定时任务的测试";
+	}
+
 }
 
 
