@@ -28,7 +28,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-17 20:14:04
+ * @Last Modified time: 2019-10-17 21:20:01
  */
 class TeacherController extends TIndexController
 {
@@ -1127,8 +1127,25 @@ class TeacherController extends TIndexController
         $Seattables = Seattable::where(['classroom_time_id'=>$Classroomtimeids])->select();
         foreach ($Seattables as $key => $Seat) {
             $_score = Score::where('student_id',$Seat->student_id)->where('course_id',$course->id)->find();
-            $_score->arrivals++;
-            $_score->save();
+
+                    if ($_score) {
+                        // 如果本学生有本课程的一条数据，签到次数+1
+                        $_score->arrivals++;
+                    } else {
+                        // 如果没有，新建之
+                        $_score = new Score;
+                        $_score->student_id = $Seat->student_id;
+                        $_score->course_id = $course->id;
+                        $_score->usual_score = 0;
+                        $_score->exam_score = 0;
+                        $_score->total_score = 0;
+                        $_score->arrivals = 0;
+                        $_score->respond = 0;
+                        $_score->arrivals++;
+                    }
+                    if (!$_score->save()) {
+                         return $this->error('信息保存异常，请重新扫码');
+                    }
         }
         return 1;
     }

@@ -26,7 +26,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:52
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-09 11:07:39
+ * @Last Modified time: 2019-10-18 20:25:44
  */
 
 
@@ -463,6 +463,37 @@ class StudentController extends SIndexController
                 // 通知他
 
 
+                if ($primarySeattable) {
+                    
+                    if (!$primarySeattable->delete()) {
+                         return $this->error('信息保存异常，请重新扫码');
+                    }
+                    
+                } else if($classroom_time->status){
+                    // 若之前未选过其他座位，签到次数+1
+
+                    $score = Score::where('student_id',$student_id)->where('course_id',$classroom_time->courseinfo->course_id)->find();
+                    if ($score) {
+                        // 如果本学生有本课程的一条数据，签到次数+1
+                        $score->arrivals++;
+                    } else {
+                        // 如果没有，新建之
+                        $score = new Score;
+                        $score->student_id = $student_id;
+                        $score->course_id = $classroom_time->courseinfo->course_id;
+                        $score->usual_score = 0;
+                        $score->exam_score = 0;
+                        $score->total_score = 0;
+                        $score->arrivals = 0;
+                        $score->respond = 0;
+                        $score->arrivals++;
+                    }
+                    if (!$score->save()) {
+                         return $this->error('信息保存异常，请重新扫码');
+                    }
+                }
+
+
                 // 他行列信息清空
                 $primaryStudent->row = null;
                 $primaryStudent->column = null;
@@ -471,10 +502,12 @@ class StudentController extends SIndexController
                 }
             }
             
+
             // 将新的行列数保存到学生那条数据里
             $seattable->row = $row;
             $seattable->column = $column;
             if ($seattable->save()) {
+
                     return $this->error('信息保存异常，请重新扫码');
             }
 

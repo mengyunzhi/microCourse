@@ -4,7 +4,7 @@
  * @Author: LYX6666666
  * @Date:   2019-09-09 20:40:17
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-17 20:31:11
+ * @Last Modified time: 2019-10-18 21:32:29
  */
 namespace app\index\controller;
 use app\index\controller\WxController;
@@ -107,6 +107,8 @@ class WxindexController extends WxController {
     //用于跳转到各个方法，传入OpenId和跳转的方法
     public function gogogo($state,$openid)
     {
+        Teacher::logout();
+        Student::logout();
         if (Teacher::Wxlogin($openid)){
             //尝试登陆教师，如果成功，不进行跳转，只存Session
         } 
@@ -115,15 +117,24 @@ class WxindexController extends WxController {
             // 登陆，直接调用M层方法，进行登录
     		if (Student::Wxlogin($openid)){
     		//尝试登陆学生，如果成功，不进行跳转，只存Session
-                if (Student::where('id',session('teacherId'))->name == Null) {
-                    //当学生ID数据时，不知道此用户时学生还是教师
+                if (Student::where('openid',$openid)->find()->name == Null) {
+                    //当学生ID数据为空时，不知道此用户时学生还是教师
                     //判断是否是要跳转到教师查看签到的界面
                     if (strlen($state) == 8) {
                         $row = substr($state,4,2)*1;
                         $column = substr($state,6,2)*1;
                         //如果长度为8，并且行号列号都是0，跳转到Login的OnlineSee方法（不需要注册）
                         if ($row == 0 || $column == 0) {
-                            $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.$state);
+                            $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.substr($state,0,4));
+                        }
+                    }
+                }else{
+                    if (strlen($state) == 8) {
+                        $row = substr($state,4,2)*1;
+                        $column = substr($state,6,2)*1;
+                        //如果长度为8，并且行号列号都是0，跳转到Login的OnlineSee方法（不需要注册）
+                        if ($row == 0 || $column == 0) {
+                            $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.substr($state,0,4));
                         }
                     }
                 }
@@ -136,7 +147,7 @@ class WxindexController extends WxController {
                     $column = substr($state,6,2)*1;
                     //如果长度为8，并且行号列号都是0，跳转到Login的OnlineSee方法（不需要注册）
                     if ($row == 0 || $column == 0) {
-                        $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.$state);
+                        $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/OnlineSee?id='.substr($state,0,4));
                     }
                 }
                 //如果不是，则是学生或教师，马上存学生的OpenID,取出ID，跳转到注册界面
@@ -151,6 +162,14 @@ class WxindexController extends WxController {
             // return $this->fetch('Login/noterm');
             return $this->error('系统尚未初始化', url('Login/noterm'));
         }
+
+        //dump(Student::Wxlogin($openid));
+        //dump(Teacher::Wxlogin($openid));
+        //dump(Student::isLogin());
+        //dump(Teacher::isLogin());
+        //dump(session('teacherId'));
+        //dump(session('studentId'));
+        //die();
 
 		//跳转，根据state跳转到不同界面
     	switch ($state) {
@@ -193,7 +212,7 @@ class WxindexController extends WxController {
                 $row = substr($state,4,2)*1;
                 $column = substr($state,6,2)*1;
                 if ($row == 0 || $column == 0) {
-                    $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Teacher/OnlineSee?id='.$state);
+                    $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Teacher/OnlineSee?id='.substr($state,0,4));
                 }else{
                     $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Student/entercourse?id='.$state);
                 }

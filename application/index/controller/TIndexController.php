@@ -10,7 +10,7 @@ use app\index\model\Term;
  * @Author: LYX6666666
  * @Date:   2019-07-19 14:58:16
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-17 20:30:31
+ * @Last Modified time: 2019-10-18 15:37:05
  */
 class TIndexController extends Controller
 {
@@ -28,6 +28,12 @@ class TIndexController extends Controller
 		if (!Teacher::isLogin()) {
 			//如果教师未登录，判断学生是否登陆
 			if (Student::isLogin()) {
+				if (Student::where('openid',$openid)->find()->name == Null) {
+                    //当学生ID数据为空时，不知道此用户时学生还是教师
+                    //跳转到签到界面
+                    $id = Session::get('studentId');
+                    $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/judgeRole?id='.$id);
+                }
 				//如果学生是登陆状态，跳转到学生的控制器
 				return $this->error('抱歉，您的身份是学生', url('Student/page'));
 			}
@@ -35,11 +41,11 @@ class TIndexController extends Controller
 			return $this->error('教师未登录', url('Login/index'));
 		}
 
-        $id = Session::get('teacherId');
-        //如果教师数据为空，则学生尚未注册，跳转到注册界面
-		if (Teacher::where('id',$id)->find()->name === Null){
-			$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/judgeRole?id='.$id);
-		}
+  		//$id = Session::get('teacherId');
+  		////如果教师数据为空，则学生尚未注册，跳转到注册界面
+		// if (Teacher::where('id',$id)->find()->name === Null){
+		// 	$this->redirect('http://'.$_SERVER['HTTP_HOST'].'/index/Login/judgeRole?id='.$id);
+		// }
 	}
 	public function index()
 	{
