@@ -19,9 +19,9 @@ use think\Controller;
 
 class WxController extends Controller{
 
-    protected $appid='wx4b4890b3f8c0ada5';
+    protected $appid='wxb56c4d9580a4b65b';
     //你的微信公众号appid
-    protected $appsecret = '7634c6e2889e0d366e4ff2e58bc520fa';
+    protected $appsecret = 'a8551f978f932f72f0fde8ffe1f2ecee';
     //你的微信公众号secret 
  
  	//拼接URL
