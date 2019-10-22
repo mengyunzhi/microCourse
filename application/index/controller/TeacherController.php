@@ -28,7 +28,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-17 21:20:01
+ * @Last Modified time: 2019-10-22 19:05:26
  */
 class TeacherController extends TIndexController
 {
@@ -1111,12 +1111,18 @@ class TeacherController extends TIndexController
     //使用js调用该方法，进行绑定——张文达、刘宇轩
     public function binding()
     {
+        //获取当前教室的当前小节
         $Classroom_time = Classroom_time::where('id',$this->request->param('Classroom_time'))->find();
         $num = 0;//计数
+        //获取当前的课
         $courseinfo = courseinfo::where('id',$this->request->param('courseinfo'))->find();
+        //获取这节课对应的课程
         $course = $courseinfo->course;
+
         $Classroomtimeids = [];
+        //循环，从这节课的起始小节开始循环，到起始小节加长度截止
         for ($i=$courseinfo->begin; $i < $courseinfo->begin + $courseinfo->length; $i++) { 
+            //找到当前教室的当前小节
             $_Classroom_time = Classroom_time::where('id',$Classroom_time->id + $num)->find();
             $_Classroom_time->status = 1;
             $_Classroom_time->courseinfo_id = $courseinfo->id;
