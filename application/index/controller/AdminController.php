@@ -1056,13 +1056,23 @@ class AdminController extends AIndexController
 							// $room[$k] = $courseInfo[$k]['Classroom'];
 							// $courseName[$k] = $courseInfo[$k]['name'];
 							// $littleClass[$k] = $courseInfo[$k]['littleClass']; 新版的上课提醒取消了小节数，但也许以后会用到
-							$nameAndRoom[$k] = $courseInfo[$k]['name'] .' '. $courseInfo[$k]['Classroom'];
+							$nameAndRoom[$k] = $courseInfo[$k]['name'] .'  '. $courseInfo[$k]['Classroom'].' ';
 							dump($courseInfo[$k]['littleClass']);
 							
 
 						} else {
 						$nameAndRoom[$k] = '无';
 							}
+					}
+					if ($nameAndRoom[2]=='无') {
+						$second = 3;
+					} else {
+						$second = 2;
+					}
+					if ($nameAndRoom[6]=='无') {
+						$forth = 7;
+					} else {
+						$forth = 6;
 					}
 					$app->template_message->send([
 			        // 'touser' => 'ooMc4w9WhXDIzI7GPpweCw63aQxY',
@@ -1072,15 +1082,13 @@ class AdminController extends AIndexController
 				        'data' => [
 				            'first' => $date,
 				           
-				            'keyword1' => $nameAndRoom[0],
+				            'keyword1' => $nameAndRoom[1],
 				            
+				            'keyword2' => $nameAndRoom[$second],
 
-				            'keyword2' => $nameAndRoom[1],
-				       
+				            'keyword3' => $nameAndRoom[5],
 
-				            'keyword3' => $nameAndRoom[3],
-
-				            'keyword4' => $nameAndRoom[5],
+				            'keyword4' => $nameAndRoom[$forth],
 				            // 'remark'   => '感谢关注梦云智',
 				            'remark'   => $nameAndRoom[9],
 
@@ -1088,6 +1096,7 @@ class AdminController extends AIndexController
 			            
 			        	],
 			    	]);
+			    
 				}
 				
 				}
