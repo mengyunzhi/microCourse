@@ -128,7 +128,7 @@
     var r=confirm("系统检测到您此时有课，是否绑定本节课程信息？");
     if (r==true)
     {
-      var url = "/index/Teacher/binding?courseinfo={$courseinfo->id}&Classroom_time={$Classroom_time->id}";
+      var url = "http://{$_SERVER['HTTP_HOST']}/index/Teacher/binding?courseinfo={$courseinfo->id}&Classroom_time={$Classroom_time->id}";
         ajaxGet(url, function(response)
         {
           console.log(response);

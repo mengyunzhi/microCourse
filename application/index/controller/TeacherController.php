@@ -28,7 +28,7 @@ use think\facade\Request;
  * @Author: LYX6666666
  * @Date:   2019-08-13 09:42:37
  * @Last Modified by:   LYX6666666
- * @Last Modified time: 2019-10-22 19:05:26
+ * @Last Modified time: 2019-10-22 20:48:25
  */
 class TeacherController extends TIndexController
 {
@@ -1122,15 +1122,19 @@ class TeacherController extends TIndexController
         $Classroomtimeids = [];
         //循环，从这节课的起始小节开始循环，到起始小节加长度截止
         for ($i=$courseinfo->begin; $i < $courseinfo->begin + $courseinfo->length; $i++) { 
-            //找到当前教室的当前小节
-            $_Classroom_time = Classroom_time::where('id',$Classroom_time->id + $num)->find();
+            //找到当前课程的所有小节
+            $_Classroom_time = Classroom_time::where('Classroom_id',$Classroom_time->Classroom->id)->where('littleClass',$i)->find();
+            //状态改为1，赋值课程信息
             $_Classroom_time->status = 1;
             $_Classroom_time->courseinfo_id = $courseinfo->id;
+            //把所有的教室时间放入数组
             array_push($Classroomtimeids, $_Classroom_time->id);
+            //储存教室小节的对象
             $_Classroom_time->save();
-            $num++;
         }
+        //取出课程时间数组的所有学生
         $Seattables = Seattable::where(['classroom_time_id'=>$Classroomtimeids])->select();
+        //对每个学生在其成绩表中修改信息
         foreach ($Seattables as $key => $Seat) {
             $_score = Score::where('student_id',$Seat->student_id)->where('course_id',$course->id)->find();
 
