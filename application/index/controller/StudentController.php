@@ -464,8 +464,8 @@ class StudentController extends SIndexController
 
 
                 // 他行列信息清空
-                $primaryStudent->row = null;
-                $primaryStudent->column = null;
+                $primaryStudent->row = 100;
+                $primaryStudent->column = 100;
                 if (!$primaryStudent->save()) {
                     return $this->error('信息保存异常，请重新扫码', url('/index/student/page'));
                 }
@@ -481,6 +481,19 @@ class StudentController extends SIndexController
             }
 
         } else {  // 如果这个学生原来没选过座位
+            $primaryStudent = Seattable::where('row',$row)->where('column',$column)->where('classroom_time_id',$classroom_time->id)->find();
+            // 如果这个座位原来有学生
+            if ($primaryStudent) {
+                // 通知他
+
+
+                // 他行列信息清空
+                $primaryStudent->row = 100;
+                $primaryStudent->column = 100;
+                if (!$primaryStudent->save()) {
+                    return $this->error('信息保存异常，请重新扫码', url('/index/student/page'));
+                }
+            }
              
             // 创建一条新数据
             $seattable = new Seattable;
