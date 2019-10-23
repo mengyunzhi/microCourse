@@ -21,7 +21,7 @@ class AIndexController extends Controller
 		// 使用构造函数将微信相关配置config储存到session中
 		$config = [
     	'app_id' => 'wxb56c4d9580a4b65b',
-   	 	'secret' => 'a8551f978f932f72f0fde8ffe1f2ecee',
+   	 	'secret' => '',
 
     	// 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
     	'response_type' => 'array',

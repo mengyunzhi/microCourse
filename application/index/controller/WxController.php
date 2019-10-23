@@ -21,7 +21,7 @@ class WxController extends Controller{
 
     protected $appid='wxb56c4d9580a4b65b';
     //你的微信公众号appid
-    protected $appsecret = 'a8551f978f932f72f0fde8ffe1f2ecee';
+    protected $appsecret = '';
     //你的微信公众号secret 
  
  	//拼接URL
