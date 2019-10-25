@@ -19,6 +19,7 @@ use app\index\model\Classroom_time;
 use app\index\model\Seattable;
 use \app\index\validate\StudentValidate;
 use think\facade\Request;
+use EasyWeChat\Factory;
 
 /**
  * $studentId = session('studentId');  //得到本学生Id
@@ -458,9 +459,28 @@ class StudentController extends SIndexController
                 // 如果这个学生是他自己
                 if ($primaryStudent->student_id == $student_id) {
                     return $this->error('您已成功扫码选择此座位，请不要重复扫码', url('/index/student/page'));    
+                } else {
+                    // 通知他(这个学生不是他自己)
+                    $date = date('Y-m-d H:i:s')
+                    $config = session('config');
+                    $app = Factory::officialAccount($config);
+                    // 用$primaryStudent->student_id在student表中查询学生openid
+                    $openid = Student::where('id',$student_id)->value('openid');
+                    $app->template_message->send([
+                            'touser' => $openid,
+                            'template_id' => '-UU2KZudxzlg14nJ3ct7b2Jt8jGd23bsZF84KWNBs0M',
+                            'data' => [
+                                'first' => $date,
+                                'keyword1' => '您的座位已被别人占用',
+                                'keyword2' => '请选择新的座位',
+                            ],
+                    );                    
+                
+                
                 }
 
-                // 通知他
+                
+
 
 
                 // 他行列信息清空

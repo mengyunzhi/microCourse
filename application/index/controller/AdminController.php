@@ -1019,21 +1019,24 @@ class AdminController extends AIndexController
 				dump('openid为 '.$allOpenid['data']['openid'][$i].' 的学生id为空');
 				
 			//若通过openid在student表中找到了学生id
-			} else {
+			}  else {
 				$courseInfo = Course::getStudentCourse($studentId,$term,$week,$weekday); //返回一个课程数组
-				// 如果学生当日无课，则调用模板0，发送今日无课
+				dump('courseInfo:');
+					dump($courseInfo);
+				// 如果学生当日无课，则调用模板2，发送今日无课
 				if (empty($courseInfo)) {
 					$templateId = $allTemplate['template_list'][0]['template_id'];
 					$app->template_message->send([
 			        	'touser' => $allOpenid['data']['openid'][$i],
+			        	// 'touser' => 'ooMc4w9WhXDIzI7GPpweCw63aQxY',
 				        'template_id' => $templateId,
-
 				        'data' => [
 				            'first' => $date,
+				            'keyword1' => '今日无课',
+				            'keyword2' => '请速离校',
 				        ],
 	    			]);
-
-
+					// zhengtianqi openid :ooMc4w9WhXDIzI7GPpweCw63aQxY
 				// 如果学生当日有课，则调用消息模板1
 				} else {
 					$templateId = $allTemplate['template_list'][1]['template_id'];
@@ -1041,60 +1044,46 @@ class AdminController extends AIndexController
 					$courseInfo = Course::getStudentCourse($studentId,$term,$week,$weekday);
 					 //通过4项参数返回一个学生当日课程数组
 					dump('学生id为'.$studentId);
+					dump('courseInfo:');
 					dump($courseInfo);
 					for ($k = 0;$k<12;$k++) {
 						if (isset($courseInfo[$k])) {
-							$room[$k] = $courseInfo[$k]['Classroom'];
-							$courseName[$k] = $courseInfo[$k]['name'];
+							// 新版的上课提醒不需要单独发送教室和课程名，改为一起发送
+							// $room[$k] = $courseInfo[$k]['Classroom'];
+							// $courseName[$k] = $courseInfo[$k]['name'];
+							// $littleClass[$k] = $courseInfo[$k]['littleClass']; 新版的上课提醒取消了小节数，但也许以后会用到
+							$nameAndRoom[$k] = $courseInfo[$k]['name'] .'  '. $courseInfo[$k]['Classroom'].' ';
+							dump($courseInfo[$k]['littleClass']);
 							
-							$littleClass[$k] = $courseInfo[$k]['littleClass']; 
-							
-
 						} else {
-							$room[$k] = '无';
-							$courseName[$k] = '无课';
-							$littleClass[$k] = '无';
+						$nameAndRoom[$k] = '无';
 							}
 					}
+					if ($nameAndRoom[2]=='无') {
+						$second = 3;
+					} else {
+						$second = 2;
+					}
+					if ($nameAndRoom[6]=='无') {
+						$forth = 7;
+					} else {
+						$forth = 6;
+					}
 					$app->template_message->send([
-			        // 'touser' => $allOpenid['data']['openid'][$i],
+			        // 'touser' => 'ooMc4w9WhXDIzI7GPpweCw63aQxY',
 			        'touser' => $allOpenid['data']['openid'][$i],
 			        'template_id' => $templateId,
 				       
 				        'data' => [
 				            'first' => $date,
 				           
-				            'room1' => $room[0],
-				            'room2' => $room[1],
-				            'room3' => $room[2],
-				            'room4' => $room[3],
-				            'room5' => $room[4],
-				            'room6' => $room[5],
-				            'room7' => $room[6],
-				            'room8' => $room[7],
-				            'room9' => $room[9],
-
-				            'course1' => $courseName[0],
-				            'course2' => $courseName[1],
-				            'course3' => $courseName[2],
-				            'course4' => $courseName[3],
-				            'course5' => $courseName[4],
-				            'course6' => $courseName[5],
-				            'course7' => $courseName[6],
-				            'course8' => $courseName[7],
-				            'course9' => $courseName[9],
-
-				            'turn1' => $littleClass[0],
-				            'turn2' => $littleClass[1],
-				            'turn3' => $littleClass[2],
-				            'turn4' => $littleClass[3],
-				            'turn5' => $littleClass[4],
-				            'turn6' => $littleClass[5],
-				            'turn7' => $littleClass[6],
-				            'turn8' => $littleClass[7],
-				            'turn9' => $littleClass[9],
-
-
+				            'keyword1' => $nameAndRoom[1],
+				            
+				            'keyword2' => $nameAndRoom[$second],
+				            'keyword3' => $nameAndRoom[5],
+				            'keyword4' => $nameAndRoom[$forth],
+				            // 'remark'   => '感谢关注梦云智',
+				            'remark'   => $nameAndRoom[9],
 			            
 			        	],
 			    	]);
