@@ -19,6 +19,7 @@ use app\index\model\Classroom_time;
 use app\index\model\Seattable;
 use \app\index\validate\StudentValidate;
 use think\facade\Request;
+use EasyWeChat\Factory;
 
 /**
  * $studentId = session('studentId');  //得到本学生Id
@@ -31,14 +32,14 @@ use think\facade\Request;
 
 
 class StudentController extends SIndexController
-{	
+{   
 //    public function index()
 //    {
 //        return $this->fetch();
 //    }
     
-	public function page()
-	{
+    public function page()
+    {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
 
@@ -144,46 +145,46 @@ class StudentController extends SIndexController
         //传入要查询的星期
         $this->assign('week',$week);
         $this->assign('timetable',Term::$timetable);
-		return $this->fetch();
-	}
+        return $this->fetch();
+    }
 
-	public function online()
-	{
+    public function online()
+    {
 
         // 获取当前方法名
         $this->assign('isaction',Request::action());
 
-		$this->assign('time',$time);    //发送各种时间变量
-		return $this->fetch();
-	}
+        $this->assign('time',$time);    //发送各种时间变量
+        return $this->fetch();
+    }
 
-	// 学生界面的课程查询--李美娜
-	public function course()
-	{
+    // 学生界面的课程查询--李美娜
+    public function course()
+    {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
 
-		// 获取所有学期
-		$terms = Term::all();
-		$this->assign('terms', $terms);
+        // 获取所有学期
+        $terms = Term::all();
+        $this->assign('terms', $terms);
 
-		// 获取请求查询的学期课程，若没有就找最近的学期
-		$id = $this->request->param('id/d');
-		if (is_null($id)) {
-			
-			$i = count($terms);
+        // 获取请求查询的学期课程，若没有就找最近的学期
+        $id = $this->request->param('id/d');
+        if (is_null($id)) {
+            
+            $i = count($terms);
             
             $id = $terms[$i-1]->id;
             foreach ($terms as $aaterm) {
                 if ($aaterm->state === 1) {
                     $id = $aaterm->id;                  
                 }
-            }   		 
-		}	
+            }            
+        }   
 
-		$isTerm = Term::get($id);
+        $isTerm = Term::get($id);
          $this->assign('isTerm', $isTerm);
-		
+        
         // 取出本学期所有课程
         $termCourses = $isTerm->Course;
 
@@ -221,23 +222,23 @@ class StudentController extends SIndexController
          // 获取请求学期的课程
         $this->assign('courses', $courses);
 
-		return $this->fetch();	
-	}
+        return $this->fetch();  
+    }
 
-	public function coursetime()
-	{
+    public function coursetime()
+    {
         // 获取当前方法名
         $this->assign('isaction','coursetime');
-		return $this->fetch();
-	}
+        return $this->fetch();
+    }
 
-	public function oncourse()
-	{
-		return $this->fetch();
-	}
+    public function oncourse()
+    {
+        return $this->fetch();
+    }
 
-	// //学生模式——扫码进入课堂——刘宇轩
-	// public function entercourse()
+    // //学生模式——扫码进入课堂——刘宇轩
+    // public function entercourse()
  //    {
         
 
@@ -273,23 +274,23 @@ class StudentController extends SIndexController
 
  //        if(is_null(Score::where('course_id',$course->id)->where('student_id',$student->id)->find()))
  //        {
- //        	$score = new Score;
- //        	$score->student_id = $student->id;
- //        	$score->course_id = $course->id;
- //        	$score->usual_score = $score->exam_score = $score->total_score = $score->arrivals = $score->responds = 0; 
- //        	$score->save();
+ //         $score = new Score;
+ //         $score->student_id = $student->id;
+ //         $score->course_id = $course->id;
+ //         $score->usual_score = $score->exam_score = $score->total_score = $score->arrivals = $score->responds = 0; 
+ //         $score->save();
  //        }
 
  //        $oncourse = Oncourse::where('student_id',$student->id)->where('courseinfo_id',$courseinfo->id)->find();
 
  //        if (is_null($oncourse)) 
  //        {
- //        	$oncourse = new Oncourse;
- //        	$oncourse->student_id = $student->id;
- //        	$oncourse->courseinfo_id = $courseinfo->id;
- //        	$oncourse->column = $oncourse->row =  100;
+ //         $oncourse = new Oncourse;
+ //         $oncourse->student_id = $student->id;
+ //         $oncourse->courseinfo_id = $courseinfo->id;
+ //         $oncourse->column = $oncourse->row =  100;
  //            $oncourse->arrival = $oncourse->respond = 0;
- //        	$oncourse->save();
+ //         $oncourse->save();
  //        } 
 
  //        $oncourse = Oncourse::where('student_id',$student->id)->where('courseinfo_id',$courseinfo->id)->find();
@@ -456,16 +457,45 @@ class StudentController extends SIndexController
             // 如果这个座位原来有学生
             if ($primaryStudent) {
                 // 如果这个学生是他自己
-                if ($primaryStudent->student_id == $student_id) {
-                    return $this->error('您已成功扫码选择此座位，请不要重复扫码', url('/index/student/page'));    
-                }
+                if ($primaryStudent->student_id == $student_id) {                 
+                     return $this->error('您已成功扫码选择此座位，请不要重复扫码', url('/index/student/page'));    
+                } else {
+                    // 通知他(这个学生不是他自己)
+                    $date = date('Y-m-d H:i:s');
+                    $config = [
+                            'app_id' => 'wxb56c4d9580a4b65b',
+                            'secret' => 'a8551f978f932f72f0fde8ffe1f2ecee',
 
-                // 通知他
+                            // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+                            'response_type' => 'array',
+
+                            ];
+                    $app = Factory::officialAccount($config);
+                    // 用$primaryStudent->student_id在student表中查询学生openid
+                    $openid = Student::where('id',$primaryStudent->student_id)->value('openid');
+                    
+                        $app->template_message->send([
+                            'touser' => $openid,
+                            'template_id' =>         '-UU2KZudxzlg14nJ3ct7b2Jt8jGd23bsZF84KWNBs0M',
+                            'data' => [
+                                'first' => $date,
+                                'keyword1' => '您的座位已被别人占用',
+                                'keyword2' => '请选择新的座位',
+                            ],
+                         ]);                    
+                
+                     
+                    
+                    
+                    }
+
+                    
+
 
 
                 // 他行列信息清空
-                $primaryStudent->row = null;
-                $primaryStudent->column = null;
+                $primaryStudent->row = 100;
+                $primaryStudent->column = 100;
                 if (!$primaryStudent->save()) {
                     return $this->error('信息保存异常，请重新扫码', url('/index/student/page'));
                 }
@@ -481,6 +511,19 @@ class StudentController extends SIndexController
             }
 
         } else {  // 如果这个学生原来没选过座位
+            $primaryStudent = Seattable::where('row',$row)->where('column',$column)->where('classroom_time_id',$classroom_time->id)->find();
+            // 如果这个座位原来有学生
+            if ($primaryStudent) {
+                // 通知他
+
+
+                // 他行列信息清空
+                $primaryStudent->row = 100;
+                $primaryStudent->column = 100;
+                if (!$primaryStudent->save()) {
+                    return $this->error('信息保存异常，请重新扫码', url('/index/student/page'));
+                }
+            }
              
             // 创建一条新数据
             $seattable = new Seattable;
@@ -523,36 +566,36 @@ class StudentController extends SIndexController
         return $this->success('选座成功', url('/index/student/page'));
     }
 
-	//学生模块——座位信息储存
-	public function seatsave()
-	{
-		$seat = $this->request->param();
+    //学生模块——座位信息储存
+    public function seatsave()
+    {
+        $seat = $this->request->param();
 
        
-		$oncourse = Oncourse::where('id',$seat["oncourse_id"])->find();
+        $oncourse = Oncourse::where('id',$seat["oncourse_id"])->find();
 
         // dump($oncourse);
         // return ;
 
-		if (is_null($oncourse)) 
+        if (is_null($oncourse)) 
         {
-        	return $this->error('课程信息异常，请重新扫码进入');
+            return $this->error('课程信息异常，请重新扫码进入');
         } 
         if ($seat["column"] == "") 
         {
-        	return $this->error('行号为空，请重新输入');
+            return $this->error('行号为空，请重新输入');
         } 
         if ($seat["row"] == "") 
         {
-        	return $this->error('列号为空，请重新输入');
+            return $this->error('列号为空，请重新输入');
         } 
         if (($seat["column"])>($seat["classroom_column"])) 
         {
-        	return $this->error('列号输入超出范围，请重新输入');
+            return $this->error('列号输入超出范围，请重新输入');
         } 
         if (($seat["row"])>($seat["classroom_row"])) 
         {
-        	return $this->error('行号输入超出范围，请重新输入');
+            return $this->error('行号输入超出范围，请重新输入');
         } 
         $oncourseinfo = Oncourse::where('courseinfo_id',$seat["courseinfo_id"])->where('row',$seat["row"])->where('column',$seat["column"])->find();
         if ($oncourseinfo != Null) {
@@ -579,18 +622,18 @@ class StudentController extends SIndexController
         }
         
         if ($oncourse->save()) {
-        	// return $this->success('恭喜您已完成签到',url('entercourse?id='.$seat['courseinfo_id']));
-        	return $this->success('恭喜您已完成签到',url('page'));
+            // return $this->success('恭喜您已完成签到',url('entercourse?id='.$seat['courseinfo_id']));
+            return $this->success('恭喜您已完成签到',url('page'));
         }
 
-		// dump($seat);
-		// return $this->fetch();
-		return $this->error('提交失败，请重新扫码进入');
-	}
+        // dump($seat);
+        // return $this->fetch();
+        return $this->error('提交失败，请重新扫码进入');
+    }
     
     // 学生成绩查询——赵凯强
-	public function score()
-	{
+    public function score()
+    {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
 
@@ -599,7 +642,7 @@ class StudentController extends SIndexController
         $ifterm = Term::ifterm();
         $this->assign('ifterm', $ifterm);
 
-		// 获取所有学期
+        // 获取所有学期
         $terms = Term::all();
         $this->assign('terms', $terms);
 
@@ -640,11 +683,11 @@ class StudentController extends SIndexController
         
         $this->assign('scores', $getScore);
         return $this->fetch();   
-	}
+    }
 
     // 学生信息页面————赵凯强
-	public function info()
-	{
+    public function info()
+    {
         // 获取当前方法名
         $this->assign('isaction',Request::action());
 
@@ -653,12 +696,12 @@ class StudentController extends SIndexController
         $this->assign('ifterm', $ifterm);
         
         // 获取本学生id
-		$id = session('studentId');
+        $id = session('studentId');
 
-		$student = Student::get($id);
-		$this->assign('student', $student);
-		return $this->fetch();
-	}	
+        $student = Student::get($id);
+        $this->assign('student', $student);
+        return $this->fetch();
+    }   
     
     // 学生信息编辑页面跳转————赵凯强
     public function infoedit()
@@ -668,7 +711,7 @@ class StudentController extends SIndexController
 
       // 判断是否存在当前记录
       if (is_null($Student = Student::get($id))) {
-      	return $this->error('未找到ID为' . $id  . '的记录');
+        return $this->error('未找到ID为' . $id  . '的记录');
       }
 
       $this->assign('Student', $Student);
@@ -679,13 +722,13 @@ class StudentController extends SIndexController
     // 学生信息编辑保存————赵凯强
     public function infoUpdate()
     {
-    	$id = $this->request->param('id/d');
+        $id = $this->request->param('id/d');
 
-    	// 获取传入的学生信息
-    	$Student = Student::get($id);
-    	if (is_null($Student)) {
-    		return $this->error('系统未找到ID为' . $id . '的记录');
-    	}
+        // 获取传入的学生信息
+        $Student = Student::get($id);
+        if (is_null($Student)) {
+            return $this->error('系统未找到ID为' . $id . '的记录');
+        }
 
          if($Student->password != sha1($this->request->param('oldpassword'))){
             return $this->error('原密码不正确');
@@ -706,25 +749,25 @@ class StudentController extends SIndexController
                 return $this->success('操作成功', url('info'));
             }
         }
-    	
-    }	
+        
+    }   
 
     public function password()
     {
-      	return $this->fetch();
+        return $this->fetch();
     }
 
     public function aboutourteam()
     {
-    	// $day = Term::largeClass();
-    	// return $day;
-    	// $day1 = "2019-08-10";
-		// $day2 = date("Y-m-d");
-		// echo $day2;
-		// echo "空格";
-		// $diff = index::weekday($day2);
-		// echo $diff;
-      	// return $this->fetch();
+        // $day = Term::largeClass();
+        // return $day;
+        // $day1 = "2019-08-10";
+        // $day2 = date("Y-m-d");
+        // echo $day2;
+        // echo "空格";
+        // $diff = index::weekday($day2);
+        // echo $diff;
+        // return $this->fetch();
         // $time = new Time();
         // dump($time->time);
         return $this->fetch();
@@ -732,7 +775,7 @@ class StudentController extends SIndexController
 
     public function OpenIdtest()
     {
-    	$test = "我是Student控制器的一个方法";
-    	dump ($test);
+        $test = "我是Student控制器的一个方法";
+        dump ($test);
     }
 }
