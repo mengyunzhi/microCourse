@@ -461,7 +461,7 @@ class StudentController extends SIndexController
                     return $this->error('您已成功扫码选择此座位，请不要重复扫码', url('/index/student/page'));    
                 } else {
                     // 通知他(这个学生不是他自己)
-                    $date = date('Y-m-d H:i:s')
+                    $date = date('Y-m-d H:i:s');
                     $config = session('config');
                     $app = Factory::officialAccount($config);
                     // 用$primaryStudent->student_id在student表中查询学生openid
@@ -474,7 +474,7 @@ class StudentController extends SIndexController
                                 'keyword1' => '您的座位已被别人占用',
                                 'keyword2' => '请选择新的座位',
                             ],
-                    );                    
+                    ]);                    
                 
                 
                 }
