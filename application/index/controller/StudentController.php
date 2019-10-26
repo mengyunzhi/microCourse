@@ -477,11 +477,13 @@ class StudentController extends SIndexController
                         $app->template_message->send([
                             'touser' => $openid,
                             'template_id' =>         '-UU2KZudxzlg14nJ3ct7b2Jt8jGd23bsZF84KWNBs0M',
+
                             'data' => [
                                 'first' => $date,
                                 'keyword1' => '您的座位已被别人占用',
                                 'keyword2' => '请选择新的座位',
                             ],
+
                          ]);                    
                 
                      
@@ -490,6 +492,7 @@ class StudentController extends SIndexController
                     }
 
                     
+
 
 
 
