@@ -1116,11 +1116,10 @@ class AdminController extends AIndexController
         $seattables = Seattable::all();
 
         foreach ($seattables as $seattable) {
-        	$seattable->student_id = null;
-        	$seattable->classroom_time_id = null;
-        	if (!$seattable->save()) {
-        		return '初始化失败';
-        	}
+          
+          if (!$seattable->delete()) {
+            return '初始化失败';
+          }
         }
     
 		return '初始化成功';
