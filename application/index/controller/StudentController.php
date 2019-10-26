@@ -464,7 +464,7 @@ class StudentController extends SIndexController
                     $date = date('Y-m-d H:i:s');
                     $config = [
                             'app_id' => 'wxb56c4d9580a4b65b',
-                            'secret' => 'a8551f978f932f72f0fde8ffe1f2ecee',
+                            'secret' => '',
 
                             // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
                             'response_type' => 'array',
